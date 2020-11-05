@@ -1,0 +1,37 @@
+package main
+
+// 导入路由包
+import (
+	"fmt"
+	"github.com/gin-gonic/gin"
+	"simple-go/pkg/config"
+	"simple-go/router"
+	"time"
+)
+
+type Student1 struct {
+	ID        uint      `json:"id"`
+	FirstName string    `json:"firstName"`
+	LastName  string    `json:"lastName"`
+	City      string    `json:"city"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"UpdatedAt"`
+}
+
+// 入口函数
+func main() {
+
+	// 初始化一个http服务对象
+	r := gin.Default()
+
+	routerGroup := r.Group("/api/")
+	//初始化路由
+	router.Init(routerGroup)
+	//r.POST("/add1", CreateUser)
+	//r.POST("/add2", CreatePerson1)
+
+	//r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	_ = r.Run(fmt.Sprintf("%s:%d", config.Server.Address, config.Server.Port)) // 监听并在 0.0.0.0:8081 上启动服务
+}
+
