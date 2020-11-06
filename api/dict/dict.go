@@ -44,8 +44,8 @@ func GetDictList(c *gin.Context) {
 
 	var service dict.DictContract = &dict.DictService{}
 
-	result,_ := service.GetDictList(pageNum,size)
-	c.JSON(http.StatusOK, gin.H{"data": result})
+	result, total := service.GetDictList(pageNum, size)
+	c.JSON(http.StatusOK, gin.H{"data": result, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
 
 func UpdateDict(c *gin.Context) {

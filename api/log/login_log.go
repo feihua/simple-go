@@ -44,8 +44,8 @@ func GetLoginLogList(c *gin.Context) {
 
 	var service log.LogContract = &log.LogService{}
 
-	result,_ := service.GetLoginLogList(pageNum, size)
-	c.JSON(http.StatusOK, gin.H{"data": result})
+	result, total := service.GetLoginLogList(pageNum, size)
+	c.JSON(http.StatusOK, gin.H{"data": result, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
 
 func UpdateLoginLog(c *gin.Context) {

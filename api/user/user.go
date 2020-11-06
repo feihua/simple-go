@@ -331,7 +331,7 @@ func GetUserList(c *gin.Context) {
 	result, total := service.GetUserList(pageNum, size)
 
 	println(total)
-	c.JSON(http.StatusOK, gin.H{"data": result})
+	c.JSON(http.StatusOK, gin.H{"data": result, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
 
 func UpdateUser(c *gin.Context) {

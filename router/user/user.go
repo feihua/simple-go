@@ -17,7 +17,7 @@ func UserUrl(r *gin.RouterGroup) {
 
 	r.GET("/hello", user.GetUser)
 	r.POST("/user/add", user.CreateUser)
-	r.POST("/user/list", user.GetUserList)
+	r.GET("/user/list", user.GetUserList)
 	r.POST("/user/update", user.UpdateUser)
 	r.POST("/user/delete", user.DeleteUserById)
 	r.POST("/user/updateUserRole", user.UpdateUserRole)

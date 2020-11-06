@@ -44,8 +44,8 @@ func GetRoleList(c *gin.Context) {
 
 	var service role.RoleContract = &role.RoleService{}
 
-	result, _ := service.GetRoleList(pageNum, size)
-	c.JSON(http.StatusOK, gin.H{"data": result})
+	result, total := service.GetRoleList(pageNum, size)
+	c.JSON(http.StatusOK, gin.H{"data": result, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
 
 func UpdateMenu(c *gin.Context) {
