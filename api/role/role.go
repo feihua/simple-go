@@ -21,8 +21,8 @@ func CreateRole(c *gin.Context) {
 	var service role.RoleContract = &role.RoleService{}
 
 	u := dto.RoleDto{
-		Username: request.UserName,
-		Password: request.Password,
+		Name:   request.Name,
+		Remark: request.Remark,
 	}
 	result := service.CreateRole(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
@@ -59,9 +59,9 @@ func UpdateMenu(c *gin.Context) {
 
 	var service role.RoleContract = &role.RoleService{}
 	u := dto.RoleDto{
-		ID:       request.ID,
-		Username: request.UserName,
-		Password: request.Password,
+		Id:     request.Id,
+		Name:   request.Name,
+		Remark: request.Remark,
 	}
 	result := service.UpdateRole(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
@@ -78,7 +78,7 @@ func DeleteMenuById(c *gin.Context) {
 
 	var service role.RoleContract = &role.RoleService{}
 
-	result := service.DeleteRoleById(request.ID)
+	result := service.DeleteRoleById(request.Id)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 

@@ -3,12 +3,20 @@ package repositories
 import (
 	"simple-go/dto"
 	"simple-go/models"
+	"time"
 )
 
 func CreateSysRole(dto dto.RoleDto) error {
-	user := models.SysRole{}
 
-	err := models.DB.Create(&user).Error
+	role := models.SysRole{}
+	role.Name = dto.Name
+	role.Remark = dto.Remark
+	role.CreateBy = "liufeihua"
+	role.CreateTime = time.Now()
+	role.LastUpdateBy = "liufeihua"
+	role.LastUpdateTime = time.Now()
+
+	err := models.DB.Create(&role).Error
 
 	return err
 }
@@ -24,8 +32,16 @@ func GetSysRoleList(current int, pageSize int) ([]models.SysRole, int) {
 }
 
 //UpdateUser 更新用户信息
-func UpdatSysRole(roleDto dto.RoleDto) error {
+func UpdatSysRole(dto dto.RoleDto) error {
+
 	role := models.SysRole{}
+	role.Id = dto.Id
+	role.Name = dto.Name
+	role.Remark = dto.Remark
+	role.CreateBy = "liufeihua"
+	role.CreateTime = time.Now()
+	role.LastUpdateBy = "liufeihua"
+	role.LastUpdateTime = time.Now()
 
 	err := models.DB.Model(&role).Update(&role).Error
 

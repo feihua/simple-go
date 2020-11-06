@@ -3,36 +3,50 @@ package repositories
 import (
 	"simple-go/dto"
 	"simple-go/models"
+	"time"
 )
 
 func CreatDict(dto dto.DictDto) error {
+
 	dict := models.SysDict{}
+	dict.Value = dto.Value
+	dict.Label = dto.Label
+	dict.Type = dto.Type
+	dict.Description = dto.Description
+	dict.Remarks = dto.Remarks
+	dict.Sort = dto.Sort
+	dict.CreateBy = "liufeihua"
+	dict.CreateTime = time.Now()
+	dict.LastUpdateBy = "liufeihua"
+	dict.LastUpdateTime = time.Now()
 
 	err := models.DB.Create(&dict).Error
 
 	return err
 }
 
-func GetDictList(current int, pageSize int) ([]models.SysDict,int) {
+func GetDictList(current int, pageSize int) ([]models.SysDict, int) {
 
 	var total = 0
 	var dict []models.SysDict
-	models.DB.Limit(pageSize).Offset((current-1)*pageSize).Find(&dict)
+	models.DB.Limit(pageSize).Offset((current - 1) * pageSize).Find(&dict)
 
 	models.DB.Model(&models.SysDict{}).Count(&total)
 
-	return dict,total
+	return dict, total
 }
 
-func UpdateDict(userDto dto.DictDto) error {
+func UpdateDict(dto dto.DictDto) error {
 	dict := models.SysDict{}
-	//if userDto.Username != "" {
-	//	dict.Username = userDto.Username
-	//}
-	//
-	//if userDto.Password != "" {
-	//	dict.Password = userDto.Password
-	//}
+	dict.Id = dto.Id
+	dict.Value = dto.Value
+	dict.Label = dto.Label
+	dict.Type = dto.Type
+	dict.Sort = dto.Sort
+	dict.Description = dto.Description
+	dict.Remarks = dto.Remarks
+	dict.LastUpdateBy = "liufeihua"
+	dict.LastUpdateTime = time.Now()
 
 	err := models.DB.Model(&dict).Update(&dict).Error
 

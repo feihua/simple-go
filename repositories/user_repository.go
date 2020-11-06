@@ -58,8 +58,6 @@ func UpdateUser(dto dto.UserDto) error {
 	user.Mobile = dto.Mobile
 	user.Email = dto.Email
 	user.Password = "123456"
-	user.CreateBy = "liufeihua"
-	user.CreateTime = time.Now()
 	user.LastUpdateBy = "liufeihua"
 	user.LastUpdateTime = time.Now()
 

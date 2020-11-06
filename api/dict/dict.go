@@ -21,8 +21,11 @@ func CreateDict(c *gin.Context) {
 	var service dict.DictContract = &dict.DictService{}
 
 	u := dto.DictDto{
-		Username: request.UserName,
-		Password: request.Password,
+		Value:       request.Value,
+		Label:       request.Label,
+		Type:        request.Type,
+		Description: request.Description,
+		Remarks:     request.Remarks,
 	}
 	result := service.CreateDict(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
@@ -60,9 +63,12 @@ func UpdateDict(c *gin.Context) {
 	var service dict.DictContract = &dict.DictService{}
 
 	u := dto.DictDto{
-		ID:       request.ID,
-		Username: request.UserName,
-		Password: request.Password,
+		Id:          request.Id,
+		Value:       request.Value,
+		Label:       request.Label,
+		Type:        request.Type,
+		Description: request.Description,
+		Remarks:     request.Remarks,
 	}
 	result := service.UpdateDict(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
@@ -79,6 +85,6 @@ func DeleteDictById(c *gin.Context) {
 
 	var service dict.DictContract = &dict.DictService{}
 
-	result := service.DeleteDictById(request.ID)
+	result := service.DeleteDictById(request.Id)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
