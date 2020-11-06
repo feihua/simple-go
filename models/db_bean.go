@@ -21,9 +21,9 @@ type SysConfig struct {
 }
 
 type SysDept struct {
-	Id             int     `json:"id" xorm:"pk autoincr comment('编号') BIGINT(20) 'id'"`
+	Id             int       `json:"id" xorm:"pk autoincr comment('编号') BIGINT(20) 'id'"`
 	Name           string    `json:"name" xorm:"comment('机构名称') VARCHAR(50) 'name'"`
-	ParentId       int     `json:"parent_id" xorm:"comment('上级机构ID，一级机构为0') BIGINT(20) 'parent_id'"`
+	ParentId       int       `json:"parent_id" xorm:"comment('上级机构ID，一级机构为0') BIGINT(20) 'parent_id'"`
 	OrderNum       int64     `json:"order_num" xorm:"comment('排序') INT(11) 'order_num'"`
 	CreateBy       string    `json:"create_by" xorm:"comment('创建人') VARCHAR(50) 'create_by'"`
 	CreateTime     time.Time `json:"create_time" xorm:"comment('创建时间') DATETIME 'create_time'"`
@@ -52,6 +52,19 @@ func (s SysDept) GetData() interface{} {
 func (s SysDept) IsRoot() bool {
 	// 这里通过FatherId等于0 或者 FatherId等于自身Id表示顶层根节点
 	return s.ParentId == 0 || s.ParentId == s.Id
+}
+
+func (s SysDept) GetCreateBy() string {
+	return s.CreateBy
+}
+func (s SysDept) GetCreateTime() time.Time {
+	return s.CreateTime
+}
+func (s SysDept) GetLastUpdateBy() string {
+	return s.LastUpdateBy
+}
+func (s SysDept) GetLastUpdateTime() time.Time {
+	return s.LastUpdateTime
 }
 
 type SysDepts []SysDept
@@ -140,6 +153,18 @@ func (s SysMenu) GetData() interface{} {
 func (s SysMenu) IsRoot() bool {
 	// 这里通过FatherId等于0 或者 FatherId等于自身Id表示顶层根节点
 	return s.ParentId == 0 || s.ParentId == s.Id
+}
+func (s SysMenu) GetCreateBy() string {
+	return s.CreateBy
+}
+func (s SysMenu) GetCreateTime() time.Time {
+	return s.CreateTime
+}
+func (s SysMenu) GetLastUpdateBy() string {
+	return s.LastUpdateBy
+}
+func (s SysMenu) GetLastUpdateTime() time.Time {
+	return s.LastUpdateTime
 }
 
 type SystemMenus []SysMenu

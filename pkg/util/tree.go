@@ -1,16 +1,23 @@
 package util
 
-import "sort"
+import (
+	"sort"
+	"time"
+)
 
 // Tree 统一定义菜单树的数据结构，也可以自定义添加其他字段
 type Tree struct {
-	Id              int      `json:"id"`               //节点名字
+	Id              int         `json:"id"`               //节点名字
 	Title           string      `json:"title"`            //节点名字
 	Data            interface{} `json:"data"`             //自定义对象
 	Leaf            bool        `json:"leaf"`             //叶子节点
 	Selected        bool        `json:"checked"`          //选中
 	PartialSelected bool        `json:"partial_selected"` //部分选中
 	Children        []Tree      `json:"children"`         //子节点
+	CreateBy        string      `json:"create_by"`
+	CreateTime      time.Time   `json:"create_time" `
+	LastUpdateBy    string      `json:"last_update_by"`
+	LastUpdateTime  time.Time   `json:"last_update_time" `
 }
 
 // ConvertToINodeArray 其他的结构体想要生成菜单树，直接实现这个接口
@@ -25,6 +32,11 @@ type INode interface {
 	GetData() interface{}
 	// IsRoot 判断当前节点是否是顶层根节点
 	IsRoot() bool
+
+	GetCreateBy() string
+	GetCreateTime() time.Time
+	GetLastUpdateBy() string
+	GetLastUpdateTime() time.Time
 }
 type INodes []INode
 
@@ -56,9 +68,13 @@ func GenerateTree(nodes, selectedNodes []INode) (trees []Tree) {
 
 	for _, v := range roots {
 		childTree := &Tree{
-			Title: v.GetTitle(),
-			Data:  v.GetData(),
-			Id: v.GetId(),
+			Title:          v.GetTitle(),
+			Data:           v.GetData(),
+			Id:             v.GetId(),
+			CreateBy:       v.GetCreateBy(),
+			CreateTime:     v.GetCreateTime(),
+			LastUpdateBy:   v.GetLastUpdateBy(),
+			LastUpdateTime: v.GetLastUpdateTime(),
 		}
 		// 递归之前，根据父节点确认 childTree 的选中状态
 		childTree.Selected = nodeSelected(v, selectedNodes, childTree.Children)
@@ -91,9 +107,13 @@ func recursiveTree(tree *Tree, nodes, selectedNodes []INode) {
 		}
 		if data.GetId() == v.GetFatherId() {
 			childTree := &Tree{
-				Title: v.GetTitle(),
-				Data:  v.GetData(),
-				Id: v.GetId(),
+				Title:          v.GetTitle(),
+				Data:           v.GetData(),
+				Id:             v.GetId(),
+				CreateBy:       v.GetCreateBy(),
+				CreateTime:     v.GetCreateTime(),
+				LastUpdateBy:   v.GetLastUpdateBy(),
+				LastUpdateTime: v.GetLastUpdateTime(),
 			}
 			// 递归之前，根据子节点和父节点确认 childTree 的选中状态
 			childTree.Selected = nodeSelected(v, selectedNodes, childTree.Children) || tree.Selected
