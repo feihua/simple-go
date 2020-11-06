@@ -305,8 +305,10 @@ func CreateUser(c *gin.Context) {
 	var service user.UserContract = &user.UserService{}
 
 	u := dto.UserDto{
-		Username: userRequest.UserName,
-		Password: userRequest.Password,
+		Name:     userRequest.Name,
+		NickName: userRequest.NickName,
+		Mobile:   userRequest.Mobile,
+		Email:    userRequest.Email,
 	}
 	result := service.CreateUser(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
@@ -346,9 +348,11 @@ func UpdateUser(c *gin.Context) {
 	var service user.UserContract = &user.UserService{}
 
 	u := dto.UserDto{
-		ID:       userRequest.ID,
-		Username: userRequest.UserName,
-		Password: userRequest.Password,
+		Id:       userRequest.Id,
+		Name:     userRequest.Name,
+		NickName: userRequest.NickName,
+		Mobile:   userRequest.Mobile,
+		Email:    userRequest.Email,
 	}
 	result := service.UpdateUser(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
@@ -365,7 +369,7 @@ func DeleteUserById(c *gin.Context) {
 
 	var service user.UserContract = &user.UserService{}
 
-	result := service.DeleteUserById(userRequest.ID)
+	result := service.DeleteUserById(userRequest.Id)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
