@@ -1,9 +1,9 @@
 package menu
 
 import (
-	"simple-go/dto"
-	"simple-go/pkg/util"
-	"simple-go/repositories"
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/models"
+	"github.com/feihua/simple-go/repositories"
 )
 
 type MenuService struct {
@@ -13,7 +13,7 @@ func (menu *MenuService) CreateMenu(dto dto.MenuDto) error {
 	return repositories.CreateSysMenu(dto)
 }
 
-func (menu *MenuService) GetMenuList(username string) []util.Tree {
+func (menu *MenuService) GetMenuList(username string) ([]models.SysMenu, int) {
 	return repositories.GetSysMenuList()
 }
 

@@ -1,11 +1,11 @@
 package log
 
 import (
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/requests"
+	"github.com/feihua/simple-go/services/log"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"simple-go/dto"
-	"simple-go/requests"
-	"simple-go/services/log"
 	"strconv"
 )
 

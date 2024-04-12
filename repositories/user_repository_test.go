@@ -2,9 +2,9 @@ package repositories
 
 import (
 	"fmt"
-	"simple-go/dto"
-	"simple-go/models"
-	"simple-go/pkg/config"
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/models"
+	"github.com/feihua/simple-go/pkg/config"
 	"testing"
 )
 

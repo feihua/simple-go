@@ -1,8 +1,8 @@
 package log
 
 import (
+	"github.com/feihua/simple-go/api/log"
 	"github.com/gin-gonic/gin"
-	"simple-go/api/log"
 )
 
 func LogUrl(r *gin.RouterGroup) {

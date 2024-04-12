@@ -1,9 +1,9 @@
 package dept
 
 import (
-	"simple-go/dto"
-	"simple-go/pkg/util"
-	"simple-go/repositories"
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/models"
+	"github.com/feihua/simple-go/repositories"
 )
 
 type DeptService struct {
@@ -13,7 +13,7 @@ func (d *DeptService) CreateDept(dto dto.DeptDto) error {
 	return repositories.CreateDept(dto)
 }
 
-func (d *DeptService) GetDeptList() []util.Tree {
+func (d *DeptService) GetDeptList() ([]models.SysDept, int) {
 	return repositories.GetDeptList()
 }
 

@@ -1,8 +1,8 @@
 package config
 
 import (
+	"github.com/feihua/simple-go/pkg/helper"
 	"gopkg.in/ini.v1"
-	"simple-go/pkg/helper"
 )
 
 var Server *server

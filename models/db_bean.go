@@ -1,7 +1,6 @@
 package models
 
 import (
-	"simple-go/pkg/util"
 	"time"
 )
 
@@ -65,16 +64,6 @@ func (s SysDept) GetLastUpdateBy() string {
 }
 func (s SysDept) GetLastUpdateTime() time.Time {
 	return s.LastUpdateTime
-}
-
-type SysDepts []SysDept
-
-// ConvertToINodeArray 将当前数组转换成父类 INode 接口 数组
-func (s SysDepts) ConvertToINodeArray() (nodes []util.INode) {
-	for _, v := range s {
-		nodes = append(nodes, v)
-	}
-	return
 }
 
 type SysDict struct {
@@ -165,16 +154,6 @@ func (s SysMenu) GetLastUpdateBy() string {
 }
 func (s SysMenu) GetLastUpdateTime() time.Time {
 	return s.LastUpdateTime
-}
-
-type SystemMenus []SysMenu
-
-// ConvertToINodeArray 将当前数组转换成父类 INode 接口 数组
-func (s SystemMenus) ConvertToINodeArray() (nodes []util.INode) {
-	for _, v := range s {
-		nodes = append(nodes, v)
-	}
-	return
 }
 
 type SysRole struct {

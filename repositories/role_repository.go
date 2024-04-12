@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"simple-go/dto"
-	"simple-go/models"
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/models"
 	"time"
 )
 
@@ -31,7 +31,7 @@ func GetSysRoleList(current int, pageSize int) ([]models.SysRole, int) {
 	return role, total
 }
 
-//UpdateUser 更新用户信息
+// UpdateUser 更新用户信息
 func UpdatSysRole(dto dto.RoleDto) error {
 
 	role := models.SysRole{}
@@ -48,7 +48,7 @@ func UpdatSysRole(dto dto.RoleDto) error {
 	return err
 }
 
-//DeleteUserById 通过Id删除用户
+// DeleteUserById 通过Id删除用户
 func DeleteSysRoleById(id int64) error {
 	err := models.DB.Delete(&models.SysRole{Id: id}).Error
 	return err

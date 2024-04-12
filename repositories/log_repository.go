@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"simple-go/dto"
-	"simple-go/models"
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/models"
 )
 
 func CreateSysLog(dto dto.LogDto) error {
@@ -13,7 +13,7 @@ func CreateSysLog(dto dto.LogDto) error {
 	return err
 }
 
-func GetSysLogList(current int, pageSize int) ([]models.SysLog,int) {
+func GetSysLogList(current int, pageSize int) ([]models.SysLog, int) {
 
 	var loginLog []models.SysLog
 
@@ -52,7 +52,7 @@ func CreateSysLoginLog(dto dto.LoginLogDto) error {
 	return err
 }
 
-func GetSysLoginLogList(current int, pageSize int) ([]models.SysLoginLog,int) {
+func GetSysLoginLogList(current int, pageSize int) ([]models.SysLoginLog, int) {
 	var loginLog []models.SysLoginLog
 
 	var total = 0

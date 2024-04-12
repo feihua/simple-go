@@ -1,28 +1,26 @@
 package repositories
 
 import (
-	"simple-go/dto"
-	"simple-go/models"
-	"simple-go/pkg/util"
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/models"
 )
 
 func CreateDept(dto dto.DeptDto) error {
 	dept := models.SysDept{}
-
 
 	err := models.DB.Create(&dept).Error
 
 	return err
 }
 
-func GetDeptList() []util.Tree {
+func GetDeptList() ([]models.SysDept, int) {
 
+	var total = 0
 	var dept []models.SysDept
 	models.DB.Find(&dept)
 
-	// 生成完全树
-	resp := util.GenerateTree(models.SysDepts.ConvertToINodeArray(dept), nil)
-	return resp
+	models.DB.Model(&models.SysRole{}).Count(&total)
+	return dept, total
 }
 
 func UpdateDept(deptDto dto.DeptDto) error {
@@ -31,7 +29,6 @@ func UpdateDept(deptDto dto.DeptDto) error {
 	if deptDto.Username != "" {
 		dept.Name = deptDto.Username
 	}
-
 
 	err := models.DB.Model(&dept).Update(&dept).Error
 

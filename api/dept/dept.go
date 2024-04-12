@@ -1,11 +1,11 @@
 package dept
 
 import (
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/requests"
+	"github.com/feihua/simple-go/services/dept"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"simple-go/dto"
-	"simple-go/requests"
-	"simple-go/services/dept"
 )
 
 func CreateDept(c *gin.Context) {

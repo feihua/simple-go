@@ -2,8 +2,8 @@ package repositories
 
 import (
 	"fmt"
-	"simple-go/dto"
-	"simple-go/models"
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/models"
 	"time"
 )
 

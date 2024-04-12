@@ -1,14 +1,14 @@
 package log
 
 import (
-	"simple-go/dto"
-	"simple-go/models"
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/models"
 )
 
 type LogContract interface {
 	CreateLog(dto dto.LogDto) error
 
-	GetLogList(current int, pageSize int) ([]models.SysLog,int)
+	GetLogList(current int, pageSize int) ([]models.SysLog, int)
 
 	UpdateLog(logDto dto.LogDto) error
 
@@ -16,7 +16,7 @@ type LogContract interface {
 
 	CreateLoginLog(dto dto.LoginLogDto) error
 
-	GetLoginLogList(current int, pageSize int) ([]models.SysLoginLog,int)
+	GetLoginLogList(current int, pageSize int) ([]models.SysLoginLog, int)
 
 	UpdateLoginLog(logDto dto.LoginLogDto) error
 

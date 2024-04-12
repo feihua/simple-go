@@ -1,11 +1,9 @@
 package repositories
 
 import (
-	"simple-go/dto"
-	"simple-go/models"
-	"simple-go/pkg/util"
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/models"
 )
-
 
 func CreateSysMenu(dto dto.MenuDto) error {
 	menu := models.SysMenu{}
@@ -15,15 +13,14 @@ func CreateSysMenu(dto dto.MenuDto) error {
 	return err
 }
 
-func GetSysMenuList() []util.Tree {
+func GetSysMenuList() ([]models.SysMenu, int) {
 
-	var menu []models.SysMenu
-	models.DB.Find(&menu)
+	var total = 0
+	var menus []models.SysMenu
+	models.DB.Find(&menus)
 
-	// 生成完全树
-	resp := util.GenerateTree(models.SystemMenus.ConvertToINodeArray(menu), nil)
-
-	return resp
+	models.DB.Model(&models.SysMenu{}).Count(&total)
+	return menus, total
 }
 
 func UpdateSysMenu(menuDto dto.MenuDto) error {

@@ -1,8 +1,8 @@
 package menu
 
 import (
+	"github.com/feihua/simple-go/api/menu"
 	"github.com/gin-gonic/gin"
-	"simple-go/api/menu"
 )
 
 func MenuUrl(r *gin.RouterGroup) {

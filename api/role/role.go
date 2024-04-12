@@ -1,11 +1,11 @@
 package role
 
 import (
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/requests"
+	"github.com/feihua/simple-go/services/role"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"simple-go/dto"
-	"simple-go/requests"
-	"simple-go/services/role"
 	"strconv"
 )
 

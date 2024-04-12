@@ -1,4 +1,4 @@
-module simple-go
+module github.com/feihua/simple-go
 
 go 1.22
 

@@ -1,13 +1,12 @@
 package user
 
 import (
-	"simple-go/dto"
-	"simple-go/models"
-	"simple-go/requests"
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/models"
+	"github.com/feihua/simple-go/requests"
 )
 
 type UserContract interface {
-
 	CreateUser(dto dto.UserDto) error
 
 	GetUserList(current int, pageSize int) ([]models.SysUser, int)

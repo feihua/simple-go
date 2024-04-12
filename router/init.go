@@ -1,16 +1,17 @@
 package router
 
 import (
+	"github.com/feihua/simple-go/router/dept"
+	"github.com/feihua/simple-go/router/dict"
+	"github.com/feihua/simple-go/router/log"
+	"github.com/feihua/simple-go/router/menu"
+	"github.com/feihua/simple-go/router/role"
+	"github.com/feihua/simple-go/router/user"
 	"github.com/gin-gonic/gin"
-	"simple-go/router/dept"
-	"simple-go/router/dict"
-	"simple-go/router/log"
-	"simple-go/router/menu"
-	"simple-go/router/role"
-	"simple-go/router/user"
 )
 
-/**
+/*
+*
 初始化路由
 */
 func Init(r *gin.RouterGroup) {

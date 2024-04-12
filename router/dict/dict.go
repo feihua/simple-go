@@ -1,8 +1,8 @@
 package dict
 
 import (
+	"github.com/feihua/simple-go/api/dict"
 	"github.com/gin-gonic/gin"
-	"simple-go/api/dict"
 )
 
 func DictUrl(r *gin.RouterGroup) {

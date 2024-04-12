@@ -1,8 +1,8 @@
 package role
 
 import (
+	"github.com/feihua/simple-go/api/role"
 	"github.com/gin-gonic/gin"
-	"simple-go/api/role"
 )
 
 func RoleUrl(r *gin.RouterGroup) {

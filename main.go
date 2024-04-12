@@ -3,9 +3,9 @@ package main
 // 导入路由包
 import (
 	"fmt"
+	"github.com/feihua/simple-go/pkg/config"
+	"github.com/feihua/simple-go/router"
 	"github.com/gin-gonic/gin"
-	"simple-go/pkg/config"
-	"simple-go/router"
 )
 
 // 入口函数

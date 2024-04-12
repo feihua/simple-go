@@ -2,9 +2,9 @@ package models
 
 import (
 	"fmt"
+	"github.com/feihua/simple-go/pkg/config"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"simple-go/pkg/config"
 )
 
 var (

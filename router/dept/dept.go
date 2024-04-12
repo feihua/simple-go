@@ -1,8 +1,8 @@
 package dept
 
 import (
+	"github.com/feihua/simple-go/api/dept"
 	"github.com/gin-gonic/gin"
-	"simple-go/api/dept"
 )
 
 func DeptUrl(r *gin.RouterGroup) {

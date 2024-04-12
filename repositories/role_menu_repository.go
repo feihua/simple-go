@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"simple-go/models"
+	"github.com/feihua/simple-go/models"
 	"time"
 )
 

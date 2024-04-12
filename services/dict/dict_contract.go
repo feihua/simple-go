@@ -1,15 +1,14 @@
 package dict
 
 import (
-	"simple-go/dto"
-	"simple-go/models"
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/models"
 )
 
 type DictContract interface {
-
 	CreateDict(dto dto.DictDto) error
 
-	GetDictList(current int, pageSize int) ([]models.SysDict,int)
+	GetDictList(current int, pageSize int) ([]models.SysDict, int)
 
 	UpdateDict(userDto dto.DictDto) error
 

@@ -1,8 +1,8 @@
 package user
 
 import (
+	"github.com/feihua/simple-go/api/user"
 	"github.com/gin-gonic/gin"
-	"simple-go/api/user"
 )
 
 func UserUrl(r *gin.RouterGroup) {

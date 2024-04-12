@@ -1,9 +1,9 @@
 package dict
 
 import (
-	"simple-go/dto"
-	"simple-go/models"
-	"simple-go/repositories"
+	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/models"
+	"github.com/feihua/simple-go/repositories"
 )
 
 type DictService struct {
@@ -13,8 +13,8 @@ func (d *DictService) CreateDict(dto dto.DictDto) error {
 	return repositories.CreatDict(dto)
 }
 
-func (d *DictService) GetDictList(current int, pageSize int) ([]models.SysDict,int) {
-	return repositories.GetDictList(current,pageSize)
+func (d *DictService) GetDictList(current int, pageSize int) ([]models.SysDict, int) {
+	return repositories.GetDictList(current, pageSize)
 }
 
 func (d *DictService) UpdateDict(dictDto dto.DictDto) error {
