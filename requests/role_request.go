@@ -1,9 +1,11 @@
 package requests
 
 type RoleRequest struct {
-	Id     int64  `json:"id" xorm:"pk autoincr comment('编号') BIGINT(20) 'id'"`
-	Name   string `json:"name" xorm:"comment('角色名称') VARCHAR(100) 'name'"`
-	Remark string `json:"remark" xorm:"comment('备注') VARCHAR(100) 'remark'"`
+	Id       int64  `json:"id"`       //主键
+	RoleName string `json:"roleName"` //名称
+	StatusId int8   `json:"statusId"` //状态(1:正常，0:禁用)
+	Sort     int32  `json:"sort"`     //排序
+	Remark   string `json:"remark"`   //备注
 }
 
 type RoleMenuRequest struct {

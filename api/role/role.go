@@ -11,8 +11,8 @@ import (
 
 func CreateRole(c *gin.Context) {
 
-	request := requests.RoleRequest{}
-	err := c.ShouldBindJSON(&request)
+	req := requests.RoleRequest{}
+	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -21,16 +21,18 @@ func CreateRole(c *gin.Context) {
 	var service role.RoleContract = &role.RoleService{}
 
 	u := dto.RoleDto{
-		Name:   request.Name,
-		Remark: request.Remark,
+		RoleName: req.RoleName,
+		StatusId: req.StatusId,
+		Sort:     req.Sort,
+		Remark:   req.Remark,
 	}
 	result := service.CreateRole(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func GetRoleList(c *gin.Context) {
-	request := requests.RoleRequest{}
-	err := c.ShouldBind(&request)
+func QueryRoleList(c *gin.Context) {
+	req := requests.RoleRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -44,14 +46,14 @@ func GetRoleList(c *gin.Context) {
 
 	var service role.RoleContract = &role.RoleService{}
 
-	result, total := service.GetRoleList(pageNum, size)
+	result, total := service.QueryRoleList(pageNum, size)
 	c.JSON(http.StatusOK, gin.H{"data": result, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
 
 func UpdateMenu(c *gin.Context) {
 
-	request := requests.RoleRequest{}
-	err := c.ShouldBind(&request)
+	req := requests.RoleRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -59,9 +61,11 @@ func UpdateMenu(c *gin.Context) {
 
 	var service role.RoleContract = &role.RoleService{}
 	u := dto.RoleDto{
-		Id:     request.Id,
-		Name:   request.Name,
-		Remark: request.Remark,
+		Id:       req.Id,
+		RoleName: req.RoleName,
+		StatusId: req.StatusId,
+		Sort:     req.Sort,
+		Remark:   req.Remark,
 	}
 	result := service.UpdateRole(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
@@ -69,8 +73,8 @@ func UpdateMenu(c *gin.Context) {
 
 func DeleteMenuById(c *gin.Context) {
 
-	request := requests.RoleRequest{}
-	err := c.ShouldBind(&request)
+	req := requests.RoleRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -78,30 +82,30 @@ func DeleteMenuById(c *gin.Context) {
 
 	var service role.RoleContract = &role.RoleService{}
 
-	result := service.DeleteRoleById(request.Id)
+	result := service.DeleteRoleById(req.Id)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func GeRoleMenuList(c *gin.Context) {
+func QueryRoleMenuList(c *gin.Context) {
 
 	roleId := c.DefaultQuery("roleId", "1")
 
 	var service role.RoleContract = &role.RoleService{}
-	menuIds := service.GeRoleMenuList(roleId)
+	menuIds := service.QueryRoleMenuList(roleId)
 	c.JSON(http.StatusOK, gin.H{"data": menuIds})
 }
 
 func UpdateRoleMenu(c *gin.Context) {
 
-	request := requests.RoleMenuRequest{}
-	err := c.ShouldBind(&request)
+	req := requests.RoleMenuRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
 	}
 
 	var service role.RoleContract = &role.RoleService{}
-	service.UpdateRoleMenu(request)
+	service.UpdateRoleMenu(req)
 
 	c.JSON(http.StatusOK, gin.H{"data": "成功"})
 }

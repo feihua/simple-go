@@ -21,8 +21,12 @@ func init() {
 
 func TestCreateUser(t *testing.T) {
 	userDto := dto.UserDto{
-		Username: username,
-		Password: password,
+		Mobile:   "",
+		UserName: "",
+		Password: "",
+		StatusId: 0,
+		Sort:     0,
+		Remark:   "",
 	}
 	err := CreateUser(userDto)
 	if err != nil {
@@ -31,7 +35,7 @@ func TestCreateUser(t *testing.T) {
 }
 
 func TestGetUserByUsername(t *testing.T) {
-	//user := GetUserByUsername(username)
+	//user := QueryUserByUsername(username)
 	//if user.Name == "" {
 	//	t.Fail()
 	//}
@@ -39,13 +43,13 @@ func TestGetUserByUsername(t *testing.T) {
 }
 
 func TestGetUserList(t *testing.T) {
-	user := GetUserByUsername(username)
+	list, _ := QueryUserList(1, 2)
 
-	fmt.Println(user)
+	fmt.Println(list)
 }
 
 func TestUpdateUser(t *testing.T) {
-	//user := GetUserByUsername(username)
+	//user := QueryUserByUsername(username)
 	//userDto := dto.UserDto{
 	//	ID:       user,
 	//	Username: update_username,
@@ -59,7 +63,7 @@ func TestUpdateUser(t *testing.T) {
 }
 
 func TestDeleteUserById(t *testing.T) {
-	//user := GetUserList(username)
+	//user := QueryUserList(username)
 	//err := DeleteUserById(user.ID)
 	//if err != nil {
 	//	t.Fail()

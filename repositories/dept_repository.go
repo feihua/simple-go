@@ -6,28 +6,36 @@ import (
 )
 
 func CreateDept(dto dto.DeptDto) error {
-	dept := models.SysDept{}
+	dept := models.Dept{
+		DeptName: dto.DeptName,
+		ParentId: dto.ParentId,
+		Sort:     dto.Sort,
+		Remarks:  dto.Remarks,
+	}
 
 	err := models.DB.Create(&dept).Error
 
 	return err
 }
 
-func GetDeptList() ([]models.SysDept, int) {
+func QueryDeptList() ([]models.Dept, int) {
 
 	var total = 0
-	var dept []models.SysDept
+	var dept []models.Dept
 	models.DB.Find(&dept)
 
-	models.DB.Model(&models.SysRole{}).Count(&total)
+	models.DB.Model(&models.Dept{}).Count(&total)
 	return dept, total
 }
 
-func UpdateDept(deptDto dto.DeptDto) error {
+func UpdateDept(dto dto.DeptDto) error {
 
-	dept := models.SysDept{}
-	if deptDto.Username != "" {
-		dept.Name = deptDto.Username
+	dept := models.Dept{
+		Id:       dto.Id,
+		DeptName: dto.DeptName,
+		ParentId: dto.ParentId,
+		Sort:     dto.Sort,
+		Remarks:  dto.Remarks,
 	}
 
 	err := models.DB.Model(&dept).Update(&dept).Error
@@ -35,7 +43,7 @@ func UpdateDept(deptDto dto.DeptDto) error {
 	return err
 }
 
-func DeleteDeptById(id int) error {
-	err := models.DB.Delete(&models.SysDept{Id: id}).Error
+func DeleteDeptById(id int64) error {
+	err := models.DB.Delete(&models.Dept{Id: id}).Error
 	return err
 }

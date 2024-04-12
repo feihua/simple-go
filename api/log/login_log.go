@@ -11,8 +11,8 @@ import (
 
 func CreateLoginLog(c *gin.Context) {
 
-	request := requests.LoginLogRequest{}
-	err := c.ShouldBindJSON(&request)
+	req := requests.LoginLogRequest{}
+	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -21,16 +21,16 @@ func CreateLoginLog(c *gin.Context) {
 	var service log.LogContract = &log.LogService{}
 
 	u := dto.LoginLogDto{
-		Username: request.UserName,
-		Password: request.Password,
+		UserName: req.UserName,
+		Ip:       req.Ip,
 	}
 	result := service.CreateLoginLog(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func GetLoginLogList(c *gin.Context) {
-	request := requests.LoginLogRequest{}
-	err := c.ShouldBind(&request)
+func QueryLoginLogList(c *gin.Context) {
+	req := requests.LoginLogRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -44,33 +44,14 @@ func GetLoginLogList(c *gin.Context) {
 
 	var service log.LogContract = &log.LogService{}
 
-	result, total := service.GetLoginLogList(pageNum, size)
+	result, total := service.QueryLoginLogList(pageNum, size)
 	c.JSON(http.StatusOK, gin.H{"data": result, "success": true, "current": current, "total": total, "pageSize": pageSize})
-}
-
-func UpdateLoginLog(c *gin.Context) {
-
-	request := requests.LoginLogRequest{}
-	err := c.ShouldBind(&request)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
-		return
-	}
-
-	var service log.LogContract = &log.LogService{}
-	u := dto.LoginLogDto{
-		ID:       request.ID,
-		Username: request.UserName,
-		Password: request.Password,
-	}
-	result := service.UpdateLoginLog(u)
-	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
 func DeleteLoginLogById(c *gin.Context) {
 
-	request := requests.LoginLogRequest{}
-	err := c.ShouldBind(&request)
+	req := requests.LoginLogRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -78,6 +59,6 @@ func DeleteLoginLogById(c *gin.Context) {
 
 	var service log.LogContract = &log.LogService{}
 
-	result := service.DeleteLoginLogById(request.ID)
+	result := service.DeleteLoginLogById(req.Id)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }

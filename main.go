@@ -18,6 +18,8 @@ func main() {
 	// 初始化一个http服务对象
 	r := gin.Default()
 
+	_ = r.SetTrustedProxies([]string{"127.0.0.1"})
+
 	routerGroup := r.Group("/api/")
 	//初始化路由
 	router.Init(routerGroup)

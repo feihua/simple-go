@@ -11,8 +11,8 @@ import (
 
 func CreateDict(c *gin.Context) {
 
-	request := requests.DictRequest{}
-	err := c.ShouldBindJSON(&request)
+	req := requests.DictRequest{}
+	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -21,19 +21,19 @@ func CreateDict(c *gin.Context) {
 	var service dict.DictContract = &dict.DictService{}
 
 	u := dto.DictDto{
-		Value:       request.Value,
-		Label:       request.Label,
-		Type:        request.Type,
-		Description: request.Description,
-		Remarks:     request.Remarks,
+		Value:       req.Value,
+		Label:       req.Label,
+		Type:        req.Type,
+		Description: req.Description,
+		Remarks:     req.Remarks,
 	}
 	result := service.CreateDict(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func GetDictList(c *gin.Context) {
-	request := requests.DictRequest{}
-	err := c.ShouldBind(&request)
+func QueryDictList(c *gin.Context) {
+	req := requests.DictRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -47,14 +47,14 @@ func GetDictList(c *gin.Context) {
 
 	var service dict.DictContract = &dict.DictService{}
 
-	result, total := service.GetDictList(pageNum, size)
+	result, total := service.QueryDictList(pageNum, size)
 	c.JSON(http.StatusOK, gin.H{"data": result, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
 
 func UpdateDict(c *gin.Context) {
 
-	request := requests.DictRequest{}
-	err := c.ShouldBind(&request)
+	req := requests.DictRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -63,12 +63,12 @@ func UpdateDict(c *gin.Context) {
 	var service dict.DictContract = &dict.DictService{}
 
 	u := dto.DictDto{
-		Id:          request.Id,
-		Value:       request.Value,
-		Label:       request.Label,
-		Type:        request.Type,
-		Description: request.Description,
-		Remarks:     request.Remarks,
+		Id:          req.Id,
+		Value:       req.Value,
+		Label:       req.Label,
+		Type:        req.Type,
+		Description: req.Description,
+		Remarks:     req.Remarks,
 	}
 	result := service.UpdateDict(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
@@ -76,8 +76,8 @@ func UpdateDict(c *gin.Context) {
 
 func DeleteDictById(c *gin.Context) {
 
-	request := requests.DictRequest{}
-	err := c.ShouldBind(&request)
+	req := requests.DictRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -85,6 +85,6 @@ func DeleteDictById(c *gin.Context) {
 
 	var service dict.DictContract = &dict.DictService{}
 
-	result := service.DeleteDictById(request.Id)
+	result := service.DeleteDictById(req.Id)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }

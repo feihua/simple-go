@@ -10,8 +10,8 @@ import (
 
 func CreateMenu(c *gin.Context) {
 
-	request := requests.MenuRequest{}
-	err := c.ShouldBindJSON(&request)
+	req := requests.MenuRequest{}
+	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -20,16 +20,23 @@ func CreateMenu(c *gin.Context) {
 	var service menu.MenuContract = &menu.MenuService{}
 
 	u := dto.MenuDto{
-		Username: request.UserName,
-		Password: request.Password,
+		MenuName: req.MenuName,
+		MenuType: req.MenuType,
+		StatusId: req.StatusId,
+		Sort:     req.Sort,
+		ParentId: req.ParentId,
+		MenuUrl:  req.MenuUrl,
+		ApiUrl:   req.ApiUrl,
+		MenuIcon: req.MenuIcon,
+		Remark:   req.Remark,
 	}
 	result := service.CreateMenu(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func GetMenuList(c *gin.Context) {
-	request := requests.MenuRequest{}
-	err := c.ShouldBind(&request)
+func QueryMenuList(c *gin.Context) {
+	req := requests.MenuRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -37,14 +44,14 @@ func GetMenuList(c *gin.Context) {
 
 	var service menu.MenuContract = &menu.MenuService{}
 
-	menuList, _ := service.GetMenuList("u")
+	menuList, _ := service.QueryMenuList("u")
 	c.JSON(http.StatusOK, gin.H{"data": menuList})
 }
 
 func UpdateMenu(c *gin.Context) {
 
-	request := requests.MenuRequest{}
-	err := c.ShouldBind(&request)
+	req := requests.MenuRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -52,9 +59,16 @@ func UpdateMenu(c *gin.Context) {
 
 	var service menu.MenuContract = &menu.MenuService{}
 	u := dto.MenuDto{
-		ID:       request.ID,
-		Username: request.UserName,
-		Password: request.Password,
+		Id:       req.Id,
+		MenuName: req.MenuName,
+		MenuType: req.MenuType,
+		StatusId: req.StatusId,
+		Sort:     req.Sort,
+		ParentId: req.ParentId,
+		MenuUrl:  req.MenuUrl,
+		ApiUrl:   req.ApiUrl,
+		MenuIcon: req.MenuIcon,
+		Remark:   req.Remark,
 	}
 	result := service.UpdateMenu(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
@@ -62,8 +76,8 @@ func UpdateMenu(c *gin.Context) {
 
 func DeleteMenuById(c *gin.Context) {
 
-	request := requests.MenuRequest{}
-	err := c.ShouldBind(&request)
+	req := requests.MenuRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -71,6 +85,6 @@ func DeleteMenuById(c *gin.Context) {
 
 	var service menu.MenuContract = &menu.MenuService{}
 
-	result := service.DeletMenuById(request.ID)
+	result := service.DeletMenuById(req.Id)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }

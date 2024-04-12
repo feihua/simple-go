@@ -8,9 +8,9 @@ import (
 type MenuContract interface {
 	CreateMenu(dto dto.MenuDto) error
 
-	GetMenuList(username string) ([]models.SysMenu, int)
+	QueryMenuList(username string) ([]models.Menu, int)
 
 	UpdateMenu(menuDto dto.MenuDto) error
 
-	DeletMenuById(id int) error
+	DeletMenuById(id int64) error
 }

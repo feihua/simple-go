@@ -13,14 +13,14 @@ func (d *DeptService) CreateDept(dto dto.DeptDto) error {
 	return repositories.CreateDept(dto)
 }
 
-func (d *DeptService) GetDeptList() ([]models.SysDept, int) {
-	return repositories.GetDeptList()
+func (d *DeptService) QueryDeptList() ([]models.Dept, int) {
+	return repositories.QueryDeptList()
 }
 
 func (d *DeptService) UpdateDept(deptDto dto.DeptDto) error {
 	return repositories.UpdateDept(deptDto)
 }
 
-func (d *DeptService) DeleteDeptById(id int) error {
+func (d *DeptService) DeleteDeptById(id int64) error {
 	return repositories.DeleteDeptById(id)
 }

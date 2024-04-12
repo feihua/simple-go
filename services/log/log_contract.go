@@ -8,17 +8,13 @@ import (
 type LogContract interface {
 	CreateLog(dto dto.LogDto) error
 
-	GetLogList(current int, pageSize int) ([]models.SysLog, int)
-
-	UpdateLog(logDto dto.LogDto) error
+	QueryLogList(current int, pageSize int) ([]models.OperationLog, int)
 
 	DeleteLogById(id int64) error
 
 	CreateLoginLog(dto dto.LoginLogDto) error
 
-	GetLoginLogList(current int, pageSize int) ([]models.SysLoginLog, int)
-
-	UpdateLoginLog(logDto dto.LoginLogDto) error
+	QueryLoginLogList(current int, pageSize int) ([]models.LoginLog, int)
 
 	DeleteLoginLogById(id int64) error
 }

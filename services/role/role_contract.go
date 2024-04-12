@@ -9,12 +9,12 @@ import (
 type RoleContract interface {
 	CreateRole(dto dto.RoleDto) error
 
-	GetRoleList(current int, pageSize int) ([]models.SysRole, int)
+	QueryRoleList(current int, pageSize int) ([]models.Role, int)
 
 	UpdateRole(roleDto dto.RoleDto) error
 
 	DeleteRoleById(id int64) error
 
-	GeRoleMenuList(id string) []int64
+	QueryRoleMenuList(id string) []int64
 	UpdateRoleMenu(request requests.RoleMenuRequest)
 }

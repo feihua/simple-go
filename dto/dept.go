@@ -1,7 +1,9 @@
 package dto
 
 type DeptDto struct {
-	ID       int `gorm:"primary_key"`
-	Username string
-	Password string
+	Id       int64  `json:"id"`       //编号
+	DeptName string `json:"deptName"` //部门名称
+	ParentId int64  `json:"parentId"` //上级部门ID，一级部门为0
+	Sort     int32  `json:"sort"`     //排序
+	Remarks  string `json:"remarks"`  //备注
 }

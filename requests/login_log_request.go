@@ -1,7 +1,7 @@
 package requests
 
 type LoginLogRequest struct {
-	ID       int64   `json:"id"`
-	UserName string `json:"userName"`
-	Password string `json:"password"`
+	Id       int64  `json:"id"`       //主键
+	UserName string `json:"userName"` //用户名
+	Ip       string `json:"ip"`       //IP地址
 }

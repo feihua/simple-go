@@ -13,8 +13,8 @@ func (d *DictService) CreateDict(dto dto.DictDto) error {
 	return repositories.CreatDict(dto)
 }
 
-func (d *DictService) GetDictList(current int, pageSize int) ([]models.SysDict, int) {
-	return repositories.GetDictList(current, pageSize)
+func (d *DictService) QueryDictList(current int, pageSize int) ([]models.Dict, int) {
+	return repositories.QueryDictList(current, pageSize)
 }
 
 func (d *DictService) UpdateDict(dictDto dto.DictDto) error {

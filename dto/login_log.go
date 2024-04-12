@@ -1,7 +1,6 @@
 package dto
 
 type LoginLogDto struct {
-	ID       int64 `gorm:"primary_key"`
-	Username string
-	Password string
+	UserName string `json:"userName"` //用户名
+	Ip       string `json:"ip"`       //IP地址
 }

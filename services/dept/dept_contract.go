@@ -8,9 +8,9 @@ import (
 type DeptContract interface {
 	CreateDept(dto dto.DeptDto) error
 
-	GetDeptList() ([]models.SysDept, int)
+	QueryDeptList() ([]models.Dept, int)
 
 	UpdateDept(deptDto dto.DeptDto) error
 
-	DeleteDeptById(id int) error
+	DeleteDeptById(id int64) error
 }

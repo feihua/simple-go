@@ -4,43 +4,39 @@ import (
 	"fmt"
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
-	"time"
 )
 
 func CreateUser(dto dto.UserDto) error {
 
-	user := models.SysUser{}
-	user.Name = dto.Name
-	user.NickName = dto.NickName
-	user.Mobile = dto.Mobile
-	user.Email = dto.Email
-	user.Status = 1
-	user.Password = "123456"
-	user.CreateBy = "liufeihua"
-	user.CreateTime = time.Now()
-	user.LastUpdateBy = "liufeihua"
-	user.LastUpdateTime = time.Now()
+	user := models.User{
+		Mobile:   dto.Mobile,
+		UserName: dto.UserName,
+		Password: dto.Password,
+		StatusId: dto.StatusId,
+		Sort:     dto.Sort,
+		Remark:   dto.Remark,
+	}
 
 	err := models.DB.Create(&user).Error
 
 	return err
 }
 
-func GetUserByUsername(username string) []models.SysUser {
-	var sysUser []models.SysUser
+func QueryUserByUsername(username string) []models.User {
+	var sysUser []models.User
 
 	models.DB.Find(&sysUser, models.DB.Where("username = ?", username))
 
 	return sysUser
 }
 
-func GetUserList(current int, pageSize int) ([]models.SysUser, int) {
+func QueryUserList(current int, pageSize int) ([]models.User, int) {
 
 	var total = 0
-	var sysUser []models.SysUser
+	var sysUser []models.User
 	models.DB.Limit(pageSize).Offset((current - 1) * pageSize).Find(&sysUser)
 
-	models.DB.Model(&models.SysUser{}).Count(&total)
+	models.DB.Model(&models.User{}).Count(&total)
 
 	for k, v := range sysUser {
 		fmt.Println(k, v)
@@ -51,15 +47,15 @@ func GetUserList(current int, pageSize int) ([]models.SysUser, int) {
 
 func UpdateUser(dto dto.UserDto) error {
 
-	user := models.SysUser{}
-	user.Id = dto.Id
-	user.Name = dto.Name
-	user.NickName = dto.NickName
-	user.Mobile = dto.Mobile
-	user.Email = dto.Email
-	user.Password = "123456"
-	user.LastUpdateBy = "liufeihua"
-	user.LastUpdateTime = time.Now()
+	user := models.User{
+		Id:       dto.Id,
+		Mobile:   dto.Mobile,
+		UserName: dto.UserName,
+		Password: dto.Password,
+		StatusId: dto.StatusId,
+		Sort:     dto.Sort,
+		Remark:   dto.Remark,
+	}
 
 	err := models.DB.Model(&user).Update(&user).Error
 
@@ -67,6 +63,6 @@ func UpdateUser(dto dto.UserDto) error {
 }
 
 func DeleteUserById(id int64) error {
-	err := models.DB.Delete(&models.SysUser{Id: id}).Error
+	err := models.DB.Delete(&models.User{Id: id}).Error
 	return err
 }

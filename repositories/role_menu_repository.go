@@ -5,9 +5,9 @@ import (
 	"time"
 )
 
-func GeRoleMenuList(roleId int64) []int64 {
+func QueryRoleMenuList(roleId int64) []int64 {
 
-	var roleMenus []models.SysRoleMenu
+	var roleMenus []models.RoleMenu
 	models.DB.Where("role_id=?", roleId).Find(&roleMenus)
 
 	var menuIds []int64
@@ -22,14 +22,13 @@ func GeRoleMenuList(roleId int64) []int64 {
 func UpdateRoleMenu(roleId int64, menuIds []int64) {
 
 	//先删除
-	models.DB.Raw("DELETE FROM sys_role_menu WHERE role_id = ?", roleId)
+	models.DB.Where("role_id = ?", roleId).Delete(&models.RoleMenu{})
 
 	for _, menuId := range menuIds {
 
-		roleMenu := models.SysRoleMenu{}
+		roleMenu := models.RoleMenu{}
 		roleMenu.RoleId = roleId
 		roleMenu.MenuId = menuId
-		roleMenu.CreateBy = "admin"
 		roleMenu.CreateTime = time.Now()
 
 		models.DB.Create(&roleMenu)

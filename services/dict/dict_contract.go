@@ -8,7 +8,7 @@ import (
 type DictContract interface {
 	CreateDict(dto dto.DictDto) error
 
-	GetDictList(current int, pageSize int) ([]models.SysDict, int)
+	QueryDictList(current int, pageSize int) ([]models.Dict, int)
 
 	UpdateDict(userDto dto.DictDto) error
 

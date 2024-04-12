@@ -11,8 +11,8 @@ import (
 
 func CreateLog(c *gin.Context) {
 
-	request := requests.SysLogRequest{}
-	err := c.ShouldBindJSON(&request)
+	req := requests.SysLogRequest{}
+	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -21,16 +21,20 @@ func CreateLog(c *gin.Context) {
 	var service log.LogContract = &log.LogService{}
 
 	u := dto.LogDto{
-		Username: request.UserName,
-		Password: request.Password,
+		UserName:      req.UserName,
+		Operation:     req.Operation,
+		Method:        req.Method,
+		Params:        req.Params,
+		OperationTime: req.OperationTime,
+		Ip:            req.Ip,
 	}
 	result := service.CreateLog(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func GetLogList(c *gin.Context) {
-	request := requests.SysLogRequest{}
-	err := c.ShouldBind(&request)
+func QueryLogList(c *gin.Context) {
+	req := requests.SysLogRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -44,33 +48,14 @@ func GetLogList(c *gin.Context) {
 
 	var service log.LogContract = &log.LogService{}
 
-	result, total := service.GetLogList(pageNum, size)
+	result, total := service.QueryLogList(pageNum, size)
 	c.JSON(http.StatusOK, gin.H{"data": result, "success": true, "current": current, "total": total, "pageSize": pageSize})
-}
-
-func UpdateLog(c *gin.Context) {
-
-	request := requests.SysLogRequest{}
-	err := c.ShouldBind(&request)
-	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
-		return
-	}
-
-	var service log.LogContract = &log.LogService{}
-	u := dto.LogDto{
-		ID:       request.ID,
-		Username: request.UserName,
-		Password: request.Password,
-	}
-	result := service.UpdateLog(u)
-	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
 func DeleteLogById(c *gin.Context) {
 
-	request := requests.SysLogRequest{}
-	err := c.ShouldBind(&request)
+	req := requests.SysLogRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -78,6 +63,6 @@ func DeleteLogById(c *gin.Context) {
 
 	var service log.LogContract = &log.LogService{}
 
-	result := service.DeleteLogById(request.ID)
+	result := service.DeleteLogById(req.Id)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }

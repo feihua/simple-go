@@ -10,8 +10,8 @@ import (
 
 func CreateDept(c *gin.Context) {
 
-	request := requests.DeptRequest{}
-	err := c.ShouldBindJSON(&request)
+	req := requests.DeptRequest{}
+	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -20,16 +20,18 @@ func CreateDept(c *gin.Context) {
 	var service dept.DeptContract = &dept.DeptService{}
 
 	u := dto.DeptDto{
-		Username: request.UserName,
-		Password: request.Password,
+		DeptName: req.DeptName,
+		ParentId: req.ParentId,
+		Sort:     req.Sort,
+		Remarks:  req.Remarks,
 	}
 	result := service.CreateDept(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func GetDeptList(c *gin.Context) {
-	request := requests.DeptRequest{}
-	err := c.ShouldBind(&request)
+func QueryDeptList(c *gin.Context) {
+	req := requests.DeptRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -39,14 +41,14 @@ func GetDeptList(c *gin.Context) {
 
 	service = &dept.DeptService{}
 
-	depts, _ := service.GetDeptList()
+	depts, _ := service.QueryDeptList()
 	c.JSON(http.StatusOK, gin.H{"data": depts})
 }
 
 func UpdateDept(c *gin.Context) {
 
-	request := requests.DeptRequest{}
-	err := c.ShouldBind(&request)
+	req := requests.DeptRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -56,9 +58,11 @@ func UpdateDept(c *gin.Context) {
 
 	service = &dept.DeptService{}
 	u := dto.DeptDto{
-		ID:       request.ID,
-		Username: request.UserName,
-		Password: request.Password,
+		Id:       req.Id,
+		DeptName: req.DeptName,
+		ParentId: req.ParentId,
+		Sort:     req.Sort,
+		Remarks:  req.Remarks,
 	}
 	result := service.UpdateDept(u)
 	c.JSON(http.StatusOK, gin.H{"data": result})
@@ -66,8 +70,8 @@ func UpdateDept(c *gin.Context) {
 
 func DeleteDeptById(c *gin.Context) {
 
-	request := requests.DeptRequest{}
-	err := c.ShouldBind(&request)
+	req := requests.DeptRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
@@ -77,6 +81,6 @@ func DeleteDeptById(c *gin.Context) {
 
 	service = &dept.DeptService{}
 
-	result := service.DeleteDeptById(request.ID)
+	result := service.DeleteDeptById(req.Id)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }

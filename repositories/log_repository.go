@@ -6,71 +6,58 @@ import (
 )
 
 func CreateSysLog(dto dto.LogDto) error {
-	log := models.SysLog{}
+	log := models.OperationLog{
+		UserName:      dto.UserName,
+		Operation:     dto.Operation,
+		Method:        dto.Method,
+		Params:        dto.Params,
+		OperationTime: dto.OperationTime,
+		Ip:            dto.Ip,
+	}
 
 	err := models.DB.Create(&log).Error
 
 	return err
 }
 
-func GetSysLogList(current int, pageSize int) ([]models.SysLog, int) {
+func QueryLogList(current int, pageSize int) ([]models.OperationLog, int) {
 
-	var loginLog []models.SysLog
+	var loginLog []models.OperationLog
 
 	var total = 0
 	models.DB.Limit(pageSize).Offset((current - 1) * pageSize).Find(&loginLog)
 
-	models.DB.Model(&models.SysLog{}).Count(&total)
+	models.DB.Model(&models.OperationLog{}).Count(&total)
 	return loginLog, total
 }
 
-func UpdateSysLog(logDto dto.LogDto) error {
-	log := models.SysLog{}
-	//if logDto.Username != "" {
-	//	log.Username = logDto.Username
-	//}
-	//
-	//if logDto.Password != "" {
-	//	log.Password = logDto.Password
-	//}
-
-	err := models.DB.Model(&log).Update(&log).Error
-
-	return err
-}
-
 func DeleteSysLogById(id int64) error {
-	err := models.DB.Delete(&models.SysLog{Id: id}).Error
+	err := models.DB.Delete(&models.OperationLog{Id: id}).Error
 	return err
 }
 
 func CreateSysLoginLog(dto dto.LoginLogDto) error {
-	log := models.SysLoginLog{}
+	log := models.LoginLog{
+		UserName: dto.UserName,
+		Ip:       dto.Ip,
+	}
 
 	err := models.DB.Create(&log).Error
 
 	return err
 }
 
-func GetSysLoginLogList(current int, pageSize int) ([]models.SysLoginLog, int) {
-	var loginLog []models.SysLoginLog
+func QueryLoginLogList(current int, pageSize int) ([]models.LoginLog, int) {
+	var loginLog []models.LoginLog
 
 	var total = 0
 	models.DB.Limit(pageSize).Offset((current - 1) * pageSize).Find(&loginLog)
 
-	models.DB.Model(&models.SysLoginLog{}).Count(&total)
+	models.DB.Model(&models.LoginLog{}).Count(&total)
 	return loginLog, total
 }
 
-func UpdateSysLoginLog(loginLogDto dto.LoginLogDto) error {
-	log := models.SysLoginLog{}
-
-	err := models.DB.Model(&log).Update(&log).Error
-
-	return err
-}
-
 func DeleteSysLoginLogById(id int64) error {
-	err := models.DB.Delete(&models.SysLoginLog{Id: id}).Error
+	err := models.DB.Delete(&models.LoginLog{Id: id}).Error
 	return err
 }

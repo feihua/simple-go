@@ -14,8 +14,8 @@ func (h *UserService) CreateUser(dto dto.UserDto) error {
 	return repositories.CreateUser(dto)
 }
 
-func (h *UserService) GetUserList(current int, pageSize int) ([]models.SysUser, int) {
-	return repositories.GetUserList(current, pageSize)
+func (h *UserService) QueryUserList(current int, pageSize int) ([]models.User, int) {
+	return repositories.QueryUserList(current, pageSize)
 }
 
 func (h *UserService) UpdateUser(userDto dto.UserDto) error {

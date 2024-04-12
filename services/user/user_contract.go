@@ -9,7 +9,7 @@ import (
 type UserContract interface {
 	CreateUser(dto dto.UserDto) error
 
-	GetUserList(current int, pageSize int) ([]models.SysUser, int)
+	QueryUserList(current int, pageSize int) ([]models.User, int)
 
 	UpdateUser(userDto dto.UserDto) error
 
