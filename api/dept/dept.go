@@ -39,8 +39,8 @@ func GetDeptList(c *gin.Context) {
 
 	service = &dept.DeptService{}
 
-	result := service.GetDeptList()
-	c.JSON(http.StatusOK, gin.H{"data": result})
+	depts, _ := service.GetDeptList()
+	c.JSON(http.StatusOK, gin.H{"data": depts})
 }
 
 func UpdateDept(c *gin.Context) {

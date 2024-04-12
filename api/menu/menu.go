@@ -37,8 +37,8 @@ func GetMenuList(c *gin.Context) {
 
 	var service menu.MenuContract = &menu.MenuService{}
 
-	result := service.GetMenuList("u")
-	c.JSON(http.StatusOK, gin.H{"data": result})
+	menuList, _ := service.GetMenuList("u")
+	c.JSON(http.StatusOK, gin.H{"data": menuList})
 }
 
 func UpdateMenu(c *gin.Context) {

@@ -31,41 +31,6 @@ type SysDept struct {
 	DelFlag        int64     `json:"del_flag" xorm:"default 0 comment('是否删除  -1：已删除  0：正常') TINYINT(4) 'del_flag'"`
 }
 
-// region 实现ITree 所有接口
-func (s SysDept) GetTitle() string {
-	return s.Name
-}
-
-func (s SysDept) GetId() int {
-	return s.Id
-}
-
-func (s SysDept) GetFatherId() int {
-	return s.ParentId
-}
-
-func (s SysDept) GetData() interface{} {
-	return s
-}
-
-func (s SysDept) IsRoot() bool {
-	// 这里通过FatherId等于0 或者 FatherId等于自身Id表示顶层根节点
-	return s.ParentId == 0 || s.ParentId == s.Id
-}
-
-func (s SysDept) GetCreateBy() string {
-	return s.CreateBy
-}
-func (s SysDept) GetCreateTime() time.Time {
-	return s.CreateTime
-}
-func (s SysDept) GetLastUpdateBy() string {
-	return s.LastUpdateBy
-}
-func (s SysDept) GetLastUpdateTime() time.Time {
-	return s.LastUpdateTime
-}
-
 type SysDict struct {
 	Id             int64     `json:"id" xorm:"pk autoincr comment('编号') BIGINT(20) 'id'"`
 	Value          string    `json:"value" xorm:"not null comment('数据值') VARCHAR(100) 'value'"`
@@ -120,40 +85,6 @@ type SysMenu struct {
 	LastUpdateBy   string    `json:"last_update_by" xorm:"comment('更新人') VARCHAR(50) 'last_update_by'"`
 	LastUpdateTime time.Time `json:"last_update_time" xorm:"comment('更新时间') DATETIME 'last_update_time'"`
 	DelFlag        int64     `json:"del_flag" xorm:"default 0 comment('是否删除  -1：已删除  0：正常') TINYINT(4) 'del_flag'"`
-}
-
-// region 实现ITree 所有接口
-func (s SysMenu) GetTitle() string {
-	return s.Name
-}
-
-func (s SysMenu) GetId() int {
-	return s.Id
-}
-
-func (s SysMenu) GetFatherId() int {
-	return s.ParentId
-}
-
-func (s SysMenu) GetData() interface{} {
-	return s
-}
-
-func (s SysMenu) IsRoot() bool {
-	// 这里通过FatherId等于0 或者 FatherId等于自身Id表示顶层根节点
-	return s.ParentId == 0 || s.ParentId == s.Id
-}
-func (s SysMenu) GetCreateBy() string {
-	return s.CreateBy
-}
-func (s SysMenu) GetCreateTime() time.Time {
-	return s.CreateTime
-}
-func (s SysMenu) GetLastUpdateBy() string {
-	return s.LastUpdateBy
-}
-func (s SysMenu) GetLastUpdateTime() time.Time {
-	return s.LastUpdateTime
 }
 
 type SysRole struct {
