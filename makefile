@@ -36,7 +36,7 @@ start: ## 运行目标
 
 
 stop: ## 停止目标
-	pkill -f simple-go
+	-pkill -f simple-go
 
 
 
