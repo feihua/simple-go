@@ -1,7 +1,7 @@
 package dict
 
 import (
-	"github.com/feihua/simple-go/api/dict"
+	"github.com/feihua/simple-go/controller/dict"
 	"github.com/gin-gonic/gin"
 )
 

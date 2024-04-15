@@ -1,7 +1,7 @@
 package menu
 
 import (
-	"github.com/feihua/simple-go/api/menu"
+	"github.com/feihua/simple-go/controller/menu"
 	"github.com/gin-gonic/gin"
 )
 

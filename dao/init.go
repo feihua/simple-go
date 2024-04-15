@@ -1,4 +1,4 @@
-package repositories
+package dao
 
 import (
 	"github.com/feihua/simple-go/models"

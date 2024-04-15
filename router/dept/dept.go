@@ -1,7 +1,7 @@
 package dept
 
 import (
-	"github.com/feihua/simple-go/api/dept"
+	"github.com/feihua/simple-go/controller/dept"
 	"github.com/gin-gonic/gin"
 )
 

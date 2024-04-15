@@ -2,8 +2,8 @@ package menu
 
 import (
 	"github.com/feihua/simple-go/dto"
-	"github.com/feihua/simple-go/requests"
 	"github.com/feihua/simple-go/services/menu"
+	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

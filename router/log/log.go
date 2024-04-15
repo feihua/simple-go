@@ -1,7 +1,7 @@
 package log
 
 import (
-	"github.com/feihua/simple-go/api/log"
+	"github.com/feihua/simple-go/controller/log"
 	"github.com/gin-gonic/gin"
 )
 

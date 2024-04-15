@@ -1,7 +1,7 @@
 package role
 
 import (
-	"github.com/feihua/simple-go/api/role"
+	"github.com/feihua/simple-go/controller/role"
 	"github.com/gin-gonic/gin"
 )
 

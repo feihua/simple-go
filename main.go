@@ -20,7 +20,7 @@ func main() {
 
 	_ = r.SetTrustedProxies([]string{"127.0.0.1"})
 
-	routerGroup := r.Group("/api/")
+	routerGroup := r.Group("/controller/")
 	//初始化路由
 	router.Init(routerGroup)
 

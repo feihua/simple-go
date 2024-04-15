@@ -1,31 +1,31 @@
 package user
 
 import (
+	"github.com/feihua/simple-go/dao"
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
-	"github.com/feihua/simple-go/repositories"
-	"github.com/feihua/simple-go/requests"
+	"github.com/feihua/simple-go/vo/requests"
 )
 
 type UserService struct {
 }
 
 func (h *UserService) CreateUser(dto dto.UserDto) error {
-	return repositories.CreateUser(dto)
+	return dao.CreateUser(dto)
 }
 
 func (h *UserService) QueryUserList(current int, pageSize int) ([]models.User, int) {
-	return repositories.QueryUserList(current, pageSize)
+	return dao.QueryUserList(current, pageSize)
 }
 
 func (h *UserService) UpdateUser(userDto dto.UserDto) error {
-	return repositories.UpdateUser(userDto)
+	return dao.UpdateUser(userDto)
 }
 
 func (h *UserService) DeleteUserById(id int64) error {
-	return repositories.DeleteUserById(id)
+	return dao.DeleteUserById(id)
 }
 
 func (h *UserService) UpdateUserRole(u requests.UserRoleRequest) error {
-	return repositories.UpdateUserRole(u.UserId, u.Roleid)
+	return dao.UpdateUserRole(u.UserId, u.Roleid)
 }

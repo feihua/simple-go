@@ -1,7 +1,7 @@
 package user
 
 import (
-	"github.com/feihua/simple-go/api/user"
+	"github.com/feihua/simple-go/controller/user"
 	"github.com/gin-gonic/gin"
 )
 

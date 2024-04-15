@@ -3,7 +3,7 @@ package role
 import (
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
-	"github.com/feihua/simple-go/requests"
+	"github.com/feihua/simple-go/vo/requests"
 )
 
 type RoleContract interface {
