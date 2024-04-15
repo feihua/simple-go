@@ -7,9 +7,10 @@ import (
 
 func MenuUrl(r *gin.RouterGroup) {
 
-	r.POST("/menu/add", menu.CreateMenu)
-	r.GET("/menu/list", menu.QueryMenuList)
-	r.POST("/menu/update", menu.UpdateMenu)
-	r.POST("/menu/delete", menu.DeleteMenuById)
+	controller := menu.NewMenuController()
+	r.POST("/menu/addMenu", controller.CreateMenu)
+	r.GET("/menu/queryMenuList", controller.QueryMenuList)
+	r.POST("/menu/updateMenu", controller.UpdateMenu)
+	r.POST("/menu/deleteMenuByIds", controller.DeleteMenuByIds)
 
 }

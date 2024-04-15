@@ -7,14 +7,15 @@ import (
 
 func UserUrl(r *gin.RouterGroup) {
 
-	r.POST("/user/login", user.Login)
-	r.GET("/user/currentUser", user.GetUserInfo)
+	controller := user.NewUserController()
+	r.POST("/user/login", controller.Login)
+	r.GET("/user/info", controller.QueryUserInfo)
 
-	r.GET("/hello", user.GetUser)
-	r.POST("/user/add", user.CreateUser)
-	r.GET("/user/queryUserList", user.QueryUserList)
-	r.POST("/user/update", user.UpdateUser)
-	r.POST("/user/delete", user.DeleteUserById)
-	r.POST("/user/updateUserRole", user.UpdateUserRole)
+	r.POST("/user/addUser", controller.CreateUser)
+	r.GET("/user/queryUserList", controller.QueryUserList)
+	r.POST("/user/updateUser", controller.UpdateUser)
+	r.GET("/user/deleteUserByIds", controller.DeleteUserByIds)
+	r.GET("/user/queryUserRoleList", controller.QueryUserRoleList)
+	r.POST("/user/updateUserRoleList", controller.UpdateUserRoleList)
 
 }

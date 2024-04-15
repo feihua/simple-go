@@ -8,7 +8,13 @@ import (
 	"net/http"
 )
 
-func CreateMenu(c *gin.Context) {
+type MenuController struct {
+}
+
+func NewMenuController() *MenuController {
+	return &MenuController{}
+}
+func (MenuController) CreateMenu(c *gin.Context) {
 
 	req := requests.MenuRequest{}
 	err := c.ShouldBindJSON(&req)
@@ -17,7 +23,7 @@ func CreateMenu(c *gin.Context) {
 		return
 	}
 
-	var service menu.MenuContract = &menu.MenuService{}
+	var service menu.MenuService = &menu.MenuServiceImpl{}
 
 	u := dto.MenuDto{
 		MenuName: req.MenuName,
@@ -34,7 +40,7 @@ func CreateMenu(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func QueryMenuList(c *gin.Context) {
+func (MenuController) QueryMenuList(c *gin.Context) {
 	req := requests.MenuRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
@@ -42,13 +48,13 @@ func QueryMenuList(c *gin.Context) {
 		return
 	}
 
-	var service menu.MenuContract = &menu.MenuService{}
+	var service menu.MenuService = &menu.MenuServiceImpl{}
 
 	menuList, _ := service.QueryMenuList("u")
 	c.JSON(http.StatusOK, gin.H{"data": menuList})
 }
 
-func UpdateMenu(c *gin.Context) {
+func (MenuController) UpdateMenu(c *gin.Context) {
 
 	req := requests.MenuRequest{}
 	err := c.ShouldBind(&req)
@@ -57,7 +63,7 @@ func UpdateMenu(c *gin.Context) {
 		return
 	}
 
-	var service menu.MenuContract = &menu.MenuService{}
+	var service menu.MenuService = &menu.MenuServiceImpl{}
 	u := dto.MenuDto{
 		Id:       req.Id,
 		MenuName: req.MenuName,
@@ -74,17 +80,17 @@ func UpdateMenu(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func DeleteMenuById(c *gin.Context) {
+func (MenuController) DeleteMenuByIds(c *gin.Context) {
 
-	req := requests.MenuRequest{}
+	req := requests.DeleteMenuRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
 	}
 
-	var service menu.MenuContract = &menu.MenuService{}
+	var service menu.MenuService = &menu.MenuServiceImpl{}
 
-	result := service.DeletMenuById(req.Id)
+	result := service.DeleteMenuById(req.Id)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }

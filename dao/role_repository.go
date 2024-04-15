@@ -46,7 +46,6 @@ func UpdateSysRole(dto dto.RoleDto) error {
 }
 
 // DeleteUserById 通过Id删除用户
-func DeleteSysRoleById(id int64) error {
-	err := models.DB.Delete(&models.Role{Id: id}).Error
-	return err
+func DeleteSysRoleByIds(ids []int64) error {
+	return models.DB.Where("id in (?)", ids).Delete(&models.Dept{}).Error
 }

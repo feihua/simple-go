@@ -5,3 +5,6 @@ type LoginLogRequest struct {
 	UserName string `json:"userName"` //用户名
 	Ip       string `json:"ip"`       //IP地址
 }
+type DeleteLoginLogRequest struct {
+	Ids []int64 `json:"ids"` //编号
+}

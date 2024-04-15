@@ -1,26 +1,16 @@
 package dept
 
 import (
-	"github.com/feihua/simple-go/dao"
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
 )
 
-type DeptService struct {
-}
+type DeptService interface {
+	CreateDept(dto dto.DeptDto) error
 
-func (d *DeptService) CreateDept(dto dto.DeptDto) error {
-	return dao.CreateDept(dto)
-}
+	QueryDeptList() ([]models.Dept, int)
 
-func (d *DeptService) QueryDeptList() ([]models.Dept, int) {
-	return dao.QueryDeptList()
-}
+	UpdateDept(deptDto dto.DeptDto) error
 
-func (d *DeptService) UpdateDept(deptDto dto.DeptDto) error {
-	return dao.UpdateDept(deptDto)
-}
-
-func (d *DeptService) DeleteDeptById(id int64) error {
-	return dao.DeleteDeptById(id)
+	DeleteDeptByIds(ids []int64) error
 }

@@ -10,10 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-/*
-*
-初始化路由
-*/
+// Init 初始化路由
 func Init(r *gin.RouterGroup) {
 
 	//用户

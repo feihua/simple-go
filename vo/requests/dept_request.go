@@ -7,3 +7,7 @@ type DeptRequest struct {
 	Sort     int32  `json:"sort"`     //排序
 	Remarks  string `json:"remarks"`  //备注
 }
+
+type DeleteDeptRequest struct {
+	Ids []int64 `json:"ids"` //编号
+}

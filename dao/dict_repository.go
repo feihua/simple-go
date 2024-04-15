@@ -46,7 +46,6 @@ func UpdateDict(dto dto.DictDto) error {
 	return err
 }
 
-func DeleteDictById(id int64) error {
-	err := models.DB.Delete(&models.Dict{Id: id}).Error
-	return err
+func DeleteDictByIds(ids []int64) error {
+	return models.DB.Where("id in (?)", ids).Delete(&models.Dept{}).Error
 }

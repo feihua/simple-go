@@ -12,3 +12,6 @@ type MenuRequest struct {
 	MenuIcon string `json:"menuIcon"` //菜单图标
 	Remark   string `json:"remark"`   //备注
 }
+type DeleteMenuRequest struct {
+	Id int64 `json:"id"` //编号
+}

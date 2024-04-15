@@ -31,9 +31,8 @@ func QueryLogList(current int, pageSize int) ([]models.OperationLog, int) {
 	return loginLog, total
 }
 
-func DeleteSysLogById(id int64) error {
-	err := models.DB.Delete(&models.OperationLog{Id: id}).Error
-	return err
+func DeleteSysLogByIds(ids []int64) error {
+	return models.DB.Where("id in (?)", ids).Delete(&models.Dept{}).Error
 }
 
 func CreateSysLoginLog(dto dto.LoginLogDto) error {
@@ -57,7 +56,6 @@ func QueryLoginLogList(current int, pageSize int) ([]models.LoginLog, int) {
 	return loginLog, total
 }
 
-func DeleteSysLoginLogById(id int64) error {
-	err := models.DB.Delete(&models.LoginLog{Id: id}).Error
-	return err
+func DeleteSysLoginLogByIds(ids []int64) error {
+	return models.DB.Where("id in (?)", ids).Delete(&models.Dept{}).Error
 }

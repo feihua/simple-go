@@ -12,3 +12,6 @@ type RoleMenuRequest struct {
 	RoleId  int64   `json:"roleId"`
 	MenuIds []int64 `json:"menuIds"`
 }
+type DeleteRoleRequest struct {
+	Ids []int64 `json:"ids"` //编号
+}

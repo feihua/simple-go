@@ -7,9 +7,10 @@ import (
 
 func DictUrl(r *gin.RouterGroup) {
 
-	r.POST("/dict/add", dict.CreateDict)
-	r.GET("/dict/list", dict.QueryDictList)
-	r.POST("/dict/update", dict.UpdateDict)
-	r.POST("/dict/delete", dict.DeleteDictById)
+	controller := dict.NewDictController()
+	r.POST("/dict/addDict", controller.CreateDict)
+	r.GET("/dict/queryDictList", controller.QueryDictList)
+	r.POST("/dict/updateDict", controller.UpdateDict)
+	r.GET("/dict/deleteDictByIds", controller.DeleteDictByIds)
 
 }

@@ -1,34 +1,20 @@
 package log
 
 import (
-	"github.com/feihua/simple-go/dao"
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
 )
 
-type LogService struct {
-}
+type LogService interface {
+	CreateLog(dto dto.LogDto) error
 
-func (l *LogService) CreateLog(dto dto.LogDto) error {
-	return dao.CreateSysLog(dto)
-}
+	QueryLogList(current int, pageSize int) ([]models.OperationLog, int)
 
-func (l *LogService) QueryLogList(current int, pageSize int) ([]models.OperationLog, int) {
-	return dao.QueryLogList(current, pageSize)
-}
+	DeleteLogByIds(ids []int64) error
 
-func (l *LogService) DeleteLogById(id int64) error {
-	return dao.DeleteSysLogById(id)
-}
+	CreateLoginLog(dto dto.LoginLogDto) error
 
-func (l *LogService) CreateLoginLog(dto dto.LoginLogDto) error {
-	return dao.CreateSysLoginLog(dto)
-}
+	QueryLoginLogList(current int, pageSize int) ([]models.LoginLog, int)
 
-func (l *LogService) QueryLoginLogList(current int, pageSize int) ([]models.LoginLog, int) {
-	return dao.QueryLoginLogList(current, pageSize)
-}
-
-func (l *LogService) DeleteLoginLogById(id int64) error {
-	return dao.DeleteSysLoginLogById(id)
+	DeleteLoginLogByIds(ids []int64) error
 }

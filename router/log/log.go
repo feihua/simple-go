@@ -7,11 +7,10 @@ import (
 
 func LogUrl(r *gin.RouterGroup) {
 
-	r.POST("/syslog/add", log.CreateLog)
-	r.GET("/syslog/list", log.QueryLogList)
-	r.POST("/syslog/delete", log.DeleteLogById)
+	controller := log.NewLogController()
+	r.GET("/syslog/queryLogList", controller.QueryLogList)
+	r.POST("/syslog/deleteLogByIds", controller.DeleteLogByIds)
 
-	r.POST("/loginLog/add", log.CreateLoginLog)
-	r.GET("/loginLog/list", log.QueryLoginLogList)
-	r.POST("/loginLog/delete", log.DeleteLoginLogById)
+	r.GET("/loginLog/queryLoginLogList", controller.QueryLoginLogList)
+	r.POST("/loginLog/deleteLoginLogByIds", controller.DeleteLoginLogByIds)
 }

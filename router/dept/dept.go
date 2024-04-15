@@ -5,11 +5,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// DeptUrl 部门相关路由
 func DeptUrl(r *gin.RouterGroup) {
 
-	r.POST("/dept/add", dept.CreateDept)
-	r.GET("/dept/list", dept.QueryDeptList)
-	r.POST("/dept/update", dept.UpdateDept)
-	r.POST("/dept/delete", dept.DeleteDeptById)
+	controller := dept.NewDeptController()
+	r.POST("/dept/addDept", controller.CreateDept)
+	r.GET("/dept/queryDeptList", controller.QueryDeptList)
+	r.POST("/dept/updateDept", controller.UpdateDept)
+	r.GET("/dept/deleteDeptByIds", controller.DeleteDeptByIds)
 
 }

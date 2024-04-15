@@ -9,7 +9,19 @@ import (
 	"strconv"
 )
 
-func CreateDict(c *gin.Context) {
+// DictController 字典相关
+/*
+Author: LiuFeiHua
+Date: 2024/4/15 16:48
+*/
+type DictController struct {
+}
+
+func NewDictController() *DictController {
+	return &DictController{}
+}
+
+func (d DictController) CreateDict(c *gin.Context) {
 
 	req := requests.DictRequest{}
 	err := c.ShouldBindJSON(&req)
@@ -18,7 +30,7 @@ func CreateDict(c *gin.Context) {
 		return
 	}
 
-	var service dict.DictContract = &dict.DictService{}
+	var service dict.DictService = &dict.DictServiceImpl{}
 
 	u := dto.DictDto{
 		Value:       req.Value,
@@ -31,7 +43,7 @@ func CreateDict(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func QueryDictList(c *gin.Context) {
+func (d DictController) QueryDictList(c *gin.Context) {
 	req := requests.DictRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
@@ -45,13 +57,13 @@ func QueryDictList(c *gin.Context) {
 	pageSize := c.DefaultQuery("pageSize", "10")
 	size, _ := strconv.Atoi(pageSize)
 
-	var service dict.DictContract = &dict.DictService{}
+	var service dict.DictService = &dict.DictServiceImpl{}
 
 	result, total := service.QueryDictList(pageNum, size)
 	c.JSON(http.StatusOK, gin.H{"data": result, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
 
-func UpdateDict(c *gin.Context) {
+func (d DictController) UpdateDict(c *gin.Context) {
 
 	req := requests.DictRequest{}
 	err := c.ShouldBind(&req)
@@ -60,7 +72,7 @@ func UpdateDict(c *gin.Context) {
 		return
 	}
 
-	var service dict.DictContract = &dict.DictService{}
+	var service dict.DictService = &dict.DictServiceImpl{}
 
 	u := dto.DictDto{
 		Id:          req.Id,
@@ -74,17 +86,17 @@ func UpdateDict(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func DeleteDictById(c *gin.Context) {
+func (d DictController) DeleteDictByIds(c *gin.Context) {
 
-	req := requests.DictRequest{}
+	req := requests.DeleteDictRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
 	}
 
-	var service dict.DictContract = &dict.DictService{}
+	var service dict.DictService = &dict.DictServiceImpl{}
 
-	result := service.DeleteDictById(req.Id)
+	result := service.DeleteDictByIds(req.Ids)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }

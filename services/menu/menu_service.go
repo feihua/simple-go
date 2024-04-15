@@ -1,26 +1,16 @@
 package menu
 
 import (
-	"github.com/feihua/simple-go/dao"
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
 )
 
-type MenuService struct {
-}
+type MenuService interface {
+	CreateMenu(dto dto.MenuDto) error
 
-func (menu *MenuService) CreateMenu(dto dto.MenuDto) error {
-	return dao.CreateSysMenu(dto)
-}
+	QueryMenuList(username string) ([]models.Menu, int)
 
-func (menu *MenuService) QueryMenuList(username string) ([]models.Menu, int) {
-	return dao.QueryMenuList()
-}
+	UpdateMenu(menuDto dto.MenuDto) error
 
-func (menu *MenuService) UpdateMenu(menuDto dto.MenuDto) error {
-	return dao.UpdateSysMenu(menuDto)
-}
-
-func (menu *MenuService) DeletMenuById(id int64) error {
-	return dao.DeleteSysMenuById(id)
+	DeleteMenuById(id int64) error
 }

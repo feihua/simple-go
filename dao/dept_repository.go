@@ -43,7 +43,6 @@ func UpdateDept(dto dto.DeptDto) error {
 	return err
 }
 
-func DeleteDeptById(id int64) error {
-	err := models.DB.Delete(&models.Dept{Id: id}).Error
-	return err
+func DeleteDeptByIds(ids []int64) error {
+	return models.DB.Where("id in (?)", ids).Delete(&models.Dept{}).Error
 }

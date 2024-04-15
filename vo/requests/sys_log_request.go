@@ -9,3 +9,6 @@ type SysLogRequest struct {
 	OperationTime int64  `json:"operationTime"` //执行时长(毫秒)
 	Ip            string `json:"ip"`            //IP地址
 }
+type DeleteLogRequest struct {
+	Ids []int64 `json:"ids"` //编号
+}

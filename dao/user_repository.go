@@ -62,7 +62,6 @@ func UpdateUser(dto dto.UserDto) error {
 	return err
 }
 
-func DeleteUserById(id int64) error {
-	err := models.DB.Delete(&models.User{Id: id}).Error
-	return err
+func DeleteUserByIds(ids []int64) error {
+	return models.DB.Where("id in (?)", ids).Delete(&models.Dept{}).Error
 }

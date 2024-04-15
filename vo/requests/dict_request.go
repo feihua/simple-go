@@ -9,3 +9,6 @@ type DictRequest struct {
 	Sort        float64 `json:"sort"`        //排序（升序）
 	Remarks     string  `json:"remarks"`     //备注
 }
+type DeleteDictRequest struct {
+	Ids []int64 `json:"ids"` //编号
+}

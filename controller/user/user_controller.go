@@ -9,18 +9,30 @@ import (
 	"strconv"
 )
 
-func Login(c *gin.Context) {
+// UserController 用户相关
+/*
+Author: LiuFeiHua
+Date: 2024/4/15 16:53
+*/
+type UserController struct {
+}
+
+func NewUserController() *UserController {
+	return &UserController{}
+}
+
+func (u UserController) Login(c *gin.Context) {
 
 	//校验通过，返回请求参数
 	c.JSON(http.StatusOK, gin.H{"status": "ok", "type": "account", "currentAuthority": "admin"})
 }
 
-func GetUserInfo(c *gin.Context) {
+func (u UserController) QueryUserInfo(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"name": "liufeihua", "avatar": "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"})
 }
 
-func GetUser(c *gin.Context) {
+func (u UserController) GetUser(c *gin.Context) {
 
 	//实例化一个TestRequest结构体，用于接收参数
 	userRequest := requests.UserRequest{}
@@ -34,7 +46,7 @@ func GetUser(c *gin.Context) {
 		return
 	}
 
-	var service user.UserContract = &user.UserService{}
+	var service user.UserService = &user.UserServiceImpl{}
 
 	result, _ := service.QueryUserList(1, 10)
 
@@ -42,7 +54,7 @@ func GetUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func CreateUser(c *gin.Context) {
+func (UserController) CreateUser(c *gin.Context) {
 
 	userRequest := requests.UserRequest{}
 	err := c.ShouldBindJSON(&userRequest)
@@ -51,7 +63,7 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	var service user.UserContract = &user.UserService{}
+	var service user.UserService = &user.UserServiceImpl{}
 
 	u := dto.UserDto{
 		Mobile:   userRequest.Mobile,
@@ -65,7 +77,7 @@ func CreateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func QueryUserList(c *gin.Context) {
+func (u UserController) QueryUserList(c *gin.Context) {
 	userRequest := requests.UserRequest{}
 	err := c.ShouldBind(&userRequest)
 	if err != nil {
@@ -79,7 +91,7 @@ func QueryUserList(c *gin.Context) {
 	pageSize := c.DefaultQuery("pageSize", "10")
 	size, _ := strconv.Atoi(pageSize)
 
-	var service user.UserContract = &user.UserService{}
+	var service user.UserService = &user.UserServiceImpl{}
 
 	result, total := service.QueryUserList(pageNum, size)
 
@@ -87,7 +99,7 @@ func QueryUserList(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": result, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
 
-func UpdateUser(c *gin.Context) {
+func (UserController) UpdateUser(c *gin.Context) {
 
 	userRequest := requests.UserRequest{}
 	err := c.ShouldBind(&userRequest)
@@ -96,7 +108,7 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	var service user.UserContract = &user.UserService{}
+	var service user.UserService = &user.UserServiceImpl{}
 
 	u := dto.UserDto{
 		Id:       userRequest.Id,
@@ -111,22 +123,22 @@ func UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func DeleteUserById(c *gin.Context) {
+func (u UserController) DeleteUserByIds(c *gin.Context) {
 
-	userRequest := requests.UserRequest{}
+	userRequest := requests.DeleteUserRequest{}
 	err := c.ShouldBind(&userRequest)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 		return
 	}
 
-	var service user.UserContract = &user.UserService{}
+	var service user.UserService = &user.UserServiceImpl{}
 
-	result := service.DeleteUserById(userRequest.Id)
+	result := service.DeleteUserByIds(userRequest.Ids)
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func UpdateUserRole(c *gin.Context) {
+func (u UserController) UpdateUserRoleList(c *gin.Context) {
 
 	req := requests.UserRoleRequest{}
 	err := c.ShouldBind(&req)
@@ -135,7 +147,7 @@ func UpdateUserRole(c *gin.Context) {
 		return
 	}
 
-	var service user.UserContract = &user.UserService{}
+	var service user.UserService = &user.UserServiceImpl{}
 
 	err = service.UpdateUserRole(req)
 	if err != nil {
@@ -143,4 +155,8 @@ func UpdateUserRole(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": "成功"})
+}
+
+func (u UserController) QueryUserRoleList(context *gin.Context) {
+
 }

@@ -52,7 +52,7 @@ func UpdateSysMenu(dto dto.MenuDto) error {
 	return err
 }
 
-func DeleteSysMenuById(id int64) error {
+func DeleteSysMenuByIds(id int64) error {
 	err := models.DB.Delete(&models.Menu{Id: id}).Error
 	return err
 }

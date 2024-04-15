@@ -62,9 +62,9 @@ func TestUpdateUser(t *testing.T) {
 	//}
 }
 
-func TestDeleteUserById(t *testing.T) {
+func TestDeleteUserByIds(t *testing.T) {
 	//user := QueryUserList(username)
-	//err := DeleteUserById(user.ID)
+	//err := DeleteUserByIds(user.ID)
 	//if err != nil {
 	//	t.Fail()
 	//}

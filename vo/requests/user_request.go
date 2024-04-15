@@ -27,3 +27,8 @@ type UserRoleRequest struct {
 	UserId int64 `json:"userId"`
 	Roleid int64 `json:"roleId" `
 }
+
+// DeleteUserRequest 删除用户
+type DeleteUserRequest struct {
+	Ids []int64 `json:"ids"` //编号
+}
