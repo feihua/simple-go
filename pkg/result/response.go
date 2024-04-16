@@ -67,14 +67,16 @@ var (
 	CSRFDetected    = Error(599, "csrf attack detected")
 
 	ParamsError = Error(1000, "params error")
-	UserError   = Error(5001, "username or password error")
-	CodeExpire  = Error(5002, "verification expire")
-	CodeError   = Error(5003, "verification error")
-	UserExist   = Error(5004, "user Exist")
 
-	DeptError = Error(6001, "dept error")
+	UserError  = Error(2001, "username or password error")
+	CodeExpire = Error(2002, "verification expire")
+	CodeError  = Error(2003, "verification error")
+	UserExist  = Error(2004, "user Exist")
+	RoleError  = Error(3001, "role error")
+	MenuError  = Error(4001, "menu error")
+	DeptError  = Error(5001, "dept error")
 
-	DictError = Error(7001, "dict error")
+	DictError = Error(6001, "dict error")
 
-	LogError = Error(8001, "log error")
+	LogError = Error(7001, "log error")
 )

@@ -1,21 +1,21 @@
 package user
 
 import (
-	"github.com/feihua/simple-go/controller/user"
+	"github.com/feihua/simple-go/controller"
 	"github.com/gin-gonic/gin"
 )
 
 func UserRouter(r *gin.RouterGroup) {
 
-	controller := user.NewUserController()
-	r.POST("/user/login", controller.Login)
-	r.GET("/user/info", controller.QueryUserInfo)
+	userController := controller.C.UserController
+	r.POST("/user/login", userController.Login)
+	r.GET("/user/info", userController.QueryUserInfo)
 
-	r.POST("/user/addUser", controller.CreateUser)
-	r.GET("/user/queryUserList", controller.QueryUserList)
-	r.POST("/user/updateUser", controller.UpdateUser)
-	r.GET("/user/deleteUserByIds", controller.DeleteUserByIds)
-	r.GET("/user/queryUserRoleList", controller.QueryUserRoleList)
-	r.POST("/user/updateUserRoleList", controller.UpdateUserRoleList)
+	r.POST("/user/addUser", userController.CreateUser)
+	r.GET("/user/queryUserList", userController.QueryUserList)
+	r.POST("/user/updateUser", userController.UpdateUser)
+	r.GET("/user/deleteUserByIds", userController.DeleteUserByIds)
+	r.GET("/user/queryUserRoleList", userController.QueryUserRoleList)
+	r.POST("/user/updateUserRoleList", userController.UpdateUserRoleList)
 
 }

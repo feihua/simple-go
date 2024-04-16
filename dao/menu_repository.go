@@ -3,9 +3,19 @@ package dao
 import (
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
+	"github.com/jinzhu/gorm"
 )
 
-func CreateSysMenu(dto dto.MenuDto) error {
+type MenuDao struct {
+	db *gorm.DB
+}
+
+func NewMenuDao(DB *gorm.DB) *MenuDao {
+	return &MenuDao{db: DB}
+}
+
+// CreateMenu 创建菜单
+func (m MenuDao) CreateMenu(dto dto.MenuDto) error {
 	menu := models.Menu{
 		MenuName: dto.MenuName,
 		MenuType: dto.MenuType,
@@ -18,22 +28,22 @@ func CreateSysMenu(dto dto.MenuDto) error {
 		Remark:   dto.Remark,
 	}
 
-	err := models.DB.Create(&menu).Error
-
-	return err
+	return m.db.Create(&menu).Error
 }
 
-func QueryMenuList() ([]models.Menu, int) {
+// QueryMenuList 查询菜单
+func (m MenuDao) QueryMenuList() ([]models.Menu, int) {
 
 	var total = 0
 	var menus []models.Menu
-	models.DB.Find(&menus)
+	m.db.Find(&menus)
 
-	models.DB.Model(&models.Menu{}).Count(&total)
+	m.db.Model(&models.Menu{}).Count(&total)
 	return menus, total
 }
 
-func UpdateSysMenu(dto dto.MenuDto) error {
+// UpdateMenu 更新菜单
+func (m MenuDao) UpdateMenu(dto dto.MenuDto) error {
 	menu := models.Menu{
 		Id:       dto.Id,
 		MenuName: dto.MenuName,
@@ -47,12 +57,13 @@ func UpdateSysMenu(dto dto.MenuDto) error {
 		Remark:   dto.Remark,
 	}
 
-	err := models.DB.Model(&menu).Update(&menu).Error
+	err := m.db.Model(&menu).Update(&menu).Error
 
 	return err
 }
 
-func DeleteSysMenuByIds(id int64) error {
-	err := models.DB.Delete(&models.Menu{Id: id}).Error
+// DeleteMenuById 删除菜单
+func (m MenuDao) DeleteMenuById(id int64) error {
+	err := m.db.Delete(&models.Menu{Id: id}).Error
 	return err
 }

@@ -1,16 +1,16 @@
 package log
 
 import (
-	"github.com/feihua/simple-go/controller/log"
+	"github.com/feihua/simple-go/controller"
 	"github.com/gin-gonic/gin"
 )
 
 func LogRouter(r *gin.RouterGroup) {
 
-	controller := log.NewLogController()
-	r.GET("/syslog/queryLogList", controller.QueryLogList)
-	r.POST("/syslog/deleteLogByIds", controller.DeleteLogByIds)
+	logController := controller.C.LogController
+	r.GET("/syslog/queryLogList", logController.QueryLogList)
+	r.POST("/syslog/deleteLogByIds", logController.DeleteLogByIds)
 
-	r.GET("/loginLog/queryLoginLogList", controller.QueryLoginLogList)
-	r.POST("/loginLog/deleteLoginLogByIds", controller.DeleteLoginLogByIds)
+	r.GET("/loginLog/queryLoginLogList", logController.QueryLoginLogList)
+	r.POST("/loginLog/deleteLoginLogByIds", logController.DeleteLoginLogByIds)
 }

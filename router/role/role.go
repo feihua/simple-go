@@ -1,18 +1,18 @@
 package role
 
 import (
-	"github.com/feihua/simple-go/controller/role"
+	"github.com/feihua/simple-go/controller"
 	"github.com/gin-gonic/gin"
 )
 
 func RoleRouter(r *gin.RouterGroup) {
 
-	controller := role.NewRoleController()
-	r.POST("/role/addRole", controller.CreateRole)
-	r.GET("/role/queryRoleList", controller.QueryRoleList)
-	r.POST("/role/updateRole", controller.UpdateMenu)
-	r.POST("/role/deleteRoleByIds", controller.DeleteRoleByIds)
-	r.POST("/role/queryRoleMenuList", controller.QueryRoleMenuList)
-	r.POST("/role/updateRoleMenuList", controller.UpdateRoleMenuList)
+	roleController := controller.C.RoleController
+	r.POST("/role/addRole", roleController.CreateRole)
+	r.GET("/role/queryRoleList", roleController.QueryRoleList)
+	r.POST("/role/updateRole", roleController.UpdateRole)
+	r.POST("/role/deleteRoleByIds", roleController.DeleteRoleByIds)
+	r.POST("/role/queryRoleMenuList", roleController.QueryRoleMenuList)
+	r.POST("/role/updateRoleMenuList", roleController.UpdateRoleMenuList)
 
 }

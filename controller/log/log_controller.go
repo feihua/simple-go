@@ -2,7 +2,7 @@ package log
 
 import (
 	"github.com/feihua/simple-go/pkg/result"
-	"github.com/feihua/simple-go/services/log"
+	"github.com/feihua/simple-go/services"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -14,14 +14,15 @@ Author: LiuFeiHua
 Date: 2024/4/15 18:02
 */
 type LogController struct {
+	Service *services.ServiceImpl
 }
 
-func NewLogController() *LogController {
-	return &LogController{}
+func NewLogController(Service *services.ServiceImpl) *LogController {
+	return &LogController{Service: Service}
 }
 
 // QueryLogList 查询操作日志
-func (LogController) QueryLogList(c *gin.Context) {
+func (l LogController) QueryLogList(c *gin.Context) {
 	req := requests.SysLogRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
@@ -35,14 +36,12 @@ func (LogController) QueryLogList(c *gin.Context) {
 	pageSize := c.DefaultQuery("pageSize", "10")
 	size, _ := strconv.Atoi(pageSize)
 
-	var service log.LogService = &log.LogServiceImpl{}
-
-	list, total := service.QueryLogList(pageNum, size)
+	list, total := l.Service.LogService.QueryLogList(pageNum, size)
 	result.OkWithData(c, gin.H{"list": list, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
 
 // DeleteLogByIds 删除操作日志
-func (LogController) DeleteLogByIds(c *gin.Context) {
+func (l LogController) DeleteLogByIds(c *gin.Context) {
 
 	req := requests.DeleteLogRequest{}
 	err := c.ShouldBind(&req)
@@ -51,9 +50,7 @@ func (LogController) DeleteLogByIds(c *gin.Context) {
 		return
 	}
 
-	var service log.LogService = &log.LogServiceImpl{}
-
-	err = service.DeleteLogByIds(req.Ids)
+	err = l.Service.LogService.DeleteLogByIds(req.Ids)
 	if err != nil {
 		result.FailWithMsg(c, result.LogError, err.Error())
 	} else {
@@ -62,7 +59,7 @@ func (LogController) DeleteLogByIds(c *gin.Context) {
 }
 
 // QueryLoginLogList 查询登录日志
-func (LogController) QueryLoginLogList(c *gin.Context) {
+func (l LogController) QueryLoginLogList(c *gin.Context) {
 	req := requests.LoginLogRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
@@ -76,14 +73,12 @@ func (LogController) QueryLoginLogList(c *gin.Context) {
 	pageSize := c.DefaultQuery("pageSize", "10")
 	size, _ := strconv.Atoi(pageSize)
 
-	var service log.LogService = &log.LogServiceImpl{}
-
-	list, total := service.QueryLoginLogList(pageNum, size)
+	list, total := l.Service.LogService.QueryLoginLogList(pageNum, size)
 	result.OkWithData(c, gin.H{"list": list, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
 
 // DeleteLoginLogByIds 删除登录日志
-func (LogController) DeleteLoginLogByIds(c *gin.Context) {
+func (l LogController) DeleteLoginLogByIds(c *gin.Context) {
 
 	req := requests.DeleteLoginLogRequest{}
 	err := c.ShouldBind(&req)
@@ -92,9 +87,7 @@ func (LogController) DeleteLoginLogByIds(c *gin.Context) {
 		return
 	}
 
-	var service log.LogService = &log.LogServiceImpl{}
-
-	err = service.DeleteLoginLogByIds(req.Ids)
+	err = l.Service.LogService.DeleteLoginLogByIds(req.Ids)
 	if err != nil {
 		result.FailWithMsg(c, result.LogError, err.Error())
 	} else {

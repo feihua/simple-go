@@ -13,12 +13,17 @@ Author: LiuFeiHua
 Date: 2024/4/16 11:18
 */
 type DictServiceImpl struct {
+	Dao *dao.DaoImpl
+}
+
+func NewDictServiceImpl(Dao *dao.DaoImpl) DictService {
+	return &DictServiceImpl{Dao: Dao}
 }
 
 // CreateDict 创建字典
 func (d *DictServiceImpl) CreateDict(dto dto.DictDto) error {
 
-	dept, err := dao.QueryDictByName(dto.Value, dto.Type)
+	dept, err := d.Dao.DictDao.QueryDictByName(dto.Value, dto.Type)
 	if err != nil {
 		return err
 	}
@@ -27,20 +32,20 @@ func (d *DictServiceImpl) CreateDict(dto dto.DictDto) error {
 		return errors.New("字典已存在")
 	}
 
-	return dao.CreateDict(dto)
+	return d.Dao.DictDao.CreateDict(dto)
 }
 
 // QueryDictList 查询字典列表
 func (d *DictServiceImpl) QueryDictList(current int, pageSize int) ([]models.Dict, int) {
-	return dao.QueryDictList(current, pageSize)
+	return d.Dao.DictDao.QueryDictList(current, pageSize)
 }
 
 // UpdateDict 更新字典
 func (d *DictServiceImpl) UpdateDict(dictDto dto.DictDto) error {
-	return dao.UpdateDict(dictDto)
+	return d.Dao.DictDao.UpdateDict(dictDto)
 }
 
 // DeleteDictByIds 删除字典
 func (d *DictServiceImpl) DeleteDictByIds(ids []int64) error {
-	return dao.DeleteDictByIds(ids)
+	return d.Dao.DictDao.DeleteDictByIds(ids)
 }

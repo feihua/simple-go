@@ -1,16 +1,16 @@
 package menu
 
 import (
-	"github.com/feihua/simple-go/controller/menu"
+	"github.com/feihua/simple-go/controller"
 	"github.com/gin-gonic/gin"
 )
 
 func MenuRouter(r *gin.RouterGroup) {
 
-	controller := menu.NewMenuController()
-	r.POST("/menu/addMenu", controller.CreateMenu)
-	r.GET("/menu/queryMenuList", controller.QueryMenuList)
-	r.POST("/menu/updateMenu", controller.UpdateMenu)
-	r.POST("/menu/deleteMenuById", controller.DeleteMenuById)
+	menuController := controller.C.MenuController
+	r.POST("/menu/addMenu", menuController.CreateMenu)
+	r.GET("/menu/queryMenuList", menuController.QueryMenuList)
+	r.POST("/menu/updateMenu", menuController.UpdateMenu)
+	r.POST("/menu/deleteMenuById", menuController.DeleteMenuById)
 
 }

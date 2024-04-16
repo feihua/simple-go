@@ -3,7 +3,7 @@ package dict
 import (
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/pkg/result"
-	"github.com/feihua/simple-go/services/dict"
+	"github.com/feihua/simple-go/services"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -15,10 +15,11 @@ Author: LiuFeiHua
 Date: 2024/4/15 16:48
 */
 type DictController struct {
+	Service *services.ServiceImpl
 }
 
-func NewDictController() *DictController {
-	return &DictController{}
+func NewDictController(Service *services.ServiceImpl) *DictController {
+	return &DictController{Service: Service}
 }
 
 // CreateDict 创建字典
@@ -31,8 +32,6 @@ func (d DictController) CreateDict(c *gin.Context) {
 		return
 	}
 
-	var service = &dict.DictServiceImpl{}
-
 	dictDto := dto.DictDto{
 		Value:       req.Value,
 		Label:       req.Label,
@@ -41,7 +40,7 @@ func (d DictController) CreateDict(c *gin.Context) {
 		Remarks:     req.Remarks,
 	}
 
-	err = service.CreateDict(dictDto)
+	err = d.Service.DictService.CreateDict(dictDto)
 	if err != nil {
 		result.FailWithMsg(c, result.DictError, err.Error())
 	} else {
@@ -64,9 +63,7 @@ func (d DictController) QueryDictList(c *gin.Context) {
 	pageSize := c.DefaultQuery("pageSize", "10")
 	size, _ := strconv.Atoi(pageSize)
 
-	var service = &dict.DictServiceImpl{}
-
-	dictList, total := service.QueryDictList(pageNum, size)
+	dictList, total := d.Service.DictService.QueryDictList(pageNum, size)
 
 	result.OkWithData(c, gin.H{"list": dictList, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
@@ -81,8 +78,6 @@ func (d DictController) UpdateDict(c *gin.Context) {
 		return
 	}
 
-	var service = &dict.DictServiceImpl{}
-
 	dictDto := dto.DictDto{
 		Id:          req.Id,
 		Value:       req.Value,
@@ -91,7 +86,7 @@ func (d DictController) UpdateDict(c *gin.Context) {
 		Description: req.Description,
 		Remarks:     req.Remarks,
 	}
-	err = service.UpdateDict(dictDto)
+	err = d.Service.DictService.UpdateDict(dictDto)
 	if err != nil {
 		result.FailWithMsg(c, result.DictError, err.Error())
 	} else {
@@ -109,9 +104,7 @@ func (d DictController) DeleteDictByIds(c *gin.Context) {
 		return
 	}
 
-	var service = &dict.DictServiceImpl{}
-
-	err = service.DeleteDictByIds(req.Ids)
+	err = d.Service.DictService.DeleteDictByIds(req.Ids)
 	if err != nil {
 		result.FailWithMsg(c, result.DictError, err.Error())
 	} else {

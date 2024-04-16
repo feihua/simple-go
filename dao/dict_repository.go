@@ -3,10 +3,19 @@ package dao
 import (
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
+	"github.com/jinzhu/gorm"
 )
 
+type DictDao struct {
+	db *gorm.DB
+}
+
+func NewDictDao(DB *gorm.DB) *DictDao {
+	return &DictDao{db: DB}
+}
+
 // CreateDict 创建字典
-func CreateDict(dto dto.DictDto) error {
+func (d DictDao) CreateDict(dto dto.DictDto) error {
 
 	dict := models.Dict{}
 	dict.Value = dto.Value
@@ -16,31 +25,31 @@ func CreateDict(dto dto.DictDto) error {
 	dict.Remarks = dto.Remarks
 	dict.Sort = dto.Sort
 
-	return models.DB.Create(&dict).Error
+	return d.db.Create(&dict).Error
 }
 
 // QueryDictList 查询字典列表
-func QueryDictList(current int, pageSize int) ([]models.Dict, int) {
+func (d DictDao) QueryDictList(current int, pageSize int) ([]models.Dict, int) {
 
 	var total = 0
 	var dict []models.Dict
-	models.DB.Limit(pageSize).Offset((current - 1) * pageSize).Find(&dict)
+	d.db.Limit(pageSize).Offset((current - 1) * pageSize).Find(&dict)
 
-	models.DB.Model(&models.Dict{}).Count(&total)
+	d.db.Model(&models.Dict{}).Count(&total)
 
 	return dict, total
 }
 
-func QueryDictByName(name, typeName string) (*models.Dict, error) {
+func (d DictDao) QueryDictByName(name, typeName string) (*models.Dict, error) {
 
 	var dict models.Dict
-	err := models.DB.First(&dict, "value = ? and 'type' = ?", name, typeName).Error
+	err := d.db.First(&dict, "value = ? and 'type' = ?", name, typeName).Error
 
 	return &dict, err
 }
 
 // UpdateDict 更新字典
-func UpdateDict(dto dto.DictDto) error {
+func (d DictDao) UpdateDict(dto dto.DictDto) error {
 	dict := models.Dict{}
 	dict.Id = dto.Id
 	dict.Value = dto.Value
@@ -50,10 +59,10 @@ func UpdateDict(dto dto.DictDto) error {
 	dict.Description = dto.Description
 	dict.Remarks = dto.Remarks
 
-	return models.DB.Model(&dict).Update(&dict).Error
+	return d.db.Model(&dict).Update(&dict).Error
 }
 
 // DeleteDictByIds 删除字典
-func DeleteDictByIds(ids []int64) error {
-	return models.DB.Where("id in (?)", ids).Delete(&models.Dept{}).Error
+func (d DictDao) DeleteDictByIds(ids []int64) error {
+	return d.db.Where("id in (?)", ids).Delete(&models.Dict{}).Error
 }

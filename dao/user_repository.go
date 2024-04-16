@@ -4,9 +4,19 @@ import (
 	"fmt"
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
+	"github.com/jinzhu/gorm"
 )
 
-func CreateUser(dto dto.UserDto) error {
+type UserDao struct {
+	db *gorm.DB
+}
+
+func NewUserDao(DB *gorm.DB) *UserDao {
+	return &UserDao{db: DB}
+}
+
+// CreateUser 创建用户
+func (u UserDao) CreateUser(dto dto.UserDto) error {
 
 	user := models.User{
 		Mobile:   dto.Mobile,
@@ -17,26 +27,27 @@ func CreateUser(dto dto.UserDto) error {
 		Remark:   dto.Remark,
 	}
 
-	err := models.DB.Create(&user).Error
+	err := u.db.Create(&user).Error
 
 	return err
 }
 
-func QueryUserByUsername(username string) []models.User {
+func (u UserDao) QueryUserByUsername(username string) []models.User {
 	var sysUser []models.User
 
-	models.DB.Find(&sysUser, models.DB.Where("username = ?", username))
+	u.db.Find(&sysUser, u.db.Where("username = ?", username))
 
 	return sysUser
 }
 
-func QueryUserList(current int, pageSize int) ([]models.User, int) {
+// QueryUserList 查询用户列表
+func (u UserDao) QueryUserList(current int, pageSize int) ([]models.User, int) {
 
 	var total = 0
 	var sysUser []models.User
-	models.DB.Limit(pageSize).Offset((current - 1) * pageSize).Find(&sysUser)
+	u.db.Limit(pageSize).Offset((current - 1) * pageSize).Find(&sysUser)
 
-	models.DB.Model(&models.User{}).Count(&total)
+	u.db.Model(&models.User{}).Count(&total)
 
 	for k, v := range sysUser {
 		fmt.Println(k, v)
@@ -45,7 +56,8 @@ func QueryUserList(current int, pageSize int) ([]models.User, int) {
 	return sysUser, total
 }
 
-func UpdateUser(dto dto.UserDto) error {
+// UpdateUser 更新用户
+func (u UserDao) UpdateUser(dto dto.UserDto) error {
 
 	user := models.User{
 		Id:       dto.Id,
@@ -57,11 +69,12 @@ func UpdateUser(dto dto.UserDto) error {
 		Remark:   dto.Remark,
 	}
 
-	err := models.DB.Model(&user).Update(&user).Error
+	err := u.db.Model(&user).Update(&user).Error
 
 	return err
 }
 
-func DeleteUserByIds(ids []int64) error {
-	return models.DB.Where("id in (?)", ids).Delete(&models.Dept{}).Error
+// DeleteUserByIds 删除用户
+func (u UserDao) DeleteUserByIds(ids []int64) error {
+	return u.db.Where("id in (?)", ids).Delete(&models.User{}).Error
 }

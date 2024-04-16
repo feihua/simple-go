@@ -1,16 +1,16 @@
 package dict
 
 import (
-	"github.com/feihua/simple-go/controller/dict"
+	"github.com/feihua/simple-go/controller"
 	"github.com/gin-gonic/gin"
 )
 
 func DictRouter(r *gin.RouterGroup) {
 
-	controller := dict.NewDictController()
-	r.POST("/dict/addDict", controller.CreateDict)
-	r.GET("/dict/queryDictList", controller.QueryDictList)
-	r.POST("/dict/updateDict", controller.UpdateDict)
-	r.GET("/dict/deleteDictByIds", controller.DeleteDictByIds)
+	dictController := controller.C.DictController
+	r.POST("/dict/addDict", dictController.CreateDict)
+	r.GET("/dict/queryDictList", dictController.QueryDictList)
+	r.POST("/dict/updateDict", dictController.UpdateDict)
+	r.GET("/dict/deleteDictByIds", dictController.DeleteDictByIds)
 
 }

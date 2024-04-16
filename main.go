@@ -3,8 +3,11 @@ package main
 // 导入路由包
 import (
 	"fmt"
+	"github.com/feihua/simple-go/controller"
+	"github.com/feihua/simple-go/dao"
 	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/router"
+	"github.com/feihua/simple-go/services"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,6 +22,10 @@ func main() {
 	r := gin.Default()
 
 	_ = r.SetTrustedProxies([]string{"127.0.0.1"})
+
+	dao.InitDao()
+	services.InitService()
+	controller.InitC()
 
 	routerGroup := r.Group("/api/")
 	//初始化路由

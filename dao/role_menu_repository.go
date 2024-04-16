@@ -2,13 +2,23 @@ package dao
 
 import (
 	"github.com/feihua/simple-go/models"
+	"github.com/jinzhu/gorm"
 	"time"
 )
 
-func QueryRoleMenuList(roleId int64) []int64 {
+type RoleMenuDao struct {
+	db *gorm.DB
+}
+
+func NewRoleMenuDao(DB *gorm.DB) *RoleMenuDao {
+	return &RoleMenuDao{db: DB}
+}
+
+// QueryRoleMenuList 查询角色菜单
+func (r RoleMenuDao) QueryRoleMenuList(roleId int64) []int64 {
 
 	var roleMenus []models.RoleMenu
-	models.DB.Where("role_id=?", roleId).Find(&roleMenus)
+	r.db.Where("role_id=?", roleId).Find(&roleMenus)
 
 	var menuIds []int64
 
@@ -19,10 +29,11 @@ func QueryRoleMenuList(roleId int64) []int64 {
 	return menuIds
 }
 
-func UpdateRoleMenu(roleId int64, menuIds []int64) {
+// UpdateRoleMenuList 更新角色菜单
+func (r RoleMenuDao) UpdateRoleMenuList(roleId int64, menuIds []int64) {
 
 	//先删除
-	models.DB.Where("role_id = ?", roleId).Delete(&models.RoleMenu{})
+	r.db.Where("role_id = ?", roleId).Delete(&models.RoleMenu{})
 
 	for _, menuId := range menuIds {
 
@@ -31,7 +42,7 @@ func UpdateRoleMenu(roleId int64, menuIds []int64) {
 		roleMenu.MenuId = menuId
 		roleMenu.CreateTime = time.Now()
 
-		models.DB.Create(&roleMenu)
+		r.db.Create(&roleMenu)
 
 	}
 

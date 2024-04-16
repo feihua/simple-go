@@ -34,7 +34,7 @@ Authorization: Bearer {{token}}
 }
 
 ###角色列表 role_list
-POST {{host}}/api/role_list
+GET {{host}}/api/role/queryRoleList
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
