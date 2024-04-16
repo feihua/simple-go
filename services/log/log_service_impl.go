@@ -6,6 +6,11 @@ import (
 	"github.com/feihua/simple-go/models"
 )
 
+// LogServiceImpl 日志操作实现
+/*
+Author: LiuFeiHua
+Date: 2024/4/16 11:23
+*/
 type LogServiceImpl struct {
 }
 

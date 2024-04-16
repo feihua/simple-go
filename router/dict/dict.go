@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func DictUrl(r *gin.RouterGroup) {
+func DictRouter(r *gin.RouterGroup) {
 
 	controller := dict.NewDictController()
 	r.POST("/dict/addDict", controller.CreateDict)

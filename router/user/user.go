@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UserUrl(r *gin.RouterGroup) {
+func UserRouter(r *gin.RouterGroup) {
 
 	controller := user.NewUserController()
 	r.POST("/user/login", controller.Login)

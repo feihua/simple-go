@@ -5,8 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// DeptUrl 部门相关路由
-func DeptUrl(r *gin.RouterGroup) {
+// DeptRouter 部门相关路由
+func DeptRouter(r *gin.RouterGroup) {
 
 	controller := dept.NewDeptController()
 	r.POST("/dept/addDept", controller.CreateDept)

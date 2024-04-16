@@ -5,6 +5,11 @@ import (
 	"github.com/feihua/simple-go/models"
 )
 
+// LogService 日志操作接口
+/*
+Author: LiuFeiHua
+Date: 2024/4/16 11:23
+*/
 type LogService interface {
 
 	// CreateLog 创建操作日志

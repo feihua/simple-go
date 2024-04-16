@@ -14,15 +14,15 @@ import (
 func Init(r *gin.RouterGroup) {
 
 	//用户
-	user.UserUrl(r)
+	user.UserRouter(r)
 	//角色
-	role.RoleUrl(r)
+	role.RoleRouter(r)
 	//菜单
-	menu.MenuUrl(r)
+	menu.MenuRouter(r)
 	//日志
-	log.LogUrl(r)
+	log.LogRouter(r)
 	//字典
-	dict.DictUrl(r)
+	dict.DictRouter(r)
 	//部门
-	dept.DeptUrl(r)
+	dept.DeptRouter(r)
 }

@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func LogUrl(r *gin.RouterGroup) {
+func LogRouter(r *gin.RouterGroup) {
 
 	controller := log.NewLogController()
 	r.GET("/syslog/queryLogList", controller.QueryLogList)

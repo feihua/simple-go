@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func MenuUrl(r *gin.RouterGroup) {
+func MenuRouter(r *gin.RouterGroup) {
 
 	controller := menu.NewMenuController()
 	r.POST("/menu/addMenu", controller.CreateMenu)

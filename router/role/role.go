@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RoleUrl(r *gin.RouterGroup) {
+func RoleRouter(r *gin.RouterGroup) {
 
 	controller := role.NewRoleController()
 	r.POST("/role/addRole", controller.CreateRole)
