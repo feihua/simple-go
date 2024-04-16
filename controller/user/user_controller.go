@@ -2,6 +2,7 @@ package user
 
 import (
 	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/pkg/result"
 	"github.com/feihua/simple-go/services/user"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
@@ -42,7 +43,7 @@ func (u UserController) GetUser(c *gin.Context) {
 
 	//判断参数校验是否通过，如果不通过，把错误返回给前端
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -59,7 +60,7 @@ func (UserController) CreateUser(c *gin.Context) {
 	userRequest := requests.UserRequest{}
 	err := c.ShouldBindJSON(&userRequest)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -81,7 +82,7 @@ func (u UserController) QueryUserList(c *gin.Context) {
 	userRequest := requests.UserRequest{}
 	err := c.ShouldBind(&userRequest)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -104,7 +105,7 @@ func (UserController) UpdateUser(c *gin.Context) {
 	userRequest := requests.UserRequest{}
 	err := c.ShouldBind(&userRequest)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -128,7 +129,7 @@ func (u UserController) DeleteUserByIds(c *gin.Context) {
 	userRequest := requests.DeleteUserRequest{}
 	err := c.ShouldBind(&userRequest)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -143,7 +144,7 @@ func (u UserController) UpdateUserRoleList(c *gin.Context) {
 	req := requests.UserRoleRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -151,7 +152,7 @@ func (u UserController) UpdateUserRoleList(c *gin.Context) {
 
 	err = service.UpdateUserRole(req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": "成功"})

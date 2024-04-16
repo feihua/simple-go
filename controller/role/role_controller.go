@@ -2,6 +2,7 @@ package role
 
 import (
 	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/pkg/result"
 	"github.com/feihua/simple-go/services/role"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
@@ -25,7 +26,7 @@ func (RoleController) CreateRole(c *gin.Context) {
 	req := requests.RoleRequest{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -45,7 +46,7 @@ func (RoleController) QueryRoleList(c *gin.Context) {
 	req := requests.RoleRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -66,7 +67,7 @@ func (RoleController) UpdateMenu(c *gin.Context) {
 	req := requests.RoleRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -87,7 +88,7 @@ func (RoleController) DeleteRoleByIds(c *gin.Context) {
 	req := requests.DeleteRoleRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -111,7 +112,7 @@ func (RoleController) UpdateRoleMenuList(c *gin.Context) {
 	req := requests.RoleMenuRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 

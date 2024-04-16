@@ -2,6 +2,7 @@ package log
 
 import (
 	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/pkg/result"
 	"github.com/feihua/simple-go/services/log"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
@@ -26,7 +27,7 @@ func (LogController) CreateLog(c *gin.Context) {
 	req := requests.SysLogRequest{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -48,7 +49,7 @@ func (LogController) QueryLogList(c *gin.Context) {
 	req := requests.SysLogRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -69,7 +70,7 @@ func (LogController) DeleteLogByIds(c *gin.Context) {
 	req := requests.DeleteLogRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -84,7 +85,7 @@ func (LogController) CreateLoginLog(c *gin.Context) {
 	req := requests.LoginLogRequest{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -102,7 +103,7 @@ func (LogController) QueryLoginLogList(c *gin.Context) {
 	req := requests.LoginLogRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -123,7 +124,7 @@ func (LogController) DeleteLoginLogByIds(c *gin.Context) {
 	req := requests.DeleteLoginLogRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 

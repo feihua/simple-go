@@ -2,6 +2,7 @@ package menu
 
 import (
 	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/pkg/result"
 	"github.com/feihua/simple-go/services/menu"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
@@ -26,7 +27,7 @@ func (MenuController) CreateMenu(c *gin.Context) {
 	req := requests.MenuRequest{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -52,7 +53,7 @@ func (MenuController) QueryMenuList(c *gin.Context) {
 	req := requests.MenuRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -68,7 +69,7 @@ func (MenuController) UpdateMenu(c *gin.Context) {
 	req := requests.MenuRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -95,7 +96,7 @@ func (MenuController) DeleteMenuById(c *gin.Context) {
 	req := requests.DeleteMenuRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 

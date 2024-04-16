@@ -5,6 +5,7 @@ import (
 	"github.com/feihua/simple-go/models"
 )
 
+// CreateDept 创建部门
 func CreateDept(dto dto.DeptDto) error {
 	dept := models.Dept{
 		DeptName: dto.DeptName,
@@ -13,21 +14,19 @@ func CreateDept(dto dto.DeptDto) error {
 		Remarks:  dto.Remarks,
 	}
 
-	err := models.DB.Create(&dept).Error
-
-	return err
+	return models.DB.Create(&dept).Error
 }
 
-func QueryDeptList() ([]models.Dept, int) {
+// QueryDeptList 查询部门列表(不需要分页)
+func QueryDeptList() ([]models.Dept, error) {
 
-	var total = 0
 	var dept []models.Dept
-	models.DB.Find(&dept)
+	err := models.DB.Find(&dept).Error
 
-	models.DB.Model(&models.Dept{}).Count(&total)
-	return dept, total
+	return dept, err
 }
 
+// UpdateDept 更新部门
 func UpdateDept(dto dto.DeptDto) error {
 
 	dept := models.Dept{
@@ -38,11 +37,10 @@ func UpdateDept(dto dto.DeptDto) error {
 		Remarks:  dto.Remarks,
 	}
 
-	err := models.DB.Model(&dept).Update(&dept).Error
-
-	return err
+	return models.DB.Model(&dept).Update(&dept).Error
 }
 
+// DeleteDeptByIds 根据id删除部门
 func DeleteDeptByIds(ids []int64) error {
 	return models.DB.Where("id in (?)", ids).Delete(&models.Dept{}).Error
 }

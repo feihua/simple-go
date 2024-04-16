@@ -2,10 +2,10 @@ package dict
 
 import (
 	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/pkg/result"
 	"github.com/feihua/simple-go/services/dict"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"strconv"
 )
 
@@ -21,33 +21,40 @@ func NewDictController() *DictController {
 	return &DictController{}
 }
 
+// CreateDict 创建字典
 func (d DictController) CreateDict(c *gin.Context) {
 
 	req := requests.DictRequest{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
-	var service dict.DictService = &dict.DictServiceImpl{}
+	var service = &dict.DictServiceImpl{}
 
-	u := dto.DictDto{
+	dictDto := dto.DictDto{
 		Value:       req.Value,
 		Label:       req.Label,
 		Type:        req.Type,
 		Description: req.Description,
 		Remarks:     req.Remarks,
 	}
-	result := service.CreateDict(u)
-	c.JSON(http.StatusOK, gin.H{"data": result})
+
+	err = service.CreateDict(dictDto)
+	if err != nil {
+		result.FailWithMsg(c, result.DictError, err.Error())
+	} else {
+		result.Ok(c)
+	}
 }
 
+// QueryDictList 查询字典列表
 func (d DictController) QueryDictList(c *gin.Context) {
 	req := requests.DictRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -57,24 +64,26 @@ func (d DictController) QueryDictList(c *gin.Context) {
 	pageSize := c.DefaultQuery("pageSize", "10")
 	size, _ := strconv.Atoi(pageSize)
 
-	var service dict.DictService = &dict.DictServiceImpl{}
+	var service = &dict.DictServiceImpl{}
 
-	result, total := service.QueryDictList(pageNum, size)
-	c.JSON(http.StatusOK, gin.H{"data": result, "success": true, "current": current, "total": total, "pageSize": pageSize})
+	dictList, total := service.QueryDictList(pageNum, size)
+
+	result.OkWithData(c, gin.H{"list": dictList, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
 
+// UpdateDict 更新字典
 func (d DictController) UpdateDict(c *gin.Context) {
 
 	req := requests.DictRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
-	var service dict.DictService = &dict.DictServiceImpl{}
+	var service = &dict.DictServiceImpl{}
 
-	u := dto.DictDto{
+	dictDto := dto.DictDto{
 		Id:          req.Id,
 		Value:       req.Value,
 		Label:       req.Label,
@@ -82,21 +91,30 @@ func (d DictController) UpdateDict(c *gin.Context) {
 		Description: req.Description,
 		Remarks:     req.Remarks,
 	}
-	result := service.UpdateDict(u)
-	c.JSON(http.StatusOK, gin.H{"data": result})
+	err = service.UpdateDict(dictDto)
+	if err != nil {
+		result.FailWithMsg(c, result.DictError, err.Error())
+	} else {
+		result.Ok(c)
+	}
 }
 
+// DeleteDictByIds 删除字典
 func (d DictController) DeleteDictByIds(c *gin.Context) {
 
 	req := requests.DeleteDictRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
-	var service dict.DictService = &dict.DictServiceImpl{}
+	var service = &dict.DictServiceImpl{}
 
-	result := service.DeleteDictByIds(req.Ids)
-	c.JSON(http.StatusOK, gin.H{"data": result})
+	err = service.DeleteDictByIds(req.Ids)
+	if err != nil {
+		result.FailWithMsg(c, result.DictError, err.Error())
+	} else {
+		result.Ok(c)
+	}
 }

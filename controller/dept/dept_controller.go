@@ -6,7 +6,6 @@ import (
 	"github.com/feihua/simple-go/services/dept"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 // DeptController 部门相关操作
@@ -23,7 +22,7 @@ func NewDeptController() *DeptController {
 
 // CreateDept 添加部门
 func (d DeptController) CreateDept(c *gin.Context) {
-	req := requests.AddDeptRequest{}
+	req := requests.DeptRequest{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		result.Fail(c, result.ParamsError)
@@ -32,14 +31,14 @@ func (d DeptController) CreateDept(c *gin.Context) {
 
 	var service dept.DeptService = &dept.DeptServiceImpl{}
 
-	u := dto.DeptDto{
+	deptDto := dto.DeptDto{
 		DeptName: req.DeptName,
 		ParentId: req.ParentId,
 		Sort:     req.Sort,
 		Remarks:  req.Remarks,
 	}
 
-	err = service.CreateDept(u)
+	err = service.CreateDept(deptDto)
 	if err != nil {
 		result.FailWithMsg(c, result.DeptError, err.Error())
 	} else {
@@ -47,11 +46,12 @@ func (d DeptController) CreateDept(c *gin.Context) {
 	}
 }
 
+// QueryDeptList 查询部门列表
 func (d DeptController) QueryDeptList(c *gin.Context) {
-	req := requests.AddDeptRequest{}
+	req := requests.DeptRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -59,46 +59,57 @@ func (d DeptController) QueryDeptList(c *gin.Context) {
 
 	service = &dept.DeptServiceImpl{}
 
-	depts, _ := service.QueryDeptList()
-	c.JSON(http.StatusOK, gin.H{"data": depts})
+	deptList, err := service.QueryDeptList()
+	if err != nil {
+		result.FailWithMsg(c, result.DeptError, err.Error())
+	} else {
+		result.OkWithData(c, deptList)
+	}
 }
 
+// UpdateDept 修改部门
 func (d DeptController) UpdateDept(c *gin.Context) {
 
-	req := requests.AddDeptRequest{}
+	req := requests.DeptRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
-	var service dept.DeptService
-
-	service = &dept.DeptServiceImpl{}
-	u := dto.DeptDto{
+	var service = &dept.DeptServiceImpl{}
+	deptDto := dto.DeptDto{
 		Id:       req.Id,
 		DeptName: req.DeptName,
 		ParentId: req.ParentId,
 		Sort:     req.Sort,
 		Remarks:  req.Remarks,
 	}
-	result := service.UpdateDept(u)
-	c.JSON(http.StatusOK, gin.H{"data": result})
+
+	err = service.UpdateDept(deptDto)
+	if err != nil {
+		result.FailWithMsg(c, result.DeptError, err.Error())
+	} else {
+		result.Ok(c)
+	}
 }
 
+// DeleteDeptByIds 删除部门
 func (d DeptController) DeleteDeptByIds(c *gin.Context) {
 
 	req := requests.DeleteDeptRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
-	var service dept.DeptService
+	var service = &dept.DeptServiceImpl{}
 
-	service = &dept.DeptServiceImpl{}
-
-	result := service.DeleteDeptByIds(req.Ids)
-	c.JSON(http.StatusOK, gin.H{"data": result})
+	err = service.DeleteDeptByIds(req.Ids)
+	if err != nil {
+		result.FailWithMsg(c, result.DeptError, err.Error())
+	} else {
+		result.Ok(c)
+	}
 }

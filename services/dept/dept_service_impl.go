@@ -10,6 +10,7 @@ import (
 type DeptServiceImpl struct {
 }
 
+// CreateDept 创建部门
 func (d *DeptServiceImpl) CreateDept(dto dto.DeptDto) error {
 	//判断部门是否已经存在
 	dept, err := dao.QueryDeptByName(dto.DeptName)
@@ -25,7 +26,8 @@ func (d *DeptServiceImpl) CreateDept(dto dto.DeptDto) error {
 	return dao.CreateDept(dto)
 }
 
-func (d *DeptServiceImpl) QueryDeptList() ([]models.Dept, int) {
+// QueryDeptList 查询部门列表
+func (d *DeptServiceImpl) QueryDeptList() ([]models.Dept, error) {
 	return dao.QueryDeptList()
 }
 
@@ -34,10 +36,22 @@ func (d *DeptServiceImpl) QueryDeptByName(deptName string) (*models.Dept, error)
 	return dao.QueryDeptByName(deptName)
 }
 
-func (d *DeptServiceImpl) UpdateDept(deptDto dto.DeptDto) error {
-	return dao.UpdateDept(deptDto)
+// UpdateDept 更新部门
+func (d *DeptServiceImpl) UpdateDept(dto dto.DeptDto) error {
+	//判断部门是否已经存在
+	dept, err := dao.QueryDeptByName(dto.DeptName)
+	if err != nil {
+		return err
+	}
+
+	if dept.Id != dto.Id {
+		return errors.New("部门已存在")
+	}
+
+	return dao.UpdateDept(dto)
 }
 
+// DeleteDeptByIds 删除部门
 func (d *DeptServiceImpl) DeleteDeptByIds(ids []int64) error {
 	return dao.DeleteDeptByIds(ids)
 }

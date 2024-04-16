@@ -73,4 +73,6 @@ var (
 	UserExist   = Error(5004, "user Exist")
 
 	DeptError = Error(6001, "dept error")
+
+	DictError = Error(7001, "dict error")
 )
