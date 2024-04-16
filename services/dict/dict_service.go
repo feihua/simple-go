@@ -5,6 +5,11 @@ import (
 	"github.com/feihua/simple-go/models"
 )
 
+// DictService 字典操作接口
+/*
+Author: LiuFeiHua
+Date: 2024/4/16 11:18
+*/
 type DictService interface {
 
 	// CreateDict 创建字典

@@ -1,12 +1,10 @@
 package log
 
 import (
-	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/feihua/simple-go/services/log"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"strconv"
 )
 
@@ -22,29 +20,7 @@ func NewLogController() *LogController {
 	return &LogController{}
 }
 
-func (LogController) CreateLog(c *gin.Context) {
-
-	req := requests.SysLogRequest{}
-	err := c.ShouldBindJSON(&req)
-	if err != nil {
-		result.Fail(c, result.ParamsError)
-		return
-	}
-
-	var service log.LogService = &log.LogServiceImpl{}
-
-	u := dto.LogDto{
-		UserName:      req.UserName,
-		Operation:     req.Operation,
-		Method:        req.Method,
-		Params:        req.Params,
-		OperationTime: req.OperationTime,
-		Ip:            req.Ip,
-	}
-	result := service.CreateLog(u)
-	c.JSON(http.StatusOK, gin.H{"data": result})
-}
-
+// QueryLogList 查询操作日志
 func (LogController) QueryLogList(c *gin.Context) {
 	req := requests.SysLogRequest{}
 	err := c.ShouldBind(&req)
@@ -61,10 +37,11 @@ func (LogController) QueryLogList(c *gin.Context) {
 
 	var service log.LogService = &log.LogServiceImpl{}
 
-	result, total := service.QueryLogList(pageNum, size)
-	c.JSON(http.StatusOK, gin.H{"data": result, "success": true, "current": current, "total": total, "pageSize": pageSize})
+	list, total := service.QueryLogList(pageNum, size)
+	result.OkWithData(c, gin.H{"list": list, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
 
+// DeleteLogByIds 删除操作日志
 func (LogController) DeleteLogByIds(c *gin.Context) {
 
 	req := requests.DeleteLogRequest{}
@@ -76,29 +53,15 @@ func (LogController) DeleteLogByIds(c *gin.Context) {
 
 	var service log.LogService = &log.LogServiceImpl{}
 
-	result := service.DeleteLogByIds(req.Ids)
-	c.JSON(http.StatusOK, gin.H{"data": result})
-}
-
-func (LogController) CreateLoginLog(c *gin.Context) {
-
-	req := requests.LoginLogRequest{}
-	err := c.ShouldBindJSON(&req)
+	err = service.DeleteLogByIds(req.Ids)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
-		return
+		result.FailWithMsg(c, result.LogError, err.Error())
+	} else {
+		result.Ok(c)
 	}
-
-	var service log.LogService = &log.LogServiceImpl{}
-
-	u := dto.LoginLogDto{
-		UserName: req.UserName,
-		Ip:       req.Ip,
-	}
-	result := service.CreateLoginLog(u)
-	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
+// QueryLoginLogList 查询登录日志
 func (LogController) QueryLoginLogList(c *gin.Context) {
 	req := requests.LoginLogRequest{}
 	err := c.ShouldBind(&req)
@@ -115,10 +78,11 @@ func (LogController) QueryLoginLogList(c *gin.Context) {
 
 	var service log.LogService = &log.LogServiceImpl{}
 
-	result, total := service.QueryLoginLogList(pageNum, size)
-	c.JSON(http.StatusOK, gin.H{"data": result, "success": true, "current": current, "total": total, "pageSize": pageSize})
+	list, total := service.QueryLoginLogList(pageNum, size)
+	result.OkWithData(c, gin.H{"list": list, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
 
+// DeleteLoginLogByIds 删除登录日志
 func (LogController) DeleteLoginLogByIds(c *gin.Context) {
 
 	req := requests.DeleteLoginLogRequest{}
@@ -130,6 +94,10 @@ func (LogController) DeleteLoginLogByIds(c *gin.Context) {
 
 	var service log.LogService = &log.LogServiceImpl{}
 
-	result := service.DeleteLoginLogByIds(req.Ids)
-	c.JSON(http.StatusOK, gin.H{"data": result})
+	err = service.DeleteLoginLogByIds(req.Ids)
+	if err != nil {
+		result.FailWithMsg(c, result.LogError, err.Error())
+	} else {
+		result.Ok(c)
+	}
 }

@@ -5,7 +5,8 @@ import (
 	"github.com/feihua/simple-go/models"
 )
 
-func CreateSysLog(dto dto.LogDto) error {
+// CreateLog 创建操作日志
+func CreateLog(dto dto.LogDto) error {
 	log := models.OperationLog{
 		UserName:      dto.UserName,
 		Operation:     dto.Operation,
@@ -20,6 +21,7 @@ func CreateSysLog(dto dto.LogDto) error {
 	return err
 }
 
+// QueryLogList 查询操作日志
 func QueryLogList(current int, pageSize int) ([]models.OperationLog, int) {
 
 	var loginLog []models.OperationLog
@@ -31,11 +33,13 @@ func QueryLogList(current int, pageSize int) ([]models.OperationLog, int) {
 	return loginLog, total
 }
 
-func DeleteSysLogByIds(ids []int64) error {
+// DeleteLogByIds 删除操作日志
+func DeleteLogByIds(ids []int64) error {
 	return models.DB.Where("id in (?)", ids).Delete(&models.Dept{}).Error
 }
 
-func CreateSysLoginLog(dto dto.LoginLogDto) error {
+// CreateLoginLog 创建登录日志
+func CreateLoginLog(dto dto.LoginLogDto) error {
 	log := models.LoginLog{
 		UserName: dto.UserName,
 		Ip:       dto.Ip,
@@ -46,6 +50,7 @@ func CreateSysLoginLog(dto dto.LoginLogDto) error {
 	return err
 }
 
+// QueryLoginLogList 查询登录日志
 func QueryLoginLogList(current int, pageSize int) ([]models.LoginLog, int) {
 	var loginLog []models.LoginLog
 
@@ -56,6 +61,7 @@ func QueryLoginLogList(current int, pageSize int) ([]models.LoginLog, int) {
 	return loginLog, total
 }
 
-func DeleteSysLoginLogByIds(ids []int64) error {
+// DeleteLoginLogByIds 删除登录日志
+func DeleteLoginLogByIds(ids []int64) error {
 	return models.DB.Where("id in (?)", ids).Delete(&models.Dept{}).Error
 }

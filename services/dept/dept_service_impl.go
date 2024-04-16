@@ -7,6 +7,11 @@ import (
 	"github.com/feihua/simple-go/models"
 )
 
+// DeptServiceImpl
+/*
+Author: LiuFeiHua
+Date: 2024/4/16 11:17
+*/
 type DeptServiceImpl struct {
 }
 

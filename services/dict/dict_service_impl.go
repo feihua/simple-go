@@ -7,6 +7,11 @@ import (
 	"github.com/feihua/simple-go/models"
 )
 
+// DictServiceImpl 字典操作实现
+/*
+Author: LiuFeiHua
+Date: 2024/4/16 11:18
+*/
 type DictServiceImpl struct {
 }
 
