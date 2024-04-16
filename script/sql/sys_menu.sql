@@ -7,16 +7,15 @@ create table sys_menu
     status_id   tinyint      default 1                 not null comment '状态(1:正常，0:禁用)',
     sort        int          default 1                 not null comment '排序',
     parent_id   bigint                                 not null comment '父ID',
-    menu_url    varchar(255) default ''                null comment '路由路径',
-    api_url     varchar(255) default ''                null comment '接口URL',
-    menu_icon   varchar(255)                           null comment '菜单图标',
-    remark      varchar(255)                           null comment '备注',
+    menu_url    varchar(255) default '' null comment '路由路径',
+    api_url     varchar(255) default '' null comment '接口URL',
+    menu_icon   varchar(255) null comment '菜单图标',
+    remark      varchar(255) null comment '备注',
     create_time datetime     default CURRENT_TIMESTAMP not null comment '创建时间',
     update_time datetime     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '修改时间',
     constraint menu_name
         unique (menu_name)
-)
-    comment '菜单信息';
+) comment '菜单信息';
 
 INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (1, '首页', 1, 1, 0, 0, '/home', '', 'SmileOutlined', '首页', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (2, '权限管理', 1, 1, 1, 0, '', '', 'SettingOutlined', '权限管理', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

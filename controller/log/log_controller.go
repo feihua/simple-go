@@ -10,12 +10,17 @@ import (
 )
 
 // LogController 日志相关
+/*
+Author: LiuFeiHua
+Date: 2024/4/15 18:02
+*/
 type LogController struct {
 }
 
 func NewLogController() *LogController {
 	return &LogController{}
 }
+
 func (LogController) CreateLog(c *gin.Context) {
 
 	req := requests.SysLogRequest{}

@@ -2,6 +2,7 @@ package dept
 
 import (
 	"github.com/feihua/simple-go/dto"
+	"github.com/feihua/simple-go/pkg/result"
 	"github.com/feihua/simple-go/services/dept"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
@@ -20,11 +21,12 @@ func NewDeptController() *DeptController {
 	return &DeptController{}
 }
 
+// CreateDept 添加部门
 func (d DeptController) CreateDept(c *gin.Context) {
-	req := requests.DeptRequest{}
+	req := requests.AddDeptRequest{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+		result.Fail(c, result.ParamsError)
 		return
 	}
 
@@ -36,12 +38,17 @@ func (d DeptController) CreateDept(c *gin.Context) {
 		Sort:     req.Sort,
 		Remarks:  req.Remarks,
 	}
-	result := service.CreateDept(u)
-	c.JSON(http.StatusOK, gin.H{"data": result})
+
+	err = service.CreateDept(u)
+	if err != nil {
+		result.FailWithMsg(c, result.DeptError, err.Error())
+	} else {
+		result.Ok(c)
+	}
 }
 
 func (d DeptController) QueryDeptList(c *gin.Context) {
-	req := requests.DeptRequest{}
+	req := requests.AddDeptRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
@@ -58,7 +65,7 @@ func (d DeptController) QueryDeptList(c *gin.Context) {
 
 func (d DeptController) UpdateDept(c *gin.Context) {
 
-	req := requests.DeptRequest{}
+	req := requests.AddDeptRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})

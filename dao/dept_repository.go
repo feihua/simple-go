@@ -46,3 +46,12 @@ func UpdateDept(dto dto.DeptDto) error {
 func DeleteDeptByIds(ids []int64) error {
 	return models.DB.Where("id in (?)", ids).Delete(&models.Dept{}).Error
 }
+
+// QueryDeptByName 根据部门名称查询
+func QueryDeptByName(name string) (*models.Dept, error) {
+
+	var dept models.Dept
+	err := models.DB.First(&dept).Where("dept_name = ?", name).Error
+
+	return &dept, err
+}

@@ -1,6 +1,6 @@
 package requests
 
-type DeptRequest struct {
+type AddDeptRequest struct {
 	Id       int64  `json:"id"`       //编号
 	DeptName string `json:"deptName"` //部门名称
 	ParentId int64  `json:"parentId"` //上级部门ID，一级部门为0

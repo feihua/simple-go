@@ -10,8 +10,7 @@ create table sys_role
     update_time datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '修改时间',
     constraint role_name
         unique (role_name)
-)
-    comment '角色信息';
+) comment '角色信息';
 
 create index name_status_index
     on sys_role (role_name, status_id);

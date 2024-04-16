@@ -11,6 +11,6 @@ func MenuUrl(r *gin.RouterGroup) {
 	r.POST("/menu/addMenu", controller.CreateMenu)
 	r.GET("/menu/queryMenuList", controller.QueryMenuList)
 	r.POST("/menu/updateMenu", controller.UpdateMenu)
-	r.POST("/menu/deleteMenuByIds", controller.DeleteMenuByIds)
+	r.POST("/menu/deleteMenuById", controller.DeleteMenuById)
 
 }

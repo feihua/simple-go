@@ -8,12 +8,19 @@ import (
 	"net/http"
 )
 
+// MenuController 菜单相关
+/*
+Author: LiuFeiHua
+Date: 2024/4/15 18:03
+*/
 type MenuController struct {
 }
 
 func NewMenuController() *MenuController {
 	return &MenuController{}
 }
+
+// CreateMenu 创建菜单
 func (MenuController) CreateMenu(c *gin.Context) {
 
 	req := requests.MenuRequest{}
@@ -40,6 +47,7 @@ func (MenuController) CreateMenu(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
+// QueryMenuList 查询菜单
 func (MenuController) QueryMenuList(c *gin.Context) {
 	req := requests.MenuRequest{}
 	err := c.ShouldBind(&req)
@@ -54,6 +62,7 @@ func (MenuController) QueryMenuList(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": menuList})
 }
 
+// UpdateMenu 更新菜单
 func (MenuController) UpdateMenu(c *gin.Context) {
 
 	req := requests.MenuRequest{}
@@ -80,7 +89,8 @@ func (MenuController) UpdateMenu(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func (MenuController) DeleteMenuByIds(c *gin.Context) {
+// DeleteMenuById 删除菜单
+func (MenuController) DeleteMenuById(c *gin.Context) {
 
 	req := requests.DeleteMenuRequest{}
 	err := c.ShouldBind(&req)
