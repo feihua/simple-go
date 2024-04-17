@@ -25,17 +25,19 @@ deps: ## 安装依赖目标
 
 build: ## 构建目标
 	$(GOBUILD) -o target/simple-go -v ./main.go
+	mkdir -p target/config
 	cp ./config/app.ini target/config/ ## 复制配置文件
 
 
 
 start: ## 运行目标
-	cd ./target
-	nohup ./simple-go  > /dev/null 2>&1 &
+	echo "start simple-go"
+	nohup ./target/simple-go  > /dev/null 2>&1 &
 
 
 
 stop: ## 停止目标
+	echo "stop simple-go"
 	-pkill -f simple-go
 
 
