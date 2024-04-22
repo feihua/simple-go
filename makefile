@@ -9,7 +9,7 @@ GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOGET=$(GOCMD) mod tidy
 
-
+TARGET_DIR = ./target
 all: deps build ## 默认的构建目标
 
 
@@ -21,24 +21,29 @@ clean: ## 清理目标
 deps: ## 安装依赖目标
 	@export GOPROXY=https://goproxy.cn,direct
 	$(GOGET) -v
- 
 
-build: ## 构建目标
+create_folder: ## 创建目录
+	@if [ ! -d "$(TARGET_DIR)" ]; then \
+            mkdir -p $(TARGET_DIR); \
+            echo "Directory $(TARGET_DIR) created"; \
+    fi
+
+build: create_folder ## 构建目标
 	$(GOBUILD) -o target/simple-go -v ./main.go
-	mkdir -p target/config
-	cp ./config/app.ini target/config/ ## 复制配置文件
+	@cp -R config target/
 
 
 
 start: ## 运行目标
-	echo "start simple-go"
+	@echo "start simple-go"
 	nohup ./target/simple-go  > /dev/null 2>&1 &
 
 
 
 stop: ## 停止目标
-	echo "stop simple-go"
+	@echo "stop simple-go"
 	-pkill -f simple-go
+	@sleep 2
 
 
 
