@@ -1,14 +1,17 @@
 package user
 
 import (
+	"context"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/feihua/simple-go/dao"
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
 	"github.com/feihua/simple-go/pkg/config"
+	"github.com/feihua/simple-go/pkg/redis"
 	"github.com/feihua/simple-go/vo/requests"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -69,6 +72,9 @@ func (u *UserServiceImpl) Login(loginDto dto.UserLoginDto) (*dto.LoginDtoResp, e
 		return nil, errors.New(err.Error())
 	}
 
+	apiUrlStr := strings.Join(apiUrl, ",")
+	ctx := context.Background()
+	redis.Rdb.Set(ctx, "simple:apiUrl:"+strconv.FormatInt(user.Id, 10), apiUrlStr, time.Duration(config.TokenInfo.AccessExpire)*time.Second)
 	return &dto.LoginDtoResp{
 		Id:       user.Id,
 		UserName: user.UserName,

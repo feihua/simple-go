@@ -6,6 +6,7 @@ import (
 	"github.com/feihua/simple-go/controller"
 	"github.com/feihua/simple-go/dao"
 	"github.com/feihua/simple-go/pkg/config"
+	"github.com/feihua/simple-go/pkg/redis"
 	"github.com/feihua/simple-go/router"
 	"github.com/feihua/simple-go/services"
 	"github.com/gin-gonic/gin"
@@ -30,6 +31,13 @@ func main() {
 	routerGroup := r.Group("/api/")
 	//初始化路由
 	router.Init(routerGroup)
+
+	if err := redis.InitRedisClient(); err != nil {
+		fmt.Printf("InitRedisClient failed: %v\n", err)
+		return
+	}
+	fmt.Println("initRedisClient started successfully")
+	defer redis.Rdb.Close() // Close 关闭客户端，释放所有打开的资源。关闭客户端是很少见的，因为客户端是长期存在的，并在许多例程之间共享。
 
 	_ = r.Run(fmt.Sprintf("%s:%d", config.Server.Address, config.Server.Port)) // 监听并在 0.0.0.0:8081 上启动服务
 }

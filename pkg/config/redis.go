@@ -9,7 +9,6 @@ var RedisConfig *redisConfig
 
 type redisConfig struct {
 	Host     string `ini:"host"`
-	Port     int    `ini:"port"`
 	Password string `ini:"password"`
 
 	source *ini.File

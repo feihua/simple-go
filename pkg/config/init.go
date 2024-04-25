@@ -9,4 +9,6 @@ func init() {
 	fmt.Println(Mysql)
 	TokenInfo = (&tokenInfo{}).Load("config/app.ini").Init()
 	fmt.Println(Mysql)
+	RedisConfig = (&redisConfig{}).Load("config/app.ini").Init()
+	fmt.Println(RedisConfig)
 }
