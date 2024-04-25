@@ -16,16 +16,16 @@ type RegisterRequest struct {
 	Password string `json:"password" form:"password" binding:"required"`
 }
 
-// LoginRequest 登陆入参
+// LoginRequest 登陆参数
 type LoginRequest struct {
-	Username string `json:"username" form:"username" binding:"required"`
-	Password string `json:"password" form:"password" binding:"required"`
+	Account  string `json:"account" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
-// LoginRequest 登陆入参
+// UserRoleRequest 查询用户角色参数
 type UserRoleRequest struct {
 	UserId int64 `json:"userId"`
-	Roleid int64 `json:"roleId" `
+	RoleId int64 `json:"roleId" `
 }
 
 // DeleteUserRequest 删除用户

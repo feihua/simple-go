@@ -3,6 +3,7 @@ module github.com/feihua/simple-go
 go 1.22
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.9.1
 	github.com/jinzhu/gorm v1.9.16
 	gopkg.in/ini.v1 v1.67.0

@@ -27,9 +27,24 @@ func NewUserController(Service *services.ServiceImpl) *UserController {
 
 // Login 登录
 func (u UserController) Login(c *gin.Context) {
+	loginRequest := requests.LoginRequest{}
+	err := c.ShouldBind(&loginRequest)
+	if err != nil {
+		result.Fail(c, result.ParamsError)
+		return
+	}
 
-	//校验通过，返回请求参数
-	c.JSON(http.StatusOK, gin.H{"status": "ok", "type": "account", "currentAuthority": "admin"})
+	loginDto := dto.UserLoginDto{
+		Account:  loginRequest.Account,
+		Password: loginRequest.Password,
+	}
+
+	loginDtoResp, err := u.Service.UserService.Login(loginDto)
+	if err != nil {
+		result.FailWithMsg(c, result.UserLoginError, err.Error())
+	} else {
+		result.OkWithData(c, loginDtoResp)
+	}
 }
 
 // QueryUserInfo 查询用户信息

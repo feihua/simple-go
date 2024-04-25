@@ -68,13 +68,15 @@ var (
 
 	ParamsError = Error(1000, "params error")
 
-	UserError  = Error(2001, "username or password error")
-	CodeExpire = Error(2002, "verification expire")
-	CodeError  = Error(2003, "verification error")
-	UserExist  = Error(2004, "user Exist")
-	RoleError  = Error(3001, "role error")
-	MenuError  = Error(4001, "menu error")
-	DeptError  = Error(5001, "dept error")
+	UserError      = Error(2001, "username or password error")
+	CodeExpire     = Error(2002, "verification expire")
+	CodeError      = Error(2003, "verification error")
+	UserExist      = Error(2004, "user Exist")
+	UserLoginError = Error(2005, "login error")
+
+	RoleError = Error(3001, "role error")
+	MenuError = Error(4001, "menu error")
+	DeptError = Error(5001, "dept error")
 
 	DictError = Error(6001, "dict error")
 

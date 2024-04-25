@@ -14,19 +14,29 @@ func NewUserRoleDao(DB *gorm.DB) *UserRoleDao {
 	return &UserRoleDao{db: DB}
 }
 
+// IsAdministrator 根据用户id判断是否是管理员
+func (u UserRoleDao) IsAdministrator(userId int64) bool {
+
+	var count int64
+	//1是预留超级管理员角色的id
+	u.db.Model(&models.UserRole{}).Where("user_id= ? and role_id = 1", userId).Count(&count)
+
+	return count == 1
+}
+
 // QueryUserRoleList 查询用户角色
-func (u UserRoleDao) QueryUserRoleList(roleId int64) []int64 {
+func (u UserRoleDao) QueryUserRoleList(userId int64) []int64 {
 
 	var userRoles []models.UserRole
-	u.db.Where("user_id=?", roleId).Find(&userRoles)
+	u.db.Where("user_id = ?", userId).Find(&userRoles)
 
-	var menuIds []int64
+	var roleIds []int64
 
 	for _, userRole := range userRoles {
-		menuIds = append(menuIds, userRole.UserId)
+		roleIds = append(roleIds, userRole.RoleId)
 	}
 
-	return menuIds
+	return roleIds
 }
 
 // UpdateUserRoleList 更新用户与角色关糸

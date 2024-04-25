@@ -1,11 +1,15 @@
 package user
 
 import (
+	"errors"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/feihua/simple-go/dao"
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
+	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/vo/requests"
 	"strconv"
+	"time"
 )
 
 // UserServiceImpl 用户操作接口实现
@@ -21,6 +25,69 @@ func NewUserServiceImpl(Dao *dao.DaoImpl) UserService {
 	return &UserServiceImpl{
 		Dao: Dao,
 	}
+}
+
+// Login 登录
+func (u *UserServiceImpl) Login(loginDto dto.UserLoginDto) (*dto.LoginDtoResp, error) {
+	users, err := u.Dao.UserDao.QueryUserByUsernameOrMobile(loginDto.Account)
+	if err != nil {
+		return nil, errors.New(err.Error())
+	}
+
+	if len(users) == 0 {
+		return nil, errors.New("用户不存在")
+	}
+
+	user := users[0]
+	if user.Password != loginDto.Password {
+		return nil, errors.New("密码错误")
+	}
+
+	if user.StatusId != 1 {
+		return nil, errors.New("用户被禁用")
+	}
+
+	var apiUrl []string
+	if u.Dao.UserRoleDao.IsAdministrator(user.Id) {
+		menuList, _ := u.Dao.MenuDao.QueryMenuList()
+		for _, menu := range menuList {
+			if menu.ApiUrl != "" {
+				apiUrl = append(apiUrl, menu.ApiUrl)
+			}
+		}
+	} else {
+		url, err1 := u.Dao.UserDao.QueryUserApiUrl(user.Id)
+		if err1 != nil {
+			return nil, errors.New(err1.Error())
+		}
+		apiUrl = url
+	}
+
+	now := time.Now().Unix()
+	token, err := createJwtToken(config.TokenInfo.AccessSecret, now, config.TokenInfo.AccessExpire, user.Id, user.UserName)
+	if err != nil {
+		return nil, errors.New(err.Error())
+	}
+
+	return &dto.LoginDtoResp{
+		Id:       user.Id,
+		UserName: user.UserName,
+		Token:    token,
+	}, nil
+
+}
+
+// 生成jwt的token
+func createJwtToken(secretKey string, iat, seconds, userId int64, userName string) (string, error) {
+
+	claims := make(jwt.MapClaims)
+	claims["exp"] = iat + seconds
+	claims["iat"] = iat
+	claims["userId"] = userId
+	claims["userName"] = userName
+	token := jwt.New(jwt.SigningMethodHS256)
+	token.Claims = claims
+	return token.SignedString([]byte(secretKey))
 }
 
 // CreateUser 创建用户
