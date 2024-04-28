@@ -6,7 +6,6 @@ import (
 	"github.com/feihua/simple-go/services"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 // MenuController 菜单相关
@@ -61,8 +60,12 @@ func (m MenuController) QueryMenuList(c *gin.Context) {
 		return
 	}
 
-	menuList, _ := m.Service.MenuService.QueryMenuList("u")
-	c.JSON(http.StatusOK, gin.H{"data": menuList})
+	menuList, err := m.Service.MenuService.QueryMenuList()
+	if err != nil {
+		result.FailWithMsg(c, result.MenuError, err.Error())
+	} else {
+		result.OkWithData(c, menuList)
+	}
 }
 
 // UpdateMenu 更新菜单

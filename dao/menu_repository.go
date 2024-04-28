@@ -32,14 +32,12 @@ func (m MenuDao) CreateMenu(dto dto.MenuDto) error {
 }
 
 // QueryMenuList 查询菜单
-func (m MenuDao) QueryMenuList() ([]models.Menu, int64) {
+func (m MenuDao) QueryMenuList() ([]models.Menu, error) {
 
-	var total int64 = 0
 	var menus []models.Menu
-	m.db.Find(&menus)
+	err := m.db.Find(&menus).Error
 
-	m.db.Model(&models.Menu{}).Count(&total)
-	return menus, total
+	return menus, err
 }
 
 // UpdateMenu 更新菜单

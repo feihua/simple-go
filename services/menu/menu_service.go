@@ -15,7 +15,7 @@ type MenuService interface {
 	CreateMenu(dto dto.MenuDto) error
 
 	// QueryMenuList 查询菜单
-	QueryMenuList(username string) ([]models.Menu, int64)
+	QueryMenuList() ([]models.Menu, error)
 
 	// UpdateMenu 更新菜单
 	UpdateMenu(menuDto dto.MenuDto) error

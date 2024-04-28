@@ -25,7 +25,7 @@ func (menu *MenuServiceImpl) CreateMenu(dto dto.MenuDto) error {
 }
 
 // QueryMenuList 查询菜单
-func (menu *MenuServiceImpl) QueryMenuList(username string) ([]models.Menu, int64) {
+func (menu *MenuServiceImpl) QueryMenuList() ([]models.Menu, error) {
 	return menu.Dao.MenuDao.QueryMenuList()
 }
 
