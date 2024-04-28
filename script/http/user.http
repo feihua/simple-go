@@ -8,15 +8,15 @@ Content-Type: application/json
   "password": "123456"
 }
 > {%
-    client.global.set("token", response.body.data);
+    client.global.set("token", response.body.data.token);
 %}
 
-###查询用户菜单 query_user_menu
-GET {{host}}/api/query_user_menu
+###查询用户菜单 queryUserMenu
+GET {{host}}/api/user/queryUserMenu
 Authorization: Bearer {{token}}
 
 
-###用户列表 user_list
+###用户列表 queryUserList
 GET {{host}}/api/user/queryUserList
 Content-Type: application/json
 Authorization: Bearer {{token}}

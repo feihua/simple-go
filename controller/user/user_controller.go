@@ -3,6 +3,7 @@ package user
 import (
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/pkg/result"
+	"github.com/feihua/simple-go/pkg/utils"
 	"github.com/feihua/simple-go/services"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
@@ -47,9 +48,12 @@ func (u UserController) Login(c *gin.Context) {
 	}
 }
 
-// QueryUserInfo 查询用户信息
-func (u UserController) QueryUserInfo(c *gin.Context) {
-
+// QueryUserMenu 查询用户信息
+func (u UserController) QueryUserMenu(c *gin.Context) {
+	userId := c.MustGet("userId").(float64)
+	userName := c.MustGet("userName").(string)
+	utils.Logger.Debugf("userId:%d", int64(userId))
+	utils.Logger.Debugf("userId:%s", userName)
 	c.JSON(http.StatusOK, gin.H{"name": "liufeihua", "avatar": "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"})
 }
 

@@ -93,8 +93,7 @@ func createJwtToken(secretKey string, iat, seconds, userId int64, userName strin
 	claims["iat"] = iat
 	claims["userId"] = userId
 	claims["userName"] = userName
-	token := jwt.New(jwt.SigningMethodHS256)
-	token.Claims = claims
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(secretKey))
 }
 

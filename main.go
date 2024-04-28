@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/feihua/simple-go/controller"
 	"github.com/feihua/simple-go/dao"
+	"github.com/feihua/simple-go/middleware"
 	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/pkg/redis"
 	"github.com/feihua/simple-go/pkg/utils"
@@ -23,6 +24,7 @@ func main() {
 
 	// 初始化一个http服务对象
 	r := gin.Default()
+	r.Use(middleware.JwtMiddleware())
 
 	_ = r.SetTrustedProxies([]string{"127.0.0.1"})
 
