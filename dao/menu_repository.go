@@ -3,7 +3,7 @@ package dao
 import (
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type MenuDao struct {
@@ -32,9 +32,9 @@ func (m MenuDao) CreateMenu(dto dto.MenuDto) error {
 }
 
 // QueryMenuList 查询菜单
-func (m MenuDao) QueryMenuList() ([]models.Menu, int) {
+func (m MenuDao) QueryMenuList() ([]models.Menu, int64) {
 
-	var total = 0
+	var total int64 = 0
 	var menus []models.Menu
 	m.db.Find(&menus)
 
@@ -57,7 +57,7 @@ func (m MenuDao) UpdateMenu(dto dto.MenuDto) error {
 		Remark:   dto.Remark,
 	}
 
-	err := m.db.Model(&menu).Update(&menu).Error
+	err := m.db.Model(&menu).Updates(&menu).Error
 
 	return err
 }

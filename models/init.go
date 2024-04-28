@@ -3,8 +3,11 @@ package models
 import (
 	"fmt"
 	"github.com/feihua/simple-go/pkg/config"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/feihua/simple-go/pkg/utils"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"time"
 )
 
 var (
@@ -13,30 +16,26 @@ var (
 )
 
 func Init() {
-	DB, err = gorm.Open(
-		"mysql",
-		fmt.Sprintf(
-			"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
-			config.Mysql.Username,
-			config.Mysql.Password,
-			config.Mysql.Host,
-			config.Mysql.Port,
-			config.Mysql.Database,
-		),
+	dsn := fmt.Sprintf(
+		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+		config.Mysql.Username,
+		config.Mysql.Password,
+		config.Mysql.Host,
+		config.Mysql.Port,
+		config.Mysql.Database,
 	)
+
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+		SkipDefaultTransaction: true,
+		PrepareStmt:            true,
+		Logger:                 settingLogConfig(),
+	})
 	if err != nil {
+		utils.Logger.Debugf("mysql连接异常%s", err.Error())
 		panic(err)
 	}
 
-	//设置连接池
-	DB.DB().SetMaxIdleConns(10)
-	DB.DB().SetMaxOpenConns(100)
-
-	//设置表名为单数
-	DB.SingularTable(true)
-	//开启sql日志
-	DB.LogMode(true)
-
+	utils.Logger.Debugf("mysql已连接%s", dsn)
 	//数据库迁移
 	//migrate()
 }
@@ -45,6 +44,23 @@ func Init() {
 //	DB.AutoMigrate(&User{})
 //}
 
-func Close() {
-	defer DB.Close()
+type Writer struct {
+}
+
+func (w Writer) Printf(format string, args ...interface{}) {
+	utils.Logger.Debugf(format, args)
+}
+
+// init log config
+func settingLogConfig() logger.Interface {
+	newLogger := logger.New(
+		Writer{},
+		logger.Config{
+			SlowThreshold:             200 * time.Millisecond, // Slow SQL threshold
+			LogLevel:                  logger.Info,            // Log level
+			IgnoreRecordNotFoundError: true,                   // Ignore ErrRecordNotFound error for logger
+			Colorful:                  true,                   // Disable color
+		},
+	)
+	return newLogger
 }

@@ -16,7 +16,7 @@ type DictService interface {
 	CreateDict(dto dto.DictDto) error
 
 	// QueryDictList 查询字典列表
-	QueryDictList(current int, pageSize int) ([]models.Dict, int)
+	QueryDictList(current int, pageSize int) ([]models.Dict, int64)
 
 	// UpdateDict 更新字典
 	UpdateDict(userDto dto.DictDto) error

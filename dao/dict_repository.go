@@ -3,7 +3,7 @@ package dao
 import (
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type DictDao struct {
@@ -29,9 +29,9 @@ func (d DictDao) CreateDict(dto dto.DictDto) error {
 }
 
 // QueryDictList 查询字典列表
-func (d DictDao) QueryDictList(current int, pageSize int) ([]models.Dict, int) {
+func (d DictDao) QueryDictList(current int, pageSize int) ([]models.Dict, int64) {
 
-	var total = 0
+	var total int64 = 0
 	var dict []models.Dict
 	d.db.Limit(pageSize).Offset((current - 1) * pageSize).Find(&dict)
 
@@ -59,7 +59,7 @@ func (d DictDao) UpdateDict(dto dto.DictDto) error {
 	dict.Description = dto.Description
 	dict.Remarks = dto.Remarks
 
-	return d.db.Model(&dict).Update(&dict).Error
+	return d.db.Model(&dict).Updates(&dict).Error
 }
 
 // DeleteDictByIds 删除字典

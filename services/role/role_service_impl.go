@@ -27,7 +27,7 @@ func (r *RoleServiceImpl) CreateRole(dto dto.RoleDto) error {
 }
 
 // QueryRoleList 查询角色列表
-func (r *RoleServiceImpl) QueryRoleList(current int, pageSize int) ([]models.Role, int) {
+func (r *RoleServiceImpl) QueryRoleList(current int, pageSize int) ([]models.Role, int64) {
 	return r.Dao.RoleDao.QueryRoleList(current, pageSize)
 }
 

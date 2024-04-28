@@ -2,7 +2,7 @@ package dao
 
 import (
 	"github.com/feihua/simple-go/models"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 	"time"
 )
 

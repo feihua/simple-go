@@ -3,7 +3,7 @@ package dao
 import (
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type DeptDao struct {
@@ -48,7 +48,7 @@ func (d DeptDao) UpdateDept(dto dto.DeptDto) error {
 		Remarks:  dto.Remarks,
 	}
 
-	return d.db.Model(&dept).Update(&dept).Error
+	return d.db.Model(&dept).Updates(&dept).Error
 }
 
 // DeleteDeptByIds 根据id删除部门

@@ -36,7 +36,7 @@ func (d *DictServiceImpl) CreateDict(dto dto.DictDto) error {
 }
 
 // QueryDictList 查询字典列表
-func (d *DictServiceImpl) QueryDictList(current int, pageSize int) ([]models.Dict, int) {
+func (d *DictServiceImpl) QueryDictList(current int, pageSize int) ([]models.Dict, int64) {
 	return d.Dao.DictDao.QueryDictList(current, pageSize)
 }
 

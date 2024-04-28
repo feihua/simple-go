@@ -3,7 +3,7 @@ package dao
 import (
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type LogDao struct {
@@ -31,11 +31,11 @@ func (l LogDao) CreateLog(dto dto.LogDto) error {
 }
 
 // QueryLogList 查询操作日志
-func (l LogDao) QueryLogList(current int, pageSize int) ([]models.OperationLog, int) {
+func (l LogDao) QueryLogList(current int, pageSize int) ([]models.OperationLog, int64) {
 
 	var loginLog []models.OperationLog
 
-	var total = 0
+	var total int64 = 0
 	l.db.Limit(pageSize).Offset((current - 1) * pageSize).Find(&loginLog)
 
 	l.db.Model(&models.OperationLog{}).Count(&total)
@@ -60,10 +60,10 @@ func (l LogDao) CreateLoginLog(dto dto.LoginLogDto) error {
 }
 
 // QueryLoginLogList 查询登录日志
-func (l LogDao) QueryLoginLogList(current int, pageSize int) ([]models.LoginLog, int) {
+func (l LogDao) QueryLoginLogList(current int, pageSize int) ([]models.LoginLog, int64) {
 	var loginLog []models.LoginLog
 
-	var total = 0
+	var total int64 = 0
 	l.db.Limit(pageSize).Offset((current - 1) * pageSize).Find(&loginLog)
 
 	l.db.Model(&models.LoginLog{}).Count(&total)

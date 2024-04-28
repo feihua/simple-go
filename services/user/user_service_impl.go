@@ -9,6 +9,7 @@ import (
 	"github.com/feihua/simple-go/models"
 	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/pkg/redis"
+	"github.com/feihua/simple-go/pkg/utils"
 	"github.com/feihua/simple-go/vo/requests"
 	"strconv"
 	"strings"
@@ -32,6 +33,7 @@ func NewUserServiceImpl(Dao *dao.DaoImpl) UserService {
 
 // Login 登录
 func (u *UserServiceImpl) Login(loginDto dto.UserLoginDto) (*dto.LoginDtoResp, error) {
+	utils.Logger.Debugf("登录参数: %+v", loginDto)
 	users, err := u.Dao.UserDao.QueryUserByUsernameOrMobile(loginDto.Account)
 	if err != nil {
 		return nil, errors.New(err.Error())
@@ -102,7 +104,7 @@ func (u *UserServiceImpl) CreateUser(dto dto.UserDto) error {
 }
 
 // QueryUserList 查询用户列表
-func (u *UserServiceImpl) QueryUserList(current int, pageSize int) ([]models.User, int) {
+func (u *UserServiceImpl) QueryUserList(current int, pageSize int) ([]models.User, int64) {
 	return u.Dao.UserDao.QueryUserList(current, pageSize)
 }
 

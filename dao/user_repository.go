@@ -2,12 +2,16 @@ package dao
 
 import (
 	"errors"
-	"fmt"
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
+// UserDao 用户操作
+/*
+Author: LiuFeiHua
+Date: 2024/4/28 10:31
+*/
 type UserDao struct {
 	db *gorm.DB
 }
@@ -71,17 +75,13 @@ where t.user_id = ?`
 }
 
 // QueryUserList 查询用户列表
-func (u UserDao) QueryUserList(current int, pageSize int) ([]models.User, int) {
+func (u UserDao) QueryUserList(current int, pageSize int) ([]models.User, int64) {
 
-	var total = 0
+	var total int64 = 0
 	var sysUser []models.User
 	u.db.Limit(pageSize).Offset((current - 1) * pageSize).Find(&sysUser)
 
 	u.db.Model(&models.User{}).Count(&total)
-
-	for k, v := range sysUser {
-		fmt.Println(k, v)
-	}
 
 	return sysUser, total
 }
@@ -99,7 +99,7 @@ func (u UserDao) UpdateUser(dto dto.UserDto) error {
 		Remark:   dto.Remark,
 	}
 
-	err := u.db.Model(&user).Update(&user).Error
+	err := u.db.Model(&user).Updates(&user).Error
 
 	return err
 }

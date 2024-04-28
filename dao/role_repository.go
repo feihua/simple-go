@@ -3,7 +3,7 @@ package dao
 import (
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type RoleDao struct {
@@ -30,9 +30,9 @@ func (r RoleDao) CreateRole(dto dto.RoleDto) error {
 }
 
 // QueryRoleList 查询角色列表
-func (r RoleDao) QueryRoleList(current int, pageSize int) ([]models.Role, int) {
+func (r RoleDao) QueryRoleList(current int, pageSize int) ([]models.Role, int64) {
 
-	var total = 0
+	var total int64 = 0
 	var role []models.Role
 	r.db.Limit(pageSize).Offset((current - 1) * pageSize).Find(&role)
 
@@ -51,7 +51,7 @@ func (r RoleDao) UpdateRole(dto dto.RoleDto) error {
 		Remark:   dto.Remark,
 	}
 
-	err := r.db.Model(&role).Update(&role).Error
+	err := r.db.Model(&role).Updates(&role).Error
 
 	return err
 }

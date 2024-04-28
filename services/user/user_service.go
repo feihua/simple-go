@@ -18,7 +18,7 @@ type UserService interface {
 	// CreateUser 创建用户
 	CreateUser(dto dto.UserDto) error
 	// QueryUserList 查询用户列表
-	QueryUserList(current int, pageSize int) ([]models.User, int)
+	QueryUserList(current int, pageSize int) ([]models.User, int64)
 	// UpdateUser 更新用户
 	UpdateUser(userDto dto.UserDto) error
 	// DeleteUserByIds 删除用户
