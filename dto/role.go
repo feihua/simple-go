@@ -7,3 +7,7 @@ type RoleDto struct {
 	Sort     int32  `json:"sort"`     //排序
 	Remark   string `json:"remark"`   //备注
 }
+type RoleMenuDtoRequest struct {
+	RoleId  int64   `json:"roleId"`
+	MenuIds []int64 `json:"menuIds"`
+}

@@ -129,7 +129,14 @@ func (r RoleController) UpdateRoleMenuList(c *gin.Context) {
 		return
 	}
 
-	r.Service.RoleService.UpdateRoleMenuList(req)
-
-	c.JSON(http.StatusOK, gin.H{"data": "成功"})
+	menuDtoRequest := dto.RoleMenuDtoRequest{
+		RoleId:  req.RoleId,
+		MenuIds: req.MenuIds,
+	}
+	err = r.Service.RoleService.UpdateRoleMenuList(menuDtoRequest)
+	if err != nil {
+		result.FailWithMsg(c, result.UserError, err.Error())
+	} else {
+		result.Ok(c)
+	}
 }

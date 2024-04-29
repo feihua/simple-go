@@ -3,7 +3,6 @@ package role
 import (
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
-	"github.com/feihua/simple-go/vo/requests"
 )
 
 // RoleService 角色操作接口
@@ -23,5 +22,5 @@ type RoleService interface {
 	// QueryRoleMenuList 查询角色菜单
 	QueryRoleMenuList(id string) []int64
 	// UpdateRoleMenuList 更新角色菜单
-	UpdateRoleMenuList(request requests.RoleMenuRequest)
+	UpdateRoleMenuList(dtoRequest dto.RoleMenuDtoRequest) error
 }

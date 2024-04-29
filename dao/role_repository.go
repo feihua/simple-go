@@ -40,6 +40,24 @@ func (r RoleDao) QueryRoleList(current int, pageSize int) ([]models.Role, int64)
 	return role, total
 }
 
+// QueryRoleById 根据角色Id查询角色
+func (r RoleDao) QueryRoleById(roleId int64) (*models.Role, error) {
+
+	var role models.Role
+
+	err := r.db.First(&role, r.db.Where("id = ?", roleId)).Error
+	return &role, err
+}
+
+// QueryRoleByName 根据角色名称查询角色
+func (r RoleDao) QueryRoleByName(name string) (*models.Role, error) {
+
+	var role models.Role
+
+	err := r.db.First(&role, r.db.Where("role_name = ?", name)).Error
+	return &role, err
+}
+
 // UpdateRole 更新角色
 func (r RoleDao) UpdateRole(dto dto.RoleDto) error {
 
@@ -51,9 +69,7 @@ func (r RoleDao) UpdateRole(dto dto.RoleDto) error {
 		Remark:   dto.Remark,
 	}
 
-	err := r.db.Model(&role).Updates(&role).Error
-
-	return err
+	return r.db.Model(&role).Updates(&role).Error
 }
 
 // DeleteRoleByIds 通过Id删除角色

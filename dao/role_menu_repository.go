@@ -1,9 +1,9 @@
 package dao
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/models"
 	"gorm.io/gorm"
-	"time"
 )
 
 type RoleMenuDao struct {
@@ -30,20 +30,22 @@ func (r RoleMenuDao) QueryRoleMenuList(roleId int64) []int64 {
 }
 
 // UpdateRoleMenuList 更新角色菜单
-func (r RoleMenuDao) UpdateRoleMenuList(roleId int64, menuIds []int64) {
+func (r RoleMenuDao) UpdateRoleMenuList(roleId int64, menuIds []int64) error {
 
 	//先删除
-	r.db.Where("role_id = ?", roleId).Delete(&models.RoleMenu{})
+	err := r.db.Where("role_id = ?", roleId).Delete(&models.RoleMenu{}).Error
+	if err != nil {
+		return errors.New("删除角色关联菜单失败")
+	}
 
+	var list []models.RoleMenu
 	for _, menuId := range menuIds {
-
-		roleMenu := models.RoleMenu{}
-		roleMenu.RoleId = roleId
-		roleMenu.MenuId = menuId
-		roleMenu.CreateTime = time.Now()
-
-		r.db.Create(&roleMenu)
+		list = append(list, models.RoleMenu{
+			RoleId: roleId,
+			MenuId: menuId,
+		})
 
 	}
+	return r.db.Model(&models.RoleMenu{}).CreateInBatches(list, len(list)).Error
 
 }
