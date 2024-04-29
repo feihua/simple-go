@@ -10,7 +10,6 @@ import (
 	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/pkg/redis"
 	"github.com/feihua/simple-go/pkg/utils"
-	"github.com/feihua/simple-go/vo/requests"
 	"strconv"
 	"strings"
 	"time"
@@ -168,6 +167,9 @@ func (u *UserServiceImpl) QueryUserList(current int, pageSize int) ([]models.Use
 
 // UpdateUser 更新用户
 func (u *UserServiceImpl) UpdateUser(userDto dto.UserDto) error {
+	if userDto.Id == 1 {
+		return errors.New("超级管理员不能修改角色")
+	}
 	return u.Dao.UserDao.UpdateUser(userDto)
 }
 
@@ -177,12 +179,38 @@ func (u *UserServiceImpl) DeleteUserByIds(ids []int64) error {
 }
 
 // QueryUserRoleList 查询用户与角色关糸
-func (u *UserServiceImpl) QueryUserRoleList(id string) []int64 {
-	userId, _ := strconv.ParseInt(id, 10, 64)
+func (u *UserServiceImpl) QueryUserRoleList(userId int64) ([]int64, error) {
 	return u.Dao.UserRoleDao.QueryUserRoleList(userId)
 }
 
 // UpdateUserRoleList 更新用户与角色关糸
-func (u *UserServiceImpl) UpdateUserRoleList(requests.UserRoleRequest) error {
-	return u.Dao.UserRoleDao.UpdateUserRoleList(1, 1)
+func (u *UserServiceImpl) UpdateUserRoleList(req dto.UpdateUserRoleDtoRequest) error {
+	userId := req.UserId
+	if u.Dao.UserRoleDao.IsAdministrator(userId) {
+		return errors.New("超级管理员不能修改角色")
+	}
+	user, err := u.Dao.UserDao.QueryUserByUserId(userId)
+	if err != nil {
+		return errors.New("查询用户异常")
+	}
+	if user == nil {
+		return errors.New("用户不存在")
+	}
+	if user.StatusId != 1 {
+		return errors.New("用户被禁用")
+	}
+
+	if len(req.RoleId) == 0 {
+		return errors.New("角色不能为空")
+	}
+
+	var userRoles []models.UserRole
+	for _, roleId := range req.RoleId {
+		userRoles = append(userRoles, models.UserRole{
+			UserId: userId,
+			RoleId: roleId,
+		})
+	}
+
+	return u.Dao.UserRoleDao.UpdateUserRoleList(userId, userRoles)
 }

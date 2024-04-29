@@ -22,10 +22,10 @@ type LoginRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
-// UserRoleRequest 查询用户角色参数
-type UserRoleRequest struct {
-	UserId int64 `json:"userId"`
-	RoleId int64 `json:"roleId" `
+// UpdateUserRoleRequest 更新用户角色参数
+type UpdateUserRoleRequest struct {
+	UserId int64   `json:"userId"`
+	RoleId []int64 `json:"roleId" `
 }
 
 // DeleteUserRequest 删除用户

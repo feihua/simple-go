@@ -3,7 +3,6 @@ package dao
 import (
 	"github.com/feihua/simple-go/models"
 	"gorm.io/gorm"
-	"time"
 )
 
 type UserRoleDao struct {
@@ -25,10 +24,10 @@ func (u UserRoleDao) IsAdministrator(userId int64) bool {
 }
 
 // QueryUserRoleList 查询用户角色
-func (u UserRoleDao) QueryUserRoleList(userId int64) []int64 {
+func (u UserRoleDao) QueryUserRoleList(userId int64) ([]int64, error) {
 
 	var userRoles []models.UserRole
-	u.db.Where("user_id = ?", userId).Find(&userRoles)
+	err := u.db.Where("user_id = ?", userId).Find(&userRoles).Error
 
 	var roleIds []int64
 
@@ -36,22 +35,14 @@ func (u UserRoleDao) QueryUserRoleList(userId int64) []int64 {
 		roleIds = append(roleIds, userRole.RoleId)
 	}
 
-	return roleIds
+	return roleIds, err
 }
 
 // UpdateUserRoleList 更新用户与角色关糸
-func (u UserRoleDao) UpdateUserRoleList(userId int64, roleId int64) error {
+func (u UserRoleDao) UpdateUserRoleList(userId int64, userRoles []models.UserRole) error {
 
 	//先删除
 	u.db.Where("user_id = ?", userId).Delete(&models.UserRole{})
 
-	//后添加
-	userRole := models.UserRole{}
-	userRole.UserId = userId
-	userRole.RoleId = roleId
-	userRole.CreateTime = time.Now()
-
-	err := u.db.Create(&userRole).Error
-
-	return err
+	return u.db.Model(&models.UserRole{}).CreateInBatches(&userRoles, len(userRoles)).Error
 }

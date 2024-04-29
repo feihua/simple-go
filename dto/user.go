@@ -38,3 +38,9 @@ type UserMenuDto struct {
 	MenuUrl  string `json:"menuUrl"`  //路由路径
 	MenuIcon string `json:"menuIcon"` //菜单图标
 }
+
+// UpdateUserRoleDtoRequest 更新用户角色参数
+type UpdateUserRoleDtoRequest struct {
+	UserId int64   `json:"userId"`
+	RoleId []int64 `json:"roleId" `
+}

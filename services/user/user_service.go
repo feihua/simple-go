@@ -3,7 +3,6 @@ package user
 import (
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
-	"github.com/feihua/simple-go/vo/requests"
 )
 
 // UserService 用户操作接口
@@ -26,7 +25,7 @@ type UserService interface {
 	// DeleteUserByIds 删除用户
 	DeleteUserByIds(ids []int64) error
 	// QueryUserRoleList 查询用户与角色关糸
-	QueryUserRoleList(id string) []int64
+	QueryUserRoleList(id int64) ([]int64, error)
 	// UpdateUserRoleList 更新用户与角色关糸
-	UpdateUserRoleList(u requests.UserRoleRequest) error
+	UpdateUserRoleList(u dto.UpdateUserRoleDtoRequest) error
 }

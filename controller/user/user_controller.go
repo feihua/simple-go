@@ -6,7 +6,6 @@ import (
 	"github.com/feihua/simple-go/services"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"strconv"
 )
 
@@ -153,27 +152,34 @@ func (u UserController) DeleteUserByIds(c *gin.Context) {
 
 // QueryUserRoleList 查询用户与角色关糸
 func (u UserController) QueryUserRoleList(c *gin.Context) {
-	userId := c.DefaultQuery("userId", "1")
+	userId := c.MustGet("userId").(float64)
 
-	menuIds := u.Service.UserService.QueryUserRoleList(userId)
-	c.JSON(http.StatusOK, gin.H{"data": menuIds})
+	menuIds, err := u.Service.UserService.QueryUserRoleList(int64(userId))
+	if err != nil {
+		result.FailWithMsg(c, result.UserError, err.Error())
+	} else {
+		result.OkWithData(c, menuIds)
+	}
 }
 
 // UpdateUserRoleList 更新用户与角色关糸
 func (u UserController) UpdateUserRoleList(c *gin.Context) {
-
-	req := requests.UserRoleRequest{}
+	req := requests.UpdateUserRoleRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.Fail(c, result.ParamsError)
 		return
 	}
 
-	err = u.Service.UserService.UpdateUserRoleList(req)
-	if err != nil {
-		result.Fail(c, result.ParamsError)
-		return
+	roleDtoRequest := dto.UpdateUserRoleDtoRequest{
+		UserId: req.UserId,
+		RoleId: req.RoleId,
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": "成功"})
+	err = u.Service.UserService.UpdateUserRoleList(roleDtoRequest)
+	if err != nil {
+		result.FailWithMsg(c, result.UserError, err.Error())
+	} else {
+		result.Ok(c)
+	}
 }
