@@ -21,3 +21,20 @@ type LoginDtoResp struct {
 	UserName string `json:"userName"`
 	Token    string `json:"token"`
 }
+
+// QueryUserMenuDtoResp 用户菜单
+type QueryUserMenuDtoResp struct {
+	Id       int64         `json:"id"`
+	UserName string        `json:"userName"`
+	Avatar   string        `json:"avatar"`
+	Menus    []UserMenuDto `json:"Menus"`   //菜单类型(1：目录   2：菜单   3：按钮)
+	ApiUrls  []string      `json:"apiUrls"` //接口权限
+}
+type UserMenuDto struct {
+	Id       int64  `json:"id"`       //主键
+	MenuName string `json:"menuName"` //菜单名称
+	Sort     int32  `json:"sort"`     //排序
+	ParentId int64  `json:"parentId"` //父ID
+	MenuUrl  string `json:"menuUrl"`  //路由路径
+	MenuIcon string `json:"menuIcon"` //菜单图标
+}

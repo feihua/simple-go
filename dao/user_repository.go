@@ -37,13 +37,22 @@ func (u UserDao) CreateUser(dto dto.UserDto) error {
 	return err
 }
 
+// QueryUserByUserId 根据用户id查询用户
+func (u UserDao) QueryUserByUserId(userId int64) (*models.User, error) {
+	var sysUser models.User
+
+	err := u.db.First(&sysUser, u.db.Where("id = ?", userId)).Error
+
+	return &sysUser, err
+}
+
 // QueryUserByUsername 根据用户名称查询用户
-func (u UserDao) QueryUserByUsername(username string) []models.User {
-	var sysUser []models.User
+func (u UserDao) QueryUserByUsername(username string) (*models.User, error) {
+	var sysUser models.User
 
-	u.db.Find(&sysUser, u.db.Where("username = ?", username))
+	err := u.db.Find(&sysUser, u.db.Where("username = ?", username)).Error
 
-	return sysUser
+	return &sysUser, err
 }
 
 // QueryUserByUsernameOrMobile 根据用户名称或者收集查询用户信息
@@ -72,6 +81,21 @@ where t.user_id = ?`
 	}
 
 	return apiUrls, nil
+}
+
+// QueryUserMenus 根据用户id查询用户权限
+func (u UserDao) QueryUserMenus(userId int64) ([]models.Menu, error) {
+	sql := `select u.*
+from sys_user_role t
+         left join sys_role usr on t.role_id = usr.id
+         left join sys_role_menu srm on usr.id = srm.role_id
+         left join sys_menu u on srm.menu_id = u.id
+where t.user_id = ?`
+
+	var list []models.Menu
+	u.db.Raw(sql, userId).Scan(&list)
+
+	return list, nil
 }
 
 // QueryUserList 查询用户列表

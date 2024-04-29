@@ -97,8 +97,67 @@ func createJwtToken(secretKey string, iat, seconds, userId int64, userName strin
 	return token.SignedString([]byte(secretKey))
 }
 
+// QueryUserMenu 查询用户菜单权限信息
+func (u *UserServiceImpl) QueryUserMenu(userId int64, userName string) (*dto.QueryUserMenuDtoResp, error) {
+	user, err := u.Dao.UserDao.QueryUserByUserId(userId)
+	if err != nil {
+		return nil, errors.New("查询用户异常")
+	}
+	if user == nil {
+		return nil, errors.New("用户不存在")
+	}
+	if user.StatusId != 1 {
+		return nil, errors.New("用户被禁用")
+	}
+
+	var menuList []models.Menu
+	if u.Dao.UserRoleDao.IsAdministrator(userId) {
+		menuList, err = u.Dao.MenuDao.QueryMenuList()
+	} else {
+		menuList, err = u.Dao.UserDao.QueryUserMenus(userId)
+	}
+
+	if err != nil {
+		return nil, errors.New("查询菜单异常")
+	}
+
+	var list []dto.UserMenuDto
+	var apiUrl []string
+	for _, menu := range menuList {
+		if menu.ApiUrl != "" {
+			apiUrl = append(apiUrl, menu.ApiUrl)
+		}
+		if menu.MenuType != 3 {
+			list = append(list, dto.UserMenuDto{
+				Id:       menu.Id,
+				MenuName: menu.MenuName,
+				Sort:     menu.Sort,
+				ParentId: menu.ParentId,
+				MenuUrl:  menu.MenuUrl,
+				MenuIcon: menu.MenuIcon,
+			})
+		}
+	}
+
+	avatar := "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
+	return &dto.QueryUserMenuDtoResp{
+		Id:       userId,
+		UserName: userName,
+		Avatar:   avatar,
+		Menus:    list,
+		ApiUrls:  apiUrl,
+	}, nil
+}
+
 // CreateUser 创建用户
 func (u *UserServiceImpl) CreateUser(dto dto.UserDto) error {
+	user, err := u.Dao.UserDao.QueryUserByUsername(dto.UserName)
+	if err != nil {
+		return errors.New("根据用户名称查询用户异常")
+	}
+	if user != nil {
+		return errors.New("用户已存在")
+	}
 	return u.Dao.UserDao.CreateUser(dto)
 }
 

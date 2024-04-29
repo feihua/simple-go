@@ -28,8 +28,8 @@ Authorization: Bearer {{token}}
   "status_id": 1
 }
 
-###新增用户 user_save
-POST {{host}}/api/user_save
+###新增用户 addUser
+POST {{host}}/api/user/addUser
 Content-Type: application/json
 Authorization: Bearer {{token}}
 

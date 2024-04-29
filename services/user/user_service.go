@@ -15,6 +15,8 @@ type UserService interface {
 
 	// Login 用户登录
 	Login(dto dto.UserLoginDto) (*dto.LoginDtoResp, error)
+	// QueryUserMenu 查询用户菜单权限信息
+	QueryUserMenu(userId int64, userName string) (*dto.QueryUserMenuDtoResp, error)
 	// CreateUser 创建用户
 	CreateUser(dto dto.UserDto) error
 	// QueryUserList 查询用户列表
