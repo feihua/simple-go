@@ -44,3 +44,12 @@ type UpdateUserRoleDtoRequest struct {
 	UserId int64   `json:"userId"`
 	RoleId []int64 `json:"roleId" `
 }
+
+// QueryUserListDto 查询用户列表
+type QueryUserListDto struct {
+	Mobile   string `json:"mobile"`   //手机
+	UserName string `json:"userName"` //姓名
+	StatusId int8   `json:"statusId"` //状态(1:正常，0:禁用)
+	PageNo   int    `json:"pageNo"`   //第几页
+	PageSize int    `json:"pageSize"` //每页的数量
+}

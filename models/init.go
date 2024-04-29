@@ -35,7 +35,7 @@ func Init() {
 		panic(err)
 	}
 
-	utils.Logger.Debugf("mysql已连接%s", dsn)
+	utils.Logger.Debugf("mysql已连接: %s", dsn)
 	//数据库迁移
 	//migrate()
 }

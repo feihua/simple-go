@@ -6,7 +6,6 @@ import (
 	"github.com/feihua/simple-go/services"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
-	"strconv"
 )
 
 // UserController 用户相关
@@ -87,22 +86,24 @@ func (u UserController) CreateUser(c *gin.Context) {
 
 // QueryUserList 查询用户列表
 func (u UserController) QueryUserList(c *gin.Context) {
-	userRequest := requests.UserRequest{}
-	err := c.ShouldBind(&userRequest)
+	req := requests.QueryUserListRequest{}
+	err := c.ShouldBind(&req)
 	if err != nil {
 		result.Fail(c, result.ParamsError)
 		return
 	}
 
-	current := c.DefaultQuery("current", "1")
-	pageNum, _ := strconv.Atoi(current)
+	queryUserListDto := dto.QueryUserListDto{
+		Mobile:   req.Mobile,
+		UserName: req.UserName,
+		StatusId: req.StatusId,
+		PageNo:   req.PageNo,
+		PageSize: req.PageSize,
+	}
 
-	pageSize := c.DefaultQuery("pageSize", "10")
-	size, _ := strconv.Atoi(pageSize)
+	list, total := u.Service.UserService.QueryUserList(queryUserListDto)
 
-	list, total := u.Service.UserService.QueryUserList(pageNum, size)
-
-	result.OkWithData(c, gin.H{"list": list, "success": true, "current": current, "total": total, "pageSize": pageSize})
+	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
 }
 
 // UpdateUser 更新用户

@@ -1,13 +1,13 @@
 ###登录 login
-POST {{host}}/api/login
+POST {{host}}/api/user/login
 Content-Type: application/json
 
 {
-  "mobile": "18613030352",
+  "account": "18613030352",
   "password": "123456"
 }
 > {%
-    client.global.set("token", response.body.data);
+    client.global.set("token", response.body.data.token);
 %}
 
 ###查询角色菜单 query_role_menu
@@ -34,13 +34,14 @@ Authorization: Bearer {{token}}
 }
 
 ###角色列表 role_list
-GET {{host}}/api/role/queryRoleList
+POST {{host}}/api/role/queryRoleList
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
   "current": 1,
-  "pageSize": 10
+  "pageSize": 10,
+  "statusId": 2
 }
 
 ###新增角色 role_save

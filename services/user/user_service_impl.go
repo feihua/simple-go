@@ -161,8 +161,8 @@ func (u *UserServiceImpl) CreateUser(dto dto.UserDto) error {
 }
 
 // QueryUserList 查询用户列表
-func (u *UserServiceImpl) QueryUserList(current int, pageSize int) ([]models.User, int64) {
-	return u.Dao.UserDao.QueryUserList(current, pageSize)
+func (u *UserServiceImpl) QueryUserList(userListDto dto.QueryUserListDto) ([]models.User, int64) {
+	return u.Dao.UserDao.QueryUserList(userListDto)
 }
 
 // UpdateUser 更新用户

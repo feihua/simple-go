@@ -9,7 +9,7 @@ func RoleRouter(r *gin.RouterGroup) {
 
 	roleController := controller.C.RoleController
 	r.POST("/role/addRole", roleController.CreateRole)
-	r.GET("/role/queryRoleList", roleController.QueryRoleList)
+	r.POST("/role/queryRoleList", roleController.QueryRoleList)
 	r.POST("/role/updateRole", roleController.UpdateRole)
 	r.POST("/role/deleteRoleByIds", roleController.DeleteRoleByIds)
 	r.POST("/role/queryRoleMenuList", roleController.QueryRoleMenuList)

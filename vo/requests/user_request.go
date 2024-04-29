@@ -32,3 +32,12 @@ type UpdateUserRoleRequest struct {
 type DeleteUserRequest struct {
 	Ids []int64 `json:"ids"` //编号
 }
+
+// QueryUserListRequest 查询用户列表
+type QueryUserListRequest struct {
+	Mobile   string `json:"mobile"`   //手机
+	UserName string `json:"userName"` //姓名
+	StatusId int8   `json:"statusId"` //状态(1:正常，0:禁用)
+	PageNo   int    `json:"pageNo"`   //第几页
+	PageSize int    `json:"pageSize"` //每页的数量
+}

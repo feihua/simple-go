@@ -14,7 +14,7 @@ type RoleService interface {
 	// CreateRole 创建角色
 	CreateRole(dto dto.RoleDto) error
 	// QueryRoleList 查询角色列表
-	QueryRoleList(current int, pageSize int) ([]models.Role, int64)
+	QueryRoleList(role dto.QueryRoleListDto) ([]models.Role, int64)
 	// UpdateRole 更新角色
 	UpdateRole(roleDto dto.RoleDto) error
 	// DeleteRoleByIds 删除角色

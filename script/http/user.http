@@ -17,15 +17,15 @@ Authorization: Bearer {{token}}
 
 
 ###用户列表 queryUserList
-GET {{host}}/api/user/queryUserList
+POST {{host}}/api/user/queryUserList
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "current": 1,
+  "pageNo": 1,
   "pageSize": 10,
   "mobile": "18613030352",
-  "status_id": 1
+  "statusId": 1
 }
 
 ###新增用户 addUser

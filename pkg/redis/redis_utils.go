@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"github.com/feihua/simple-go/pkg/config"
+	"github.com/feihua/simple-go/pkg/utils"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -24,5 +25,6 @@ func InitRedisClient(ctx context.Context) (err error) {
 	if err != nil {
 		return err
 	}
+	utils.Logger.Debugf("redis已连接: %s", config.RedisConfig.Host)
 	return nil
 }

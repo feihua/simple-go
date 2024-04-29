@@ -7,7 +7,6 @@ import (
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 )
 
 // RoleController 角色相关
@@ -50,21 +49,21 @@ func (r RoleController) CreateRole(c *gin.Context) {
 
 // QueryRoleList 查询角色列表
 func (r RoleController) QueryRoleList(c *gin.Context) {
-	req := requests.RoleRequest{}
+	req := requests.QueryRoleListRequest{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.Fail(c, result.ParamsError)
 		return
 	}
 
-	current := c.DefaultQuery("current", "1")
-	pageNum, _ := strconv.Atoi(current)
-
-	pageSize := c.DefaultQuery("pageSize", "10")
-	size, _ := strconv.Atoi(pageSize)
-
-	list, total := r.Service.RoleService.QueryRoleList(pageNum, size)
-	result.OkWithData(c, gin.H{"list": list, "success": true, "current": current, "total": total, "pageSize": pageSize})
+	roleListDto := dto.QueryRoleListDto{
+		RoleName: req.RoleName,
+		StatusId: req.StatusId,
+		PageNo:   req.PageNo,
+		PageSize: req.PageSize,
+	}
+	list, total := r.Service.RoleService.QueryRoleList(roleListDto)
+	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
 }
 
 // UpdateRole 更新角色

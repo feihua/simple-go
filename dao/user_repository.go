@@ -99,13 +99,27 @@ where t.user_id = ?`
 }
 
 // QueryUserList 查询用户列表
-func (u UserDao) QueryUserList(current int, pageSize int) ([]models.User, int64) {
+func (u UserDao) QueryUserList(userListDto dto.QueryUserListDto) ([]models.User, int64) {
 
+	pageNo := userListDto.PageNo
+	pageSize := userListDto.PageSize
 	var total int64 = 0
 	var sysUser []models.User
-	u.db.Limit(pageSize).Offset((current - 1) * pageSize).Find(&sysUser)
 
-	u.db.Model(&models.User{}).Count(&total)
+	tx := u.db.Model(&models.User{})
+
+	if userListDto.Mobile != "" {
+		tx.Where("mobile=?", userListDto.Mobile)
+	}
+	if userListDto.UserName != "" {
+		tx.Where("user_name=?", userListDto.UserName)
+	}
+	if userListDto.StatusId != 2 {
+		tx.Where("status_id=?", userListDto.StatusId)
+	}
+
+	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&sysUser)
+	tx.Count(&total)
 
 	return sysUser, total
 }

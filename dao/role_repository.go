@@ -30,13 +30,23 @@ func (r RoleDao) CreateRole(dto dto.RoleDto) error {
 }
 
 // QueryRoleList 查询角色列表
-func (r RoleDao) QueryRoleList(current int, pageSize int) ([]models.Role, int64) {
+func (r RoleDao) QueryRoleList(roleDto dto.QueryRoleListDto) ([]models.Role, int64) {
+	pageNo := roleDto.PageNo
+	pageSize := roleDto.PageSize
 
 	var total int64 = 0
 	var role []models.Role
-	r.db.Limit(pageSize).Offset((current - 1) * pageSize).Find(&role)
+	tx := r.db.Model(&models.Role{})
 
-	r.db.Model(&models.Role{}).Count(&total)
+	if roleDto.RoleName != "" {
+		tx.Where("role_name=?", roleDto.RoleName)
+	}
+	if roleDto.StatusId != 2 {
+		tx.Where("status_id=?", roleDto.StatusId)
+	}
+	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&role)
+
+	tx.Count(&total)
 	return role, total
 }
 
