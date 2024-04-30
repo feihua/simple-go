@@ -10,5 +10,5 @@ type DictRequest struct {
 	Remark      *string `json:"remark"`      //备注
 }
 type DeleteDictRequest struct {
-	Ids []int64 `json:"ids"` //编号
+	Ids []int64 `json:"ids" binding:"required"` //编号
 }

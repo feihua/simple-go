@@ -9,5 +9,5 @@ type DeptRequest struct {
 }
 
 type DeleteDeptRequest struct {
-	Ids []int64 `json:"ids"` //编号
+	Ids []int64 `json:"ids" binding:"required"` //编号
 }

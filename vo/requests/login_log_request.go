@@ -6,5 +6,5 @@ type LoginLogRequest struct {
 	Ip       string `json:"ip"`       //IP地址
 }
 type DeleteLoginLogRequest struct {
-	Ids []int64 `json:"ids"` //编号
+	Ids []int64 `json:"ids" binding:"required"` //编号
 }

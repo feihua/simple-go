@@ -35,7 +35,7 @@ func main() {
 	services.InitService()
 	controller.InitC()
 
-	routerGroup := r.Group("/api/")
+	routerGroup := r.Group("/api")
 	//初始化路由
 	router.Init(routerGroup)
 

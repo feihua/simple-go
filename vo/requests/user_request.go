@@ -24,20 +24,20 @@ type LoginRequest struct {
 
 // UpdateUserRoleRequest 更新用户角色参数
 type UpdateUserRoleRequest struct {
-	UserId int64   `json:"userId"`
-	RoleId []int64 `json:"roleId" `
+	UserId int64   `json:"userId" binding:"required"`
+	RoleId []int64 `json:"roleId" binding:"required"`
 }
 
 // DeleteUserRequest 删除用户
 type DeleteUserRequest struct {
-	Ids []int64 `json:"ids"` //编号
+	Ids []int64 `json:"ids" binding:"required"` //编号
 }
 
 // QueryUserListRequest 查询用户列表
 type QueryUserListRequest struct {
-	Mobile   string `json:"mobile"`   //手机
-	UserName string `json:"userName"` //姓名
-	StatusId int32  `json:"statusId"` //状态(1:正常，0:禁用)
-	PageNo   int    `json:"pageNo"`   //第几页
-	PageSize int    `json:"pageSize"` //每页的数量
+	Mobile   string `json:"mobile"`                      //手机
+	UserName string `json:"userName"`                    //姓名
+	StatusId int32  `json:"statusId" binding:"required"` //状态(1:正常，0:禁用)
+	PageNo   int    `json:"pageNo" default:"1"`          //第几页
+	PageSize int    `json:"pageSize" default:"10"`       //每页的数量
 }

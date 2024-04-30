@@ -22,9 +22,9 @@ create table sys_menu
 INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (1, '首页', 1, 1, 0, 0, '/home', '', 'SmileOutlined', '首页', current_timestamp, null);
 INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (2, '权限管理', 1, 1, 1, 0, '/system', '', 'SettingOutlined', '权限管理', current_timestamp, null);
 
-INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (3, '用户管理', 2, 1, 1, 2, '/user/list', '', 'setting', '用户管理', current_timestamp, null);
-INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (4, '角色管理', 2, 1, 2, 2, '/role/list', '', '', '角色管理', current_timestamp, null);
-INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (5, '菜单管理', 2, 1, 3, 2, '/menu/list', '', 'setting', '菜单管理', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (3, '用户管理', 2, 1, 1, 2, '/system/user/list', '', 'setting', '用户管理', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (4, '角色管理', 2, 1, 2, 2, '/system/role/list', '', '', '角色管理', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (5, '菜单管理', 2, 1, 3, 2, '/system/menu/list', '', 'setting', '菜单管理', current_timestamp, null);
 
 INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (6, '保存用户接口', 3, 1, 1, 3, '', '/api/user/addUser', '', '保存用户接口', current_timestamp, null);
 INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (7, '删除用户接口', 3, 1, 2, 3, '', '/api/user/deleteUserByIds', '', '删除用户接口', current_timestamp, null);
@@ -39,7 +39,7 @@ INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu
 INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (15, '更新角色接口', 3, 1, 3, 4, '', '/api/role/updateRole', '', '更新角色接口', current_timestamp, null);
 INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (16, '查询角色列表', 3, 1, 4, 4, '', '/api/role/queryRoleList', '', '查询角色列表接口', current_timestamp, null);
 INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (17, '菜单角色关联', 3, 1, 5, 4, '', '/api/role/queryRoleMenuList', '', '菜单角色关联接口', current_timestamp, null);
-INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (18, '保存角色菜单关联', 3, 6, 1, 4, '', '/api/role/updateRoleMenuList', '', '角色菜单关联接口', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (18, '保存角色菜单关联', 3, 1, 6, 4, '', '/api/role/updateRoleMenuList', '', '角色菜单关联接口', current_timestamp, null);
 
 INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (19, '保存菜单接口', 3, 1, 1, 5, '', '/api/menu/addMenu', '', '保存菜单接口', current_timestamp, null);
 INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (20, '删除菜单接口', 3, 1, 2, 5, '', '/api/menu/deleteMenuById', '', '删除菜单接口', current_timestamp, null);
