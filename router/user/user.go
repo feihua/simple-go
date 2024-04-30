@@ -15,7 +15,7 @@ func UserRouter(r *gin.RouterGroup) {
 	r.POST("/user/queryUserList", userController.QueryUserList)
 	r.POST("/user/updateUser", userController.UpdateUser)
 	r.POST("/user/deleteUserByIds", userController.DeleteUserByIds)
-	r.POST("/user/queryUserRoleList", userController.QueryUserRoleList)
+	r.GET("/user/queryUserRoleList", userController.QueryUserRoleList)
 	r.POST("/user/updateUserRoleList", userController.UpdateUserRoleList)
 
 }

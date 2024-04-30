@@ -17,7 +17,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  
+
 }
 
 ###新增部门 addDept
@@ -26,16 +26,10 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "api_url": "/auth/ping",
-  "icon": "FrownOutlined",
-  "label": "test4",
-  "menu_name": "test4",
-  "menu_type": 1,
-  "menu_url": "test4",
-  "parent_id": 0,
-  "remark": "test",
+  "deptName": "测试1",
+  "parentId": 0,
   "sort": 1,
-  "status_id": 1
+  "remark": "测试1"
 }
 
 ###删除部门 deleteDeptByIds
@@ -55,17 +49,13 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "api_url": "/auth/ping123",
-  "icon": "FrownOutlined",
-  "id": 35,
-  "label": "test4",
-  "menu_name": "test4",
-  "menu_type": 1,
-  "menu_url": "test4",
-  "parent_id": 0,
-  "remark": "test",
+  "id": 1,
+  "deptName": "测试11",
+  "parentId": 0,
   "sort": 1,
-  "status_id": 1
+  "remark": "测试",
+  "createTime": "2024-04-30T14:15:32+08:00",
+  "updateTime": null
 }
 
 

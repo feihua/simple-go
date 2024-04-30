@@ -12,7 +12,7 @@ func RoleRouter(r *gin.RouterGroup) {
 	r.POST("/role/queryRoleList", roleController.QueryRoleList)
 	r.POST("/role/updateRole", roleController.UpdateRole)
 	r.POST("/role/deleteRoleByIds", roleController.DeleteRoleByIds)
-	r.POST("/role/queryRoleMenuList", roleController.QueryRoleMenuList)
+	r.GET("/role/queryRoleMenuList", roleController.QueryRoleMenuList)
 	r.POST("/role/updateRoleMenuList", roleController.UpdateRoleMenuList)
 
 }

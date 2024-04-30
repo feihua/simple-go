@@ -1,71 +1,49 @@
 ###登录 login
-POST {{host}}/api/login
+POST {{host}}/api/user/login
 Content-Type: application/json
 
 {
-  "mobile": "18613030352",
+  "account": "18613030352",
   "password": "123456"
 }
 > {%
-    client.global.set("token", response.body.data);
+    client.global.set("token", response.body.data.token);
 %}
 
 
-###日志列表 menu_list
-POST {{host}}/api/menu_list
+###查询操作日志 queryOperateLogList
+POST {{host}}/api/sysLog/queryOperateLogList
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "menu_name": ""
+
 }
 
-###新增日志 menu_save
-POST {{host}}/api/menu_save
+###删除操作日志 deleteOperateLogByIds
+POST {{host}}/api/sysLog/deleteOperateLogByIds
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "api_url": "/auth/ping",
-  "icon": "FrownOutlined",
-  "label": "test4",
-  "menu_name": "test4",
-  "menu_type": 1,
-  "menu_url": "test4",
-  "parent_id": 0,
-  "remark": "test",
-  "sort": 1,
-  "status_id": 1
+  "ids": []
 }
 
-###删除日志 menu_delete
-POST {{host}}/api/menu_delete
+###查询登录日志 queryLoginLogList
+POST {{host}}/api/loginLog/queryLoginLogList
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "ids": [
-    100
-  ]
+
 }
 
-###更新日志 menu_update
-POST {{host}}/api/menu_update
+###删除登录日志 deleteLoginLogByIds
+POST {{host}}/api/loginLog/deleteLoginLogByIds
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "api_url": "/auth/ping123",
-  "icon": "FrownOutlined",
-  "id": 35,
-  "label": "test4",
-  "menu_name": "test4",
-  "menu_type": 1,
-  "menu_url": "test4",
-  "parent_id": 0,
-  "remark": "test",
-  "sort": 1,
-  "status_id": 1
+  "ids": []
 }
-
 

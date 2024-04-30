@@ -61,7 +61,7 @@ func (d DeptDao) DeleteDeptByIds(ids []int64) error {
 func (d DeptDao) QueryDeptByName(name string) (*models.Dept, error) {
 
 	var dept models.Dept
-	err := d.db.First(&dept).Where("dept_name = ?", name).Error
+	err := d.db.First(&dept, "dept_name = ?", name).Error
 
 	switch {
 	case err == nil:

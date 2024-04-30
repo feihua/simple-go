@@ -63,6 +63,7 @@ func JwtMiddleware() gin.HandlerFunc {
 		}
 		apiUrls := strings.Split(result, ",")
 		var flag = false
+		path = strings.Split(path, "?")[0]
 		for _, url := range apiUrls {
 			if path == url {
 				flag = true

@@ -24,7 +24,6 @@ Authorization: Bearer {{token}}
 {
   "pageNo": 1,
   "pageSize": 10,
-  "mobile": "18613030352",
   "statusId": 1
 }
 
@@ -41,29 +40,44 @@ Authorization: Bearer {{token}}
   "remark": "超级管理员"
 }
 
-###删除用户 user_delete
-POST {{host}}/api/user_delete
+###删除用户 deleteUserByIds
+POST {{host}}/api/user/deleteUserByIds
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
   "ids": [
-    13
+    3
   ]
 }
 
-###更新用户 user_update
-POST {{host}}/api/user_update
+###更新用户 updateUser
+POST {{host}}/api/user/updateUser
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": 17,
-  "mobile": "18613030351",
-  "user_name": "test123",
-  "remark": "test123",
+  "id": 3,
+  "mobile": "18613030112",
+  "userName": "123",
+  "statusId": 1,
   "sort": 1,
-  "status_id": 1
+  "remark": "超级管理员"
 }
 
+
+###根据用户id查询用户与角色关糸 queryUserRoleList
+GET {{host}}/api/user/queryUserRoleList?userId=2
+Authorization: Bearer {{token}}
+
+
+###更新用户与角色关糸 updateUserRoleList
+POST {{host}}/api/user/updateUserRoleList
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "userId": 17,
+  "roleId": []
+}
 

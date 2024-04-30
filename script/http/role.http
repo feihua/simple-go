@@ -10,14 +10,10 @@ Content-Type: application/json
     client.global.set("token", response.body.data.token);
 %}
 
-###查询角色菜单 query_role_menu
-POST {{host}}/api/query_role_menu
-Content-Type: application/json
+###查询角色菜单 queryRoleMenuList
+GET {{host}}/api/role/queryRoleMenuList?roleId=3
 Authorization: Bearer {{token}}
 
-{
-  "role_id": 3
-}
 
 ###更新角色菜单 updateRoleMenuList
 POST {{host}}/api/role/updateRoleMenuList
@@ -44,38 +40,38 @@ Authorization: Bearer {{token}}
   "statusId": 2
 }
 
-###新增角色 role_save
-POST {{host}}/api/role_save
+###新增角色 addRole
+POST {{host}}/api/role/addRole
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "remark": "test",
-  "role_name": "test",
+  "roleName": "test",
+  "statusId": 1,
   "sort": 1,
-  "status_id": 1
+  "remark": "test"
 }
 
-###删除角色 role_delete
-POST {{host}}/api/role_delete
+###删除角色 deleteRoleByIds
+POST {{host}}/api/role/deleteRoleByIds
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
   "ids": [
-    100
+    3
   ]
 }
 
-###更新角色 role_update
-POST {{host}}/api/role_update
+###更新角色 updateRole
+POST {{host}}/api/role/updateRole
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": 7,
-  "remark": "test123",
-  "role_name": "test123",
+  "id": 3,
+  "roleName": "tes12t",
+  "statusId": 1,
   "sort": 1,
-  "status_id": 1
+  "remark": "tes12t"
 }
