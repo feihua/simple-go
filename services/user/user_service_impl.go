@@ -123,7 +123,7 @@ func (u *UserServiceImpl) QueryUserMenu(userId int64, userName string) (*dto.Que
 	var list []dto.UserMenuDto
 	var apiUrl []string
 	for _, menu := range menuList {
-		if menu.ApiUrl != nil {
+		if menu.ApiUrl != nil && *menu.ApiUrl != "" {
 			apiUrl = append(apiUrl, *menu.ApiUrl)
 		}
 		if menu.MenuType != 3 {

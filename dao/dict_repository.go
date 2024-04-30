@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
 	"gorm.io/gorm"
@@ -45,7 +46,14 @@ func (d DictDao) QueryDictByName(name, typeName string) (*models.Dict, error) {
 	var dict models.Dict
 	err := d.db.First(&dict, "value = ? and 'type' = ?", name, typeName).Error
 
-	return &dict, err
+	switch {
+	case err == nil:
+		return &dict, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }
 
 // UpdateDict 更新字典

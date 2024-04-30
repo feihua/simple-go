@@ -46,12 +46,24 @@ INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu
 INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (21, '更新菜单接口', 3, 1, 3, 5, '', '/api/menu/updateMenu', '', '更新菜单接口', current_timestamp, null);
 INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (22, '查询菜单列表', 3, 1, 4, 5, '', '/api/menu/queryMenuList', '', '查询菜单列表接口', current_timestamp, null);
 
-INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (23, '日志管理', 1, 1, 2, 0, '/logs', '', 'SettingOutlined', '', current_timestamp, null);
-INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (24, '登录日志', 2, 1, 1, 23, '/log/login/list', '', '', '', current_timestamp, null);
-INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (25, '操作日志', 2, 1, 2, 23, '/log/operate/list', '', '', '', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (23, '保存部门接口', 3, 1, 1, 5, '', '/api/dept/addDept', '', '保存部门接口', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (24, '删除部门接口', 3, 1, 2, 5, '', '/api/dept/deleteDeptById', '', '删除部门接口', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (25, '更新部门接口', 3, 1, 3, 5, '', '/api/dept/updateDept', '', '更新部门接口', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (26, '查询部门列表', 3, 1, 4, 5, '', '/api/dept/queryDeptList', '', '查询部门列表接口', current_timestamp, null);
 
-INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (26, '删除登录日志', 3, 1, 1, 24, '', '/api/loginLog/deleteLoginLogByIds', '', '删除登录日志接口', current_timestamp, null);
-INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (27, '查询登录日志', 3, 1, 2, 24, '', '/api/loginLog/queryLoginLogList', '', '查询登录日志列表接口', current_timestamp, null);
-INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (28, '删除操作日志', 3, 1, 1, 25, '', '/api/sysLog/deleteOperateLogByIds', '', '删除操作日志接口', current_timestamp, null);
-INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (29, '查询操作日志', 3, 1, 2, 25, '', '/api/sysLog/queryOperateLogList', '', '查询操作日志列表接口', current_timestamp, null);
-INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (30, '查询登录日志统计', 3, 1, 2, 25, '', '/api/loginLog/statisticsLoginLog', '', '查询登录日志统计接口', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (27, '保存字典接口', 3, 1, 1, 5, '', '/api/dict/addDict', '', '保存字典接口', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (28, '删除字典接口', 3, 1, 2, 5, '', '/api/dict/deleteDictById', '', '删除字典接口', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (29, '更新字典接口', 3, 1, 3, 5, '', '/api/dict/updateDict', '', '更新字典接口', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (30, '查询字典列表', 3, 1, 4, 5, '', '/api/dict/queryDictList', '', '查询字典列表接口', current_timestamp, null);
+
+
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (31, '日志管理', 1, 1, 2, 0, '/logs', '', 'SettingOutlined', '', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (32, '登录日志', 2, 1, 1, 31, '/log/login/list', '', '', '', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (33, '操作日志', 2, 1, 2, 31, '/log/operate/list', '', '', '', current_timestamp, null);
+
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (34, '删除登录日志', 3, 1, 1, 32, '', '/api/loginLog/deleteLoginLogByIds', '', '删除登录日志接口', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (35, '查询登录日志', 3, 1, 2, 32, '', '/api/loginLog/queryLoginLogList', '', '查询登录日志列表接口', current_timestamp, null);
+
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (36, '删除操作日志', 3, 1, 1, 33, '', '/api/sysLog/deleteOperateLogByIds', '', '删除操作日志接口', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (37, '查询操作日志', 3, 1, 2, 33, '', '/api/sysLog/queryOperateLogList', '', '查询操作日志列表接口', current_timestamp, null);
+INSERT INTO sys_menu (id, menu_name, menu_type, status_id, sort, parent_id, menu_url, api_url, menu_icon, remark, create_time, update_time) VALUES (38, '查询登录日志统计', 3, 1, 2, 32, '', '/api/loginLog/statisticsLoginLog', '', '查询登录日志统计接口', current_timestamp, null);

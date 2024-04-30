@@ -10,8 +10,8 @@ func DeptRouter(r *gin.RouterGroup) {
 
 	deptController := controller.C.DeptController
 	r.POST("/dept/addDept", deptController.CreateDept)
-	r.GET("/dept/queryDeptList", deptController.QueryDeptList)
+	r.POST("/dept/queryDeptList", deptController.QueryDeptList)
 	r.POST("/dept/updateDept", deptController.UpdateDept)
-	r.GET("/dept/deleteDeptByIds", deptController.DeleteDeptByIds)
+	r.POST("/dept/deleteDeptByIds", deptController.DeleteDeptByIds)
 
 }

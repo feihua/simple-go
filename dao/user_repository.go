@@ -43,7 +43,14 @@ func (u UserDao) QueryUserByUserId(userId int64) (*models.User, error) {
 
 	err := u.db.First(&sysUser, u.db.Where("id = ?", userId)).Error
 
-	return &sysUser, err
+	switch {
+	case err == nil:
+		return &sysUser, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }
 
 // QueryUserByUsername 根据用户名称查询用户
@@ -52,7 +59,14 @@ func (u UserDao) QueryUserByUsername(username string) (*models.User, error) {
 
 	err := u.db.First(&sysUser, u.db.Where("user_name = ?", username)).Error
 
-	return &sysUser, err
+	switch {
+	case err == nil:
+		return &sysUser, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }
 
 // QueryUserByUsernameOrMobile 根据用户名称或者收集查询用户信息

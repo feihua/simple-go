@@ -1,0 +1,63 @@
+###登录 login
+POST {{host}}/api/dict/user/login
+Content-Type: application/json
+
+{
+  "account": "18613030352",
+  "password": "123456"
+}
+> {%
+    client.global.set("token", response.body.data.token);
+%}
+
+
+###字典列表 queryDictList
+POST {{host}}/api/dict/queryDictList
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+
+}
+
+###新增字典 addDict
+POST {{host}}/api/dict/addDict
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "value": "female1",
+  "label": "女1",
+  "type": "sex",
+  "description": "性别",
+  "sort": 1,
+  "remark": "test"
+}
+###删除字典 deleteDictByIds
+POST {{host}}/api/dict/deleteDictByIds
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "ids": [
+    100
+  ]
+}
+
+###更新字典 updateDict
+POST {{host}}/api/dict/updateDict
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": 3,
+  "value": "female2",
+  "label": "女",
+  "type": "sex",
+  "description": "性别",
+  "sort": 1,
+  "remark": "test"
+
+}
+
+

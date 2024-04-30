@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
 	"gorm.io/gorm"
@@ -62,5 +63,12 @@ func (d DeptDao) QueryDeptByName(name string) (*models.Dept, error) {
 	var dept models.Dept
 	err := d.db.First(&dept).Where("dept_name = ?", name).Error
 
-	return &dept, err
+	switch {
+	case err == nil:
+		return &dept, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }

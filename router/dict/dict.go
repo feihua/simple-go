@@ -9,8 +9,8 @@ func DictRouter(r *gin.RouterGroup) {
 
 	dictController := controller.C.DictController
 	r.POST("/dict/addDict", dictController.CreateDict)
-	r.GET("/dict/queryDictList", dictController.QueryDictList)
+	r.POST("/dict/queryDictList", dictController.QueryDictList)
 	r.POST("/dict/updateDict", dictController.UpdateDict)
-	r.GET("/dict/deleteDictByIds", dictController.DeleteDictByIds)
+	r.POST("/dict/deleteDictByIds", dictController.DeleteDictByIds)
 
 }

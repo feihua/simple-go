@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
 	"gorm.io/gorm"
@@ -74,7 +75,14 @@ func (r RoleDao) QueryRoleByName(name string) (*models.Role, error) {
 	var role models.Role
 
 	err := r.db.First(&role, r.db.Where("role_name = ?", name)).Error
-	return &role, err
+	switch {
+	case err == nil:
+		return &role, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }
 
 // UpdateRole 更新角色

@@ -8,3 +8,4 @@ create table sys_user_role
 )
     comment '角色用户关联表';
 
+INSERT INTO sys_user_role (id, user_id, role_id, create_time) VALUES (1, 1, 1, current_timestamp);
