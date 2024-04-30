@@ -14,7 +14,7 @@ create table sys_role
     comment '角色信息';
 
 create index name_status_index
-    on hertzdb.sys_role (role_name, status_id);
+    on sys_role (role_name, status_id);
 
 
 INSERT INTO sys_role (id, role_name, status_id, sort, remark, create_time, update_time) VALUES (1, '超级管理员', 1, 1, '全部权限', current_timestamp, null);

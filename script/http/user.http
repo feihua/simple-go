@@ -12,7 +12,7 @@ Content-Type: application/json
 %}
 
 ###查询用户菜单 queryUserMenu
-GET {{host}}/api/user/queryUserMenu
+GET {{host}}/api/user/queryUserMenuList
 Authorization: Bearer {{token}}
 
 
@@ -34,9 +34,11 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "mobile": "18613030351",
-  "user_name": "test",
-  "remark": "test"
+  "mobile": "18613030112",
+  "userName": "超级管理员1",
+  "statusId": 1,
+  "sort": 1,
+  "remark": "超级管理员"
 }
 
 ###删除用户 user_delete
