@@ -19,14 +19,14 @@ Authorization: Bearer {{token}}
   "role_id": 3
 }
 
-###更新角色菜单 update_role_menu
-POST {{host}}/api/update_role_menu
+###更新角色菜单 updateRoleMenuList
+POST {{host}}/api/role/updateRoleMenuList
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "role_id": 1,
-  "menu_ids": [
+  "roleId": 3,
+  "menuIds": [
     1,
     2,
     3

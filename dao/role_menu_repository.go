@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/feihua/simple-go/models"
 	"gorm.io/gorm"
+	"time"
 )
 
 type RoleMenuDao struct {
@@ -41,8 +42,9 @@ func (r RoleMenuDao) UpdateRoleMenuList(roleId int64, menuIds []int64) error {
 	var list []models.RoleMenu
 	for _, menuId := range menuIds {
 		list = append(list, models.RoleMenu{
-			RoleId: roleId,
-			MenuId: menuId,
+			RoleId:     roleId,
+			MenuId:     menuId,
+			CreateTime: time.Now(),
 		})
 
 	}

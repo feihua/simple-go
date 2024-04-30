@@ -207,8 +207,9 @@ func (u *UserServiceImpl) UpdateUserRoleList(req dto.UpdateUserRoleDtoRequest) e
 	var userRoles []models.UserRole
 	for _, roleId := range req.RoleId {
 		userRoles = append(userRoles, models.UserRole{
-			UserId: userId,
-			RoleId: roleId,
+			UserId:     userId,
+			RoleId:     roleId,
+			CreateTime: time.Now(),
 		})
 	}
 
