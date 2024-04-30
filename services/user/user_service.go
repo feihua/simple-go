@@ -24,8 +24,8 @@ type UserService interface {
 	UpdateUser(userDto dto.UserDto) error
 	// DeleteUserByIds 删除用户
 	DeleteUserByIds(ids []int64) error
-	// QueryUserRoleList 查询用户与角色关糸
-	QueryUserRoleList(id int64) ([]int64, error)
+	// QueryUserRoleList 根据用户id查询用户与角色关糸
+	QueryUserRoleList(id int64) (*dto.QueryUserRoleListDtoResp, error)
 	// UpdateUserRoleList 更新用户与角色关糸
 	UpdateUserRoleList(u dto.UpdateUserRoleDtoRequest) error
 }

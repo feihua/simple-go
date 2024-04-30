@@ -9,7 +9,7 @@ func UserRouter(r *gin.RouterGroup) {
 
 	userController := controller.C.UserController
 	r.POST("/user/login", userController.Login)
-	r.GET("/user/queryUserMenu", userController.QueryUserMenu)
+	r.GET("/user/queryUserMenuList", userController.QueryUserMenuList)
 
 	r.POST("/user/addUser", userController.CreateUser)
 	r.POST("/user/queryUserList", userController.QueryUserList)

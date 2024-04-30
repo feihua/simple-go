@@ -8,8 +8,8 @@ import (
 func LogRouter(r *gin.RouterGroup) {
 
 	logController := controller.C.LogController
-	r.GET("/sysLog/queryLogList", logController.QueryLogList)
-	r.POST("/sysLog/deleteLogByIds", logController.DeleteLogByIds)
+	r.GET("/sysLog/queryOperateLogList", logController.QueryLogList)
+	r.POST("/sysLog/deleteOperateLogByIds", logController.DeleteLogByIds)
 
 	r.GET("/loginLog/queryLoginLogList", logController.QueryLoginLogList)
 	r.POST("/loginLog/deleteLoginLogByIds", logController.DeleteLoginLogByIds)

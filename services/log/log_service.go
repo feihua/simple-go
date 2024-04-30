@@ -16,7 +16,7 @@ type LogService interface {
 	CreateLog(dto dto.LogDto) error
 
 	// QueryLogList 查询操作日志
-	QueryLogList(current int, pageSize int) ([]models.OperationLog, int64)
+	QueryLogList(current int, pageSize int) ([]models.OperateLog, int64)
 
 	// DeleteLogByIds 删除操作日志
 	DeleteLogByIds(ids []int64) error

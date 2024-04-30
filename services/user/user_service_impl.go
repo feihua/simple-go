@@ -55,8 +55,8 @@ func (u *UserServiceImpl) Login(loginDto dto.UserLoginDto) (*dto.LoginDtoResp, e
 	if u.Dao.UserRoleDao.IsAdministrator(user.Id) {
 		menuList, _ := u.Dao.MenuDao.QueryMenuList()
 		for _, menu := range menuList {
-			if menu.ApiUrl != "" {
-				apiUrl = append(apiUrl, menu.ApiUrl)
+			if menu.ApiUrl != nil {
+				apiUrl = append(apiUrl, *menu.ApiUrl)
 			}
 		}
 	} else {
@@ -123,8 +123,8 @@ func (u *UserServiceImpl) QueryUserMenu(userId int64, userName string) (*dto.Que
 	var list []dto.UserMenuDto
 	var apiUrl []string
 	for _, menu := range menuList {
-		if menu.ApiUrl != "" {
-			apiUrl = append(apiUrl, menu.ApiUrl)
+		if menu.ApiUrl != nil {
+			apiUrl = append(apiUrl, *menu.ApiUrl)
 		}
 		if menu.MenuType != 3 {
 			list = append(list, dto.UserMenuDto{
@@ -132,8 +132,8 @@ func (u *UserServiceImpl) QueryUserMenu(userId int64, userName string) (*dto.Que
 				MenuName: menu.MenuName,
 				Sort:     menu.Sort,
 				ParentId: menu.ParentId,
-				MenuUrl:  menu.MenuUrl,
-				MenuIcon: menu.MenuIcon,
+				MenuUrl:  *menu.MenuUrl,
+				MenuIcon: *menu.MenuIcon,
 			})
 		}
 	}
@@ -150,13 +150,7 @@ func (u *UserServiceImpl) QueryUserMenu(userId int64, userName string) (*dto.Que
 
 // CreateUser 创建用户
 func (u *UserServiceImpl) CreateUser(dto dto.UserDto) error {
-	user, err := u.Dao.UserDao.QueryUserByUsername(dto.UserName)
-	if err != nil {
-		return errors.New("根据用户名称查询用户异常")
-	}
-	if user != nil {
-		return errors.New("用户已存在")
-	}
+
 	return u.Dao.UserDao.CreateUser(dto)
 }
 
@@ -178,9 +172,43 @@ func (u *UserServiceImpl) DeleteUserByIds(ids []int64) error {
 	return u.Dao.UserDao.DeleteUserByIds(ids)
 }
 
-// QueryUserRoleList 查询用户与角色关糸
-func (u *UserServiceImpl) QueryUserRoleList(userId int64) ([]int64, error) {
-	return u.Dao.UserRoleDao.QueryUserRoleList(userId)
+// QueryUserRoleList 根据用户id查询用户与角色关糸
+func (u *UserServiceImpl) QueryUserRoleList(userId int64) (*dto.QueryUserRoleListDtoResp, error) {
+
+	list, err := u.Dao.RoleDao.QueryAllRoleList()
+	if err != nil {
+		return nil, errors.New("查询所有角色异常")
+	}
+	if len(list) == 0 {
+		return nil, errors.New("查询所有角色异常")
+	}
+
+	var roleIds []int64
+	var roleList []dto.RoleDto
+
+	for _, role := range list {
+		roleIds = append(roleIds, role.Id)
+		roleList = append(roleList, dto.RoleDto{
+			Id:       role.Id,
+			RoleName: role.RoleName,
+			StatusId: role.StatusId,
+			Sort:     role.Sort,
+			Remark:   role.Remark,
+		})
+	}
+
+	if !u.Dao.UserRoleDao.IsAdministrator(userId) {
+		ids, err1 := u.Dao.UserRoleDao.QueryUserRoleList(userId)
+		if err1 != nil {
+			return nil, errors.New(err1.Error())
+		}
+		roleIds = ids
+	}
+
+	return &dto.QueryUserRoleListDtoResp{
+		RoleIds:  roleIds,
+		RoleList: roleList,
+	}, nil
 }
 
 // UpdateUserRoleList 更新用户与角色关糸

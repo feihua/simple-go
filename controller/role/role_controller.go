@@ -6,7 +6,7 @@ import (
 	"github.com/feihua/simple-go/services"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"strconv"
 )
 
 // RoleController 角色相关
@@ -109,13 +109,24 @@ func (r RoleController) DeleteRoleByIds(c *gin.Context) {
 	}
 }
 
-// QueryRoleMenuList 查询角色菜单
+// QueryRoleMenuList 根据角色Id查询角色菜单
 func (r RoleController) QueryRoleMenuList(c *gin.Context) {
 
-	roleId := c.DefaultQuery("roleId", "1")
+	roleId := c.DefaultQuery("roleId", "10")
+	id, err := strconv.ParseInt(roleId, 10, 64)
 
-	menuIds := r.Service.RoleService.QueryRoleMenuList(roleId)
-	c.JSON(http.StatusOK, gin.H{"data": menuIds})
+	if err != nil {
+		result.Fail(c, result.ParamsError)
+		return
+	}
+
+	resp, err := r.Service.RoleService.QueryRoleMenuList(id)
+
+	if err != nil {
+		result.FailWithMsg(c, result.RoleError, err.Error())
+	} else {
+		result.OkWithData(c, resp)
+	}
 }
 
 // UpdateRoleMenuList 更新角色菜单

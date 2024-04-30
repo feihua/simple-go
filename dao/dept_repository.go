@@ -22,7 +22,7 @@ func (d DeptDao) CreateDept(dto dto.DeptDto) error {
 		DeptName: dto.DeptName,
 		ParentId: dto.ParentId,
 		Sort:     dto.Sort,
-		Remarks:  dto.Remarks,
+		Remark:   dto.Remark,
 	}
 
 	return d.db.Create(&dept).Error
@@ -45,7 +45,7 @@ func (d DeptDao) UpdateDept(dto dto.DeptDto) error {
 		DeptName: dto.DeptName,
 		ParentId: dto.ParentId,
 		Sort:     dto.Sort,
-		Remarks:  dto.Remarks,
+		Remark:   dto.Remark,
 	}
 
 	return d.db.Model(&dept).Updates(&dept).Error

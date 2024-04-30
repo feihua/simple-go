@@ -3,9 +3,11 @@ package user
 import (
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/pkg/result"
+	"github.com/feihua/simple-go/pkg/utils"
 	"github.com/feihua/simple-go/services"
 	"github.com/feihua/simple-go/vo/requests"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 // UserController 用户相关
@@ -45,8 +47,8 @@ func (u UserController) Login(c *gin.Context) {
 	}
 }
 
-// QueryUserMenu 查询用户菜单权限信息
-func (u UserController) QueryUserMenu(c *gin.Context) {
+// QueryUserMenuList 查询用户菜单权限信息
+func (u UserController) QueryUserMenuList(c *gin.Context) {
 	userId := c.MustGet("userId").(float64)
 	userName := c.MustGet("userName").(string)
 	resp, err := u.Service.UserService.QueryUserMenu(int64(userId), userName)
@@ -62,8 +64,9 @@ func (u UserController) QueryUserMenu(c *gin.Context) {
 func (u UserController) CreateUser(c *gin.Context) {
 
 	userRequest := requests.UserRequest{}
-	err := c.ShouldBindJSON(&userRequest)
+	err := c.ShouldBind(&userRequest)
 	if err != nil {
+		utils.Logger.Error(err.Error())
 		result.Fail(c, result.ParamsError)
 		return
 	}
@@ -71,7 +74,7 @@ func (u UserController) CreateUser(c *gin.Context) {
 	userDto := dto.UserDto{
 		Mobile:   userRequest.Mobile,
 		UserName: userRequest.UserName,
-		Password: userRequest.Password,
+		Password: "123456",
 		StatusId: userRequest.StatusId,
 		Sort:     userRequest.Sort,
 		Remark:   userRequest.Remark,
@@ -151,15 +154,21 @@ func (u UserController) DeleteUserByIds(c *gin.Context) {
 	}
 }
 
-// QueryUserRoleList 查询用户与角色关糸
+// QueryUserRoleList 根据用户id查询用户与角色关糸
 func (u UserController) QueryUserRoleList(c *gin.Context) {
-	userId := c.MustGet("userId").(float64)
+	userId := c.DefaultQuery("userId", "10")
+	id, err := strconv.ParseInt(userId, 10, 64)
 
-	menuIds, err := u.Service.UserService.QueryUserRoleList(int64(userId))
+	if err != nil {
+		result.Fail(c, result.ParamsError)
+		return
+	}
+
+	resp, err := u.Service.UserService.QueryUserRoleList(id)
 	if err != nil {
 		result.FailWithMsg(c, result.UserError, err.Error())
 	} else {
-		result.OkWithData(c, menuIds)
+		result.OkWithData(c, resp)
 	}
 }
 

@@ -16,13 +16,14 @@ func NewLogDao(DB *gorm.DB) *LogDao {
 
 // CreateLog 创建操作日志
 func (l LogDao) CreateLog(dto dto.LogDto) error {
-	log := models.OperationLog{
-		UserName:      dto.UserName,
-		Operation:     dto.Operation,
-		Method:        dto.Method,
-		Params:        dto.Params,
-		OperationTime: dto.OperationTime,
-		Ip:            dto.Ip,
+	log := models.OperateLog{
+		UserName:       dto.UserName,
+		Operation:      dto.Operation,
+		Method:         dto.Method,
+		RequestParams:  dto.RequestParams,
+		ResponseParams: dto.ResponseParams,
+		Time:           dto.OperationTime,
+		Ip:             dto.Ip,
 	}
 
 	err := l.db.Create(&log).Error
@@ -31,20 +32,20 @@ func (l LogDao) CreateLog(dto dto.LogDto) error {
 }
 
 // QueryLogList 查询操作日志
-func (l LogDao) QueryLogList(current int, pageSize int) ([]models.OperationLog, int64) {
+func (l LogDao) QueryLogList(current int, pageSize int) ([]models.OperateLog, int64) {
 
-	var loginLog []models.OperationLog
+	var loginLog []models.OperateLog
 
 	var total int64 = 0
 	l.db.Limit(pageSize).Offset((current - 1) * pageSize).Find(&loginLog)
 
-	l.db.Model(&models.OperationLog{}).Count(&total)
+	l.db.Model(&models.OperateLog{}).Count(&total)
 	return loginLog, total
 }
 
 // DeleteLogByIds 删除操作日志
 func (l LogDao) DeleteLogByIds(ids []int64) error {
-	return l.db.Where("id in (?)", ids).Delete(&models.OperationLog{}).Error
+	return l.db.Where("id in (?)", ids).Delete(&models.OperateLog{}).Error
 }
 
 // CreateLoginLog 创建登录日志

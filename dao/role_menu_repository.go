@@ -16,10 +16,13 @@ func NewRoleMenuDao(DB *gorm.DB) *RoleMenuDao {
 }
 
 // QueryRoleMenuList 查询角色菜单
-func (r RoleMenuDao) QueryRoleMenuList(roleId int64) []int64 {
+func (r RoleMenuDao) QueryRoleMenuList(roleId int64) ([]int64, error) {
 
 	var roleMenus []models.RoleMenu
-	r.db.Where("role_id=?", roleId).Find(&roleMenus)
+	err := r.db.Where("role_id=?", roleId).Find(&roleMenus).Error
+	if err != nil {
+		return nil, errors.New("查询角色菜单失败")
+	}
 
 	var menuIds []int64
 
@@ -27,7 +30,7 @@ func (r RoleMenuDao) QueryRoleMenuList(roleId int64) []int64 {
 		menuIds = append(menuIds, roleMenu.MenuId)
 	}
 
-	return menuIds
+	return menuIds, nil
 }
 
 // UpdateRoleMenuList 更新角色菜单

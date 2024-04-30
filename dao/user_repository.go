@@ -50,7 +50,7 @@ func (u UserDao) QueryUserByUserId(userId int64) (*models.User, error) {
 func (u UserDao) QueryUserByUsername(username string) (*models.User, error) {
 	var sysUser models.User
 
-	err := u.db.Find(&sysUser, u.db.Where("username = ?", username)).Error
+	err := u.db.First(&sysUser, u.db.Where("user_name = ?", username)).Error
 
 	return &sysUser, err
 }

@@ -50,6 +50,15 @@ func (r RoleDao) QueryRoleList(roleDto dto.QueryRoleListDto) ([]models.Role, int
 	return role, total
 }
 
+// QueryAllRoleList 查询角色列表
+func (r RoleDao) QueryAllRoleList() ([]models.Role, error) {
+
+	var role []models.Role
+	err := r.db.Model(&models.Role{}).Where("status_id=?", 1).Find(&role).Error
+
+	return role, err
+}
+
 // QueryRoleById 根据角色Id查询角色
 func (r RoleDao) QueryRoleById(roleId int64) (*models.Role, error) {
 

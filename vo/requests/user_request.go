@@ -1,13 +1,13 @@
 package requests
 
 type UserRequest struct {
-	Id       int64  `json:"id"`       //主键
-	Mobile   string `json:"mobile"`   //手机
-	UserName string `json:"userName"` //姓名
-	Password string `json:"password"` //密码
-	StatusId int8   `json:"statusId"` //状态(1:正常，0:禁用)
-	Sort     int32  `json:"sort"`     //排序
-	Remark   string `json:"remark"`   //备注
+	Id       int64   `json:"id"`       //主键
+	Mobile   string  `json:"mobile"`   //手机
+	UserName string  `json:"userName"` //姓名
+	Password string  `json:"password"` //密码
+	StatusId int32   `json:"statusId"` //状态(1:正常，0:禁用)
+	Sort     int32   `json:"sort"`     //排序
+	Remark   *string `json:"remark"`   //备注
 }
 
 // RegisterRequest 注册入参
@@ -37,7 +37,7 @@ type DeleteUserRequest struct {
 type QueryUserListRequest struct {
 	Mobile   string `json:"mobile"`   //手机
 	UserName string `json:"userName"` //姓名
-	StatusId int8   `json:"statusId"` //状态(1:正常，0:禁用)
+	StatusId int32  `json:"statusId"` //状态(1:正常，0:禁用)
 	PageNo   int    `json:"pageNo"`   //第几页
 	PageSize int    `json:"pageSize"` //每页的数量
 }

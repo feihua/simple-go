@@ -25,7 +25,7 @@ func (l *LogServiceImpl) CreateLog(dto dto.LogDto) error {
 }
 
 // QueryLogList 查询操作日志
-func (l *LogServiceImpl) QueryLogList(current int, pageSize int) ([]models.OperationLog, int64) {
+func (l *LogServiceImpl) QueryLogList(current int, pageSize int) ([]models.OperateLog, int64) {
 	return l.Dao.LogDao.QueryLogList(current, pageSize)
 }
 

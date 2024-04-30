@@ -16,7 +16,7 @@ type DeleteLogRequest struct {
 // QueryRoleListRequest 查询角色列表
 type QueryRoleListRequest struct {
 	RoleName string `json:"roleName"` //名称
-	StatusId int8   `json:"statusId"` //状态(1:正常，0:禁用)
+	StatusId int32  `json:"statusId"` //状态(1:正常，0:禁用)
 	PageNo   int    `json:"pageNo"`   //第几页
 	PageSize int    `json:"pageSize"` //每页的数量
 }

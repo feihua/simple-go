@@ -22,7 +22,7 @@ func (d DictDao) CreateDict(dto dto.DictDto) error {
 	dict.Label = dto.Label
 	dict.Type = dto.Type
 	dict.Description = dto.Description
-	dict.Remarks = dto.Remarks
+	dict.Remark = dto.Remark
 	dict.Sort = dto.Sort
 
 	return d.db.Create(&dict).Error
@@ -57,7 +57,7 @@ func (d DictDao) UpdateDict(dto dto.DictDto) error {
 	dict.Type = dto.Type
 	dict.Sort = dto.Sort
 	dict.Description = dto.Description
-	dict.Remarks = dto.Remarks
+	dict.Remark = dto.Remark
 
 	return d.db.Model(&dict).Updates(&dict).Error
 }

@@ -35,7 +35,7 @@ func (m MenuDao) CreateMenu(dto dto.MenuDto) error {
 func (m MenuDao) QueryMenuList() ([]models.Menu, error) {
 
 	var menus []models.Menu
-	err := m.db.Find(&menus).Error
+	err := m.db.Model(&models.Menu{}).Where("status_id = ?", 1).Find(&menus).Error
 
 	return menus, err
 }

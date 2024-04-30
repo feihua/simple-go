@@ -5,7 +5,6 @@ import (
 	"github.com/feihua/simple-go/dao"
 	"github.com/feihua/simple-go/dto"
 	"github.com/feihua/simple-go/models"
-	"strconv"
 )
 
 // RoleServiceImpl 角色操作实现
@@ -41,10 +40,47 @@ func (r *RoleServiceImpl) DeleteRoleByIds(ids []int64) error {
 	return r.Dao.RoleDao.DeleteRoleByIds(ids)
 }
 
-// QueryRoleMenuList 查询角色菜单
-func (r *RoleServiceImpl) QueryRoleMenuList(id string) []int64 {
-	roleId, _ := strconv.ParseInt(id, 10, 64)
-	return r.Dao.RoleMenuDao.QueryRoleMenuList(roleId)
+// QueryRoleMenuList 根据角色Id查询角色菜单
+func (r *RoleServiceImpl) QueryRoleMenuList(roleId int64) (*dto.QueryRoleMenuListDtoResp, error) {
+	list, err := r.Dao.MenuDao.QueryMenuList()
+	if err != nil {
+		return nil, errors.New("查询所有菜单异常")
+	}
+	if len(list) == 0 {
+		return nil, errors.New("查询所有菜单异常")
+	}
+
+	var menuIds []int64
+	var menuList []dto.MenuDto
+
+	for _, menu := range list {
+		menuIds = append(menuIds, menu.Id)
+		menuList = append(menuList, dto.MenuDto{
+			Id:       menu.Id,
+			MenuName: menu.MenuName,
+			MenuType: menu.MenuType,
+			StatusId: menu.StatusId,
+			Sort:     menu.Sort,
+			ParentId: menu.ParentId,
+			MenuUrl:  menu.MenuUrl,
+			ApiUrl:   menu.ApiUrl,
+			MenuIcon: menu.MenuIcon,
+			Remark:   menu.Remark,
+		})
+	}
+
+	if roleId != 1 {
+		ids, err1 := r.Dao.RoleMenuDao.QueryRoleMenuList(roleId)
+		if err1 != nil {
+			return nil, errors.New(err1.Error())
+		}
+		menuIds = ids
+	}
+
+	return &dto.QueryRoleMenuListDtoResp{
+		MenuIds:  menuIds,
+		MenuList: menuList,
+	}, nil
 }
 
 // UpdateRoleMenuList 更新角色菜单

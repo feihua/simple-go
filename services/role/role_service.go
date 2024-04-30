@@ -19,8 +19,8 @@ type RoleService interface {
 	UpdateRole(roleDto dto.RoleDto) error
 	// DeleteRoleByIds 删除角色
 	DeleteRoleByIds(ids []int64) error
-	// QueryRoleMenuList 查询角色菜单
-	QueryRoleMenuList(id string) []int64
+	// QueryRoleMenuList 根据角色Id查询角色菜单
+	QueryRoleMenuList(id int64) (*dto.QueryRoleMenuListDtoResp, error)
 	// UpdateRoleMenuList 更新角色菜单
 	UpdateRoleMenuList(dtoRequest dto.RoleMenuDtoRequest) error
 }

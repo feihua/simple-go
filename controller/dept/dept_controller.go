@@ -34,7 +34,7 @@ func (d DeptController) CreateDept(c *gin.Context) {
 		DeptName: req.DeptName,
 		ParentId: req.ParentId,
 		Sort:     req.Sort,
-		Remarks:  req.Remarks,
+		Remark:   req.Remark,
 	}
 
 	err = d.Service.DeptService.CreateDept(deptDto)
@@ -77,7 +77,7 @@ func (d DeptController) UpdateDept(c *gin.Context) {
 		DeptName: req.DeptName,
 		ParentId: req.ParentId,
 		Sort:     req.Sort,
-		Remarks:  req.Remarks,
+		Remark:   req.Remark,
 	}
 
 	err = d.Service.DeptService.UpdateDept(deptDto)

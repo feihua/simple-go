@@ -23,7 +23,7 @@ func (u UserRoleDao) IsAdministrator(userId int64) bool {
 	return count == 1
 }
 
-// QueryUserRoleList 查询用户角色
+// QueryUserRoleList 根据userId查询用户角色的roleId
 func (u UserRoleDao) QueryUserRoleList(userId int64) ([]int64, error) {
 
 	var userRoles []models.UserRole

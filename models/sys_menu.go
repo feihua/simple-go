@@ -14,7 +14,7 @@ type Menu struct {
 	StatusId   int32      `gorm:"column:status_id;not null;default:1;comment:状态(1:正常，0:禁用)" json:"statusId"`            // 状态(1:正常，0:禁用)
 	Sort       int32      `gorm:"column:sort;not null;default:1;comment:排序" json:"sort"`                                // 排序
 	ParentId   int64      `gorm:"column:parent_id;not null;comment:父Id" json:"parentId"`                                // 父Id
-	MenuURL    *string    `gorm:"column:menu_url;comment:路由路径" json:"menuUrl"`                                          // 路由路径
+	MenuUrl    *string    `gorm:"column:menu_url;comment:路由路径" json:"menuUrl"`                                          // 路由路径
 	ApiUrl     *string    `gorm:"column:api_url;comment:接口URL" json:"apiUrl"`                                           // 接口URL
 	MenuIcon   *string    `gorm:"column:menu_icon;comment:菜单图标" json:"menuIcon"`                                        // 菜单图标
 	Remark     *string    `gorm:"column:remark;comment:备注" json:"remark"`                                               // 备注

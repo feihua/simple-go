@@ -7,7 +7,7 @@ type DictRequest struct {
 	Type        string  `json:"type"`        //类型
 	Description string  `json:"description"` //描述
 	Sort        float64 `json:"sort"`        //排序（升序）
-	Remarks     string  `json:"remarks"`     //备注
+	Remark      *string `json:"remark"`      //备注
 }
 type DeleteDictRequest struct {
 	Ids []int64 `json:"ids"` //编号

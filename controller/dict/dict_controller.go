@@ -37,7 +37,7 @@ func (d DictController) CreateDict(c *gin.Context) {
 		Label:       req.Label,
 		Type:        req.Type,
 		Description: req.Description,
-		Remarks:     req.Remarks,
+		Remark:      req.Remark,
 	}
 
 	err = d.Service.DictService.CreateDict(dictDto)
@@ -84,7 +84,7 @@ func (d DictController) UpdateDict(c *gin.Context) {
 		Label:       req.Label,
 		Type:        req.Type,
 		Description: req.Description,
-		Remarks:     req.Remarks,
+		Remark:      req.Remark,
 	}
 	err = d.Service.DictService.UpdateDict(dictDto)
 	if err != nil {
