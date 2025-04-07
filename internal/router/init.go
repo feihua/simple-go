@@ -14,8 +14,8 @@ import (
 
 // Init 初始化路由
 func Init(uController *u1.UserController, rController *u1.RoleController, mController *u1.MenuController, lController *u1.LogController, dController *u1.DictController, deController *u1.DeptController) *gin.Engine {
-	r := gin.Default()
-	r.Use(middleware.JwtMiddleware())
+	r := gin.New()
+	r.Use(gin.Recovery(), middleware.JwtMiddleware())
 
 	_ = r.SetTrustedProxies([]string{"127.0.0.1"})
 	routerGroup := r.Group("/api")

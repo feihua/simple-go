@@ -51,7 +51,7 @@ type Writer struct {
 }
 
 func (w Writer) Printf(format string, args ...interface{}) {
-	utils.Logger.Debugf(format, args)
+	utils.Logger.Debugf(format, args...)
 }
 
 // init log config
