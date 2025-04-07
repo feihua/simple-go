@@ -1,0 +1,22 @@
+# 配置服务器的网络地址和端口号
+server:
+  address: 127.0.0.1
+  port: 6677
+
+# MySQL数据库的连接配置
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  database: simple-go
+  username: root
+  password: 123456
+
+# JWT（JSON Web Token）的配置
+jwt:
+  accessSecret: 879037c7a4406392366bfc35d
+  accessExpire: 86400
+
+# Redis数据库的连接配置
+redis:
+  host: 127.0.0.1:6379
+  password: 123456
