@@ -3,8 +3,6 @@ package middleware
 import (
 	"context"
 	"fmt"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/pkg/redis"
 	"github.com/feihua/simple-go/pkg/utils"
 	"github.com/gin-gonic/gin"
