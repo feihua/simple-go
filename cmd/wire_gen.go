@@ -7,8 +7,8 @@
 package main
 
 import (
-	"github.com/feihua/simple-go/internal/controller/system"
-	system2 "github.com/feihua/simple-go/internal/dao/system"
+	system2 "github.com/feihua/simple-go/internal/controller/system"
+	"github.com/feihua/simple-go/internal/dao/system"
 	"github.com/feihua/simple-go/internal/model"
 	"github.com/feihua/simple-go/internal/router"
 	"github.com/feihua/simple-go/internal/service/system/dept"
@@ -24,26 +24,26 @@ import (
 
 func initApp() *gin.Engine {
 	db := model.Init()
-	userDao := system2.NewUserDao(db)
-	userRoleDao := system2.NewUserRoleDao(db)
-	menuDao := system2.NewMenuDao(db)
-	roleDao := system2.NewRoleDao(db)
+	userDao := system.NewUserDao(db)
+	userRoleDao := system.NewUserRoleDao(db)
+	menuDao := system.NewMenuDao(db)
+	roleDao := system.NewRoleDao(db)
 	userService := user.NewUserServiceImpl(userDao, userRoleDao, menuDao, roleDao)
-	userController := system.NewUserController(userService)
-	roleMenuDao := system2.NewRoleMenuDao(db)
+	userController := system2.NewUserController(userService)
+	roleMenuDao := system.NewRoleMenuDao(db)
 	roleService := role.NewRoleServiceImpl(roleDao, menuDao, roleMenuDao)
-	roleController := system.NewRoleController(roleService)
+	roleController := system2.NewRoleController(roleService)
 	menuService := menu.NewMenuServiceImpl(menuDao)
-	menuController := system.NewMenuController(menuService)
-	logDao := system2.NewLogDao(db)
+	menuController := system2.NewMenuController(menuService)
+	logDao := system.NewLogDao(db)
 	logService := log.NewLogServiceImpl(logDao)
-	logController := system.NewLogController(logService)
-	dictDao := system2.NewDictDao(db)
+	logController := system2.NewLogController(logService)
+	dictDao := system.NewDictDao(db)
 	dictService := dict.NewDictServiceImpl(dictDao)
-	dictController := system.NewDictController(dictService)
-	deptDao := system2.NewDeptDao(db)
+	dictController := system2.NewDictController(dictService)
+	deptDao := system.NewDeptDao(db)
 	deptService := dept.NewDeptServiceImpl(deptDao)
-	deptController := system.NewDeptController(deptService)
+	deptController := system2.NewDeptController(deptService)
 	engine := router.Init(userController, roleController, menuController, logController, dictController, deptController)
 	return engine
 }
