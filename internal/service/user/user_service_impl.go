@@ -21,19 +21,25 @@ Author: LiuFeiHua
 Date: 2024/4/16 13:58
 */
 type UserServiceImpl struct {
-	Dao *dao.DaoImpl
+	Dao         *dao.UserDao
+	UserRoleDao *dao.UserRoleDao
+	MenuDao     *dao.MenuDao
+	RoleDao     *dao.RoleDao
 }
 
-func NewUserServiceImpl(Dao *dao.DaoImpl) UserService {
+func NewUserServiceImpl(Dao *dao.UserDao, UserRoleDao *dao.UserRoleDao, MenuDao *dao.MenuDao, RoleDao *dao.RoleDao) UserService {
 	return &UserServiceImpl{
-		Dao: Dao,
+		Dao:         Dao,
+		UserRoleDao: UserRoleDao,
+		MenuDao:     MenuDao,
+		RoleDao:     RoleDao,
 	}
 }
 
 // Login 登录
 func (u *UserServiceImpl) Login(loginDto dto.UserLoginDto) (*dto.LoginDtoResp, error) {
 	utils.Logger.Debugf("登录参数: %+v", loginDto)
-	users, err := u.Dao.UserDao.QueryUserByUsernameOrMobile(loginDto.Account)
+	users, err := u.Dao.QueryUserByUsernameOrMobile(loginDto.Account)
 	if err != nil {
 		return nil, errors.New(err.Error())
 	}
@@ -52,15 +58,15 @@ func (u *UserServiceImpl) Login(loginDto dto.UserLoginDto) (*dto.LoginDtoResp, e
 	}
 
 	var apiUrl []string
-	if u.Dao.UserRoleDao.IsAdministrator(user.Id) {
-		menuList, _ := u.Dao.MenuDao.QueryMenuList()
+	if u.UserRoleDao.IsAdministrator(user.Id) {
+		menuList, _ := u.MenuDao.QueryMenuList()
 		for _, menu := range menuList {
 			if menu.ApiUrl != nil {
 				apiUrl = append(apiUrl, *menu.ApiUrl)
 			}
 		}
 	} else {
-		url, err1 := u.Dao.UserDao.QueryUserApiUrl(user.Id)
+		url, err1 := u.Dao.QueryUserApiUrl(user.Id)
 		if err1 != nil {
 			return nil, errors.New(err1.Error())
 		}
@@ -99,7 +105,7 @@ func createJwtToken(secretKey string, iat, seconds, userId int64, userName strin
 
 // QueryUserMenu 查询用户菜单权限信息
 func (u *UserServiceImpl) QueryUserMenu(userId int64, userName string) (*dto.QueryUserMenuDtoResp, error) {
-	user, err := u.Dao.UserDao.QueryUserByUserId(userId)
+	user, err := u.Dao.QueryUserByUserId(userId)
 	if err != nil {
 		return nil, errors.New("查询用户异常")
 	}
@@ -111,10 +117,10 @@ func (u *UserServiceImpl) QueryUserMenu(userId int64, userName string) (*dto.Que
 	}
 
 	var menuList []model.Menu
-	if u.Dao.UserRoleDao.IsAdministrator(userId) {
-		menuList, err = u.Dao.MenuDao.QueryMenuList()
+	if u.UserRoleDao.IsAdministrator(userId) {
+		menuList, err = u.MenuDao.QueryMenuList()
 	} else {
-		menuList, err = u.Dao.UserDao.QueryUserMenus(userId)
+		menuList, err = u.Dao.QueryUserMenus(userId)
 	}
 
 	if err != nil {
@@ -152,12 +158,12 @@ func (u *UserServiceImpl) QueryUserMenu(userId int64, userName string) (*dto.Que
 // CreateUser 创建用户
 func (u *UserServiceImpl) CreateUser(dto dto.UserDto) error {
 
-	return u.Dao.UserDao.CreateUser(dto)
+	return u.Dao.CreateUser(dto)
 }
 
 // QueryUserList 查询用户列表
 func (u *UserServiceImpl) QueryUserList(userListDto dto.QueryUserListDto) ([]model.User, int64) {
-	return u.Dao.UserDao.QueryUserList(userListDto)
+	return u.Dao.QueryUserList(userListDto)
 }
 
 // UpdateUser 更新用户
@@ -165,18 +171,18 @@ func (u *UserServiceImpl) UpdateUser(userDto dto.UserDto) error {
 	if userDto.Id == 1 {
 		return errors.New("超级管理员不能修改角色")
 	}
-	return u.Dao.UserDao.UpdateUser(userDto)
+	return u.Dao.UpdateUser(userDto)
 }
 
 // DeleteUserByIds 删除用户
 func (u *UserServiceImpl) DeleteUserByIds(ids []int64) error {
-	return u.Dao.UserDao.DeleteUserByIds(ids)
+	return u.Dao.DeleteUserByIds(ids)
 }
 
 // QueryUserRoleList 根据用户id查询用户与角色关糸
 func (u *UserServiceImpl) QueryUserRoleList(userId int64) (*dto.QueryUserRoleListDtoResp, error) {
 
-	list, err := u.Dao.RoleDao.QueryAllRoleList()
+	list, err := u.RoleDao.QueryAllRoleList()
 	if err != nil {
 		return nil, errors.New("查询所有角色异常")
 	}
@@ -198,8 +204,8 @@ func (u *UserServiceImpl) QueryUserRoleList(userId int64) (*dto.QueryUserRoleLis
 		})
 	}
 
-	if !u.Dao.UserRoleDao.IsAdministrator(userId) {
-		ids, err1 := u.Dao.UserRoleDao.QueryUserRoleList(userId)
+	if !u.UserRoleDao.IsAdministrator(userId) {
+		ids, err1 := u.UserRoleDao.QueryUserRoleList(userId)
 		if err1 != nil {
 			return nil, errors.New(err1.Error())
 		}
@@ -215,10 +221,10 @@ func (u *UserServiceImpl) QueryUserRoleList(userId int64) (*dto.QueryUserRoleLis
 // UpdateUserRoleList 更新用户与角色关糸
 func (u *UserServiceImpl) UpdateUserRoleList(req dto.UpdateUserRoleDtoRequest) error {
 	userId := req.UserId
-	if u.Dao.UserRoleDao.IsAdministrator(userId) {
+	if u.UserRoleDao.IsAdministrator(userId) {
 		return errors.New("超级管理员不能修改角色")
 	}
-	user, err := u.Dao.UserDao.QueryUserByUserId(userId)
+	user, err := u.Dao.QueryUserByUserId(userId)
 	if err != nil {
 		return errors.New("查询用户异常")
 	}
@@ -242,5 +248,5 @@ func (u *UserServiceImpl) UpdateUserRoleList(req dto.UpdateUserRoleDtoRequest) e
 		})
 	}
 
-	return u.Dao.UserRoleDao.UpdateUserRoleList(userId, userRoles)
+	return u.UserRoleDao.UpdateUserRoleList(userId, userRoles)
 }

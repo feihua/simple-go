@@ -2,7 +2,7 @@ package role
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/service"
+	"github.com/feihua/simple-go/internal/service/role"
 	"github.com/feihua/simple-go/internal/vo/requests"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
@@ -15,10 +15,10 @@ Author: LiuFeiHua
 Date: 2024/4/15 16:55
 */
 type RoleController struct {
-	Service *service.ServiceImpl
+	Service role.RoleService
 }
 
-func NewRoleController(Service *service.ServiceImpl) *RoleController {
+func NewRoleController(Service role.RoleService) *RoleController {
 	return &RoleController{Service: Service}
 }
 
@@ -39,7 +39,7 @@ func (r RoleController) CreateRole(c *gin.Context) {
 		Remark:   req.Remark,
 	}
 
-	err = r.Service.RoleService.CreateRole(roleDto)
+	err = r.Service.CreateRole(roleDto)
 	if err != nil {
 		result.FailWithMsg(c, result.RoleError, err.Error())
 	} else {
@@ -62,7 +62,7 @@ func (r RoleController) QueryRoleList(c *gin.Context) {
 		PageNo:   req.PageNo,
 		PageSize: req.PageSize,
 	}
-	list, total := r.Service.RoleService.QueryRoleList(roleListDto)
+	list, total := r.Service.QueryRoleList(roleListDto)
 	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
 }
 
@@ -83,7 +83,7 @@ func (r RoleController) UpdateRole(c *gin.Context) {
 		Sort:     req.Sort,
 		Remark:   req.Remark,
 	}
-	err = r.Service.RoleService.UpdateRole(roleDto)
+	err = r.Service.UpdateRole(roleDto)
 	if err != nil {
 		result.FailWithMsg(c, result.RoleError, err.Error())
 	} else {
@@ -101,7 +101,7 @@ func (r RoleController) DeleteRoleByIds(c *gin.Context) {
 		return
 	}
 
-	err = r.Service.RoleService.DeleteRoleByIds(req.Ids)
+	err = r.Service.DeleteRoleByIds(req.Ids)
 	if err != nil {
 		result.FailWithMsg(c, result.RoleError, err.Error())
 	} else {
@@ -120,7 +120,7 @@ func (r RoleController) QueryRoleMenuList(c *gin.Context) {
 		return
 	}
 
-	resp, err := r.Service.RoleService.QueryRoleMenuList(id)
+	resp, err := r.Service.QueryRoleMenuList(id)
 
 	if err != nil {
 		result.FailWithMsg(c, result.RoleError, err.Error())
@@ -143,7 +143,7 @@ func (r RoleController) UpdateRoleMenuList(c *gin.Context) {
 		RoleId:  req.RoleId,
 		MenuIds: req.MenuIds,
 	}
-	err = r.Service.RoleService.UpdateRoleMenuList(menuDtoRequest)
+	err = r.Service.UpdateRoleMenuList(menuDtoRequest)
 	if err != nil {
 		result.FailWithMsg(c, result.UserError, err.Error())
 	} else {

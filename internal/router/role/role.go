@@ -1,13 +1,12 @@
 package role
 
 import (
-	"github.com/feihua/simple-go/internal/controller"
+	"github.com/feihua/simple-go/internal/controller/role"
 	"github.com/gin-gonic/gin"
 )
 
-func RoleRouter(r *gin.RouterGroup) {
+func RoleRouter(r *gin.RouterGroup, roleController *role.RoleController) {
 
-	roleController := controller.C.RoleController
 	r.POST("/role/addRole", roleController.CreateRole)
 	r.POST("/role/queryRoleList", roleController.QueryRoleList)
 	r.POST("/role/updateRole", roleController.UpdateRole)

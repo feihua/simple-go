@@ -2,7 +2,7 @@ package dict
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/service"
+	"github.com/feihua/simple-go/internal/service/dict"
 	"github.com/feihua/simple-go/internal/vo/requests"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
@@ -15,10 +15,10 @@ Author: LiuFeiHua
 Date: 2024/4/15 16:48
 */
 type DictController struct {
-	Service *service.ServiceImpl
+	Service dict.DictService
 }
 
-func NewDictController(Service *service.ServiceImpl) *DictController {
+func NewDictController(Service dict.DictService) *DictController {
 	return &DictController{Service: Service}
 }
 
@@ -40,7 +40,7 @@ func (d DictController) CreateDict(c *gin.Context) {
 		Remark:      req.Remark,
 	}
 
-	err = d.Service.DictService.CreateDict(dictDto)
+	err = d.Service.CreateDict(dictDto)
 	if err != nil {
 		result.FailWithMsg(c, result.DictError, err.Error())
 	} else {
@@ -63,7 +63,7 @@ func (d DictController) QueryDictList(c *gin.Context) {
 	pageSize := c.DefaultQuery("pageSize", "10")
 	size, _ := strconv.Atoi(pageSize)
 
-	dictList, total := d.Service.DictService.QueryDictList(pageNum, size)
+	dictList, total := d.Service.QueryDictList(pageNum, size)
 
 	result.OkWithData(c, gin.H{"list": dictList, "success": true, "current": current, "total": total, "pageSize": pageSize})
 }
@@ -86,7 +86,7 @@ func (d DictController) UpdateDict(c *gin.Context) {
 		Description: req.Description,
 		Remark:      req.Remark,
 	}
-	err = d.Service.DictService.UpdateDict(dictDto)
+	err = d.Service.UpdateDict(dictDto)
 	if err != nil {
 		result.FailWithMsg(c, result.DictError, err.Error())
 	} else {
@@ -104,7 +104,7 @@ func (d DictController) DeleteDictByIds(c *gin.Context) {
 		return
 	}
 
-	err = d.Service.DictService.DeleteDictByIds(req.Ids)
+	err = d.Service.DeleteDictByIds(req.Ids)
 	if err != nil {
 		result.FailWithMsg(c, result.DictError, err.Error())
 	} else {

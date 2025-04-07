@@ -2,7 +2,7 @@ package user
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/service"
+	"github.com/feihua/simple-go/internal/service/user"
 	"github.com/feihua/simple-go/internal/vo/requests"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/feihua/simple-go/pkg/utils"
@@ -16,10 +16,10 @@ Author: LiuFeiHua
 Date: 2024/4/15 16:53
 */
 type UserController struct {
-	Service *service.ServiceImpl
+	Service user.UserService
 }
 
-func NewUserController(Service *service.ServiceImpl) *UserController {
+func NewUserController(Service user.UserService) *UserController {
 	return &UserController{
 		Service: Service,
 	}
@@ -39,7 +39,7 @@ func (u UserController) Login(c *gin.Context) {
 		Password: loginRequest.Password,
 	}
 
-	loginDtoResp, err := u.Service.UserService.Login(loginDto)
+	loginDtoResp, err := u.Service.Login(loginDto)
 	if err != nil {
 		result.FailWithMsg(c, result.UserLoginError, err.Error())
 	} else {
@@ -51,7 +51,7 @@ func (u UserController) Login(c *gin.Context) {
 func (u UserController) QueryUserMenuList(c *gin.Context) {
 	userId := c.MustGet("userId").(float64)
 	userName := c.MustGet("userName").(string)
-	resp, err := u.Service.UserService.QueryUserMenu(int64(userId), userName)
+	resp, err := u.Service.QueryUserMenu(int64(userId), userName)
 
 	if err != nil {
 		result.FailWithMsg(c, result.UserLoginError, err.Error())
@@ -79,7 +79,7 @@ func (u UserController) CreateUser(c *gin.Context) {
 		Sort:     userRequest.Sort,
 		Remark:   userRequest.Remark,
 	}
-	err = u.Service.UserService.CreateUser(userDto)
+	err = u.Service.CreateUser(userDto)
 	if err != nil {
 		result.FailWithMsg(c, result.UserError, err.Error())
 	} else {
@@ -104,7 +104,7 @@ func (u UserController) QueryUserList(c *gin.Context) {
 		PageSize: req.PageSize,
 	}
 
-	list, total := u.Service.UserService.QueryUserList(queryUserListDto)
+	list, total := u.Service.QueryUserList(queryUserListDto)
 
 	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
 }
@@ -128,7 +128,7 @@ func (u UserController) UpdateUser(c *gin.Context) {
 		Sort:     userRequest.Sort,
 		Remark:   userRequest.Remark,
 	}
-	err = u.Service.UserService.UpdateUser(userDto)
+	err = u.Service.UpdateUser(userDto)
 	if err != nil {
 		result.FailWithMsg(c, result.UserError, err.Error())
 	} else {
@@ -146,7 +146,7 @@ func (u UserController) DeleteUserByIds(c *gin.Context) {
 		return
 	}
 
-	err = u.Service.UserService.DeleteUserByIds(userRequest.Ids)
+	err = u.Service.DeleteUserByIds(userRequest.Ids)
 	if err != nil {
 		result.FailWithMsg(c, result.UserError, err.Error())
 	} else {
@@ -164,7 +164,7 @@ func (u UserController) QueryUserRoleList(c *gin.Context) {
 		return
 	}
 
-	resp, err := u.Service.UserService.QueryUserRoleList(id)
+	resp, err := u.Service.QueryUserRoleList(id)
 	if err != nil {
 		result.FailWithMsg(c, result.UserError, err.Error())
 	} else {
@@ -186,7 +186,7 @@ func (u UserController) UpdateUserRoleList(c *gin.Context) {
 		RoleId: req.RoleId,
 	}
 
-	err = u.Service.UserService.UpdateUserRoleList(roleDtoRequest)
+	err = u.Service.UpdateUserRoleList(roleDtoRequest)
 	if err != nil {
 		result.FailWithMsg(c, result.UserError, err.Error())
 	} else {

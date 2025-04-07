@@ -2,7 +2,7 @@ package menu
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/service"
+	"github.com/feihua/simple-go/internal/service/menu"
 	"github.com/feihua/simple-go/internal/vo/requests"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
@@ -14,10 +14,10 @@ Author: LiuFeiHua
 Date: 2024/4/15 18:03
 */
 type MenuController struct {
-	Service *service.ServiceImpl
+	Service menu.MenuService
 }
 
-func NewMenuController(Service *service.ServiceImpl) *MenuController {
+func NewMenuController(Service menu.MenuService) *MenuController {
 	return &MenuController{Service: Service}
 }
 
@@ -43,7 +43,7 @@ func (m MenuController) CreateMenu(c *gin.Context) {
 		Remark:   req.Remark,
 	}
 
-	err = m.Service.MenuService.CreateMenu(menuDto)
+	err = m.Service.CreateMenu(menuDto)
 	if err != nil {
 		result.FailWithMsg(c, result.MenuError, err.Error())
 	} else {
@@ -60,7 +60,7 @@ func (m MenuController) QueryMenuList(c *gin.Context) {
 		return
 	}
 
-	menuList, err := m.Service.MenuService.QueryMenuList()
+	menuList, err := m.Service.QueryMenuList()
 	if err != nil {
 		result.FailWithMsg(c, result.MenuError, err.Error())
 	} else {
@@ -90,7 +90,7 @@ func (m MenuController) UpdateMenu(c *gin.Context) {
 		MenuIcon: req.MenuIcon,
 		Remark:   req.Remark,
 	}
-	err = m.Service.MenuService.UpdateMenu(menuDto)
+	err = m.Service.UpdateMenu(menuDto)
 	if err != nil {
 		result.FailWithMsg(c, result.MenuError, err.Error())
 	} else {
@@ -108,7 +108,7 @@ func (m MenuController) DeleteMenuById(c *gin.Context) {
 		return
 	}
 
-	err = m.Service.MenuService.DeleteMenuById(req.Id)
+	err = m.Service.DeleteMenuById(req.Id)
 	if err != nil {
 		result.FailWithMsg(c, result.MenuError, err.Error())
 	} else {

@@ -1,13 +1,12 @@
 package user
 
 import (
-	"github.com/feihua/simple-go/internal/controller"
+	"github.com/feihua/simple-go/internal/controller/user"
 	"github.com/gin-gonic/gin"
 )
 
-func UserRouter(r *gin.RouterGroup) {
+func UserRouter(r *gin.RouterGroup, userController *user.UserController) {
 
-	userController := controller.C.UserController
 	r.POST("/user/login", userController.Login)
 	r.GET("/user/queryUserMenuList", userController.QueryUserMenuList)
 

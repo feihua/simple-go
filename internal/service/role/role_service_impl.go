@@ -13,36 +13,41 @@ Author: LiuFeiHua
 Date: 2024/4/16 13:47
 */
 type RoleServiceImpl struct {
-	Dao *dao.DaoImpl
+	Dao         *dao.RoleDao
+	MenuDao     *dao.MenuDao
+	RoleMenuDao *dao.RoleMenuDao
 }
 
-func NewRoleServiceImpl(dao *dao.DaoImpl) RoleService {
-	return &RoleServiceImpl{Dao: dao}
+func NewRoleServiceImpl(dao *dao.RoleDao, MenuDao *dao.MenuDao, RoleMenuDao *dao.RoleMenuDao) RoleService {
+	return &RoleServiceImpl{Dao: dao,
+		MenuDao:     MenuDao,
+		RoleMenuDao: RoleMenuDao,
+	}
 }
 
 // CreateRole 创建角色
 func (r *RoleServiceImpl) CreateRole(dto dto.RoleDto) error {
-	return r.Dao.RoleDao.CreateRole(dto)
+	return r.Dao.CreateRole(dto)
 }
 
 // QueryRoleList 查询角色列表
 func (r *RoleServiceImpl) QueryRoleList(role dto.QueryRoleListDto) ([]model.Role, int64) {
-	return r.Dao.RoleDao.QueryRoleList(role)
+	return r.Dao.QueryRoleList(role)
 }
 
 // UpdateRole 更新角色
 func (r *RoleServiceImpl) UpdateRole(roleDto dto.RoleDto) error {
-	return r.Dao.RoleDao.UpdateRole(roleDto)
+	return r.Dao.UpdateRole(roleDto)
 }
 
 // DeleteRoleByIds 删除角色
 func (r *RoleServiceImpl) DeleteRoleByIds(ids []int64) error {
-	return r.Dao.RoleDao.DeleteRoleByIds(ids)
+	return r.Dao.DeleteRoleByIds(ids)
 }
 
 // QueryRoleMenuList 根据角色Id查询角色菜单
 func (r *RoleServiceImpl) QueryRoleMenuList(roleId int64) (*dto.QueryRoleMenuListDtoResp, error) {
-	list, err := r.Dao.MenuDao.QueryMenuList()
+	list, err := r.MenuDao.QueryMenuList()
 	if err != nil {
 		return nil, errors.New("查询所有菜单异常")
 	}
@@ -70,7 +75,7 @@ func (r *RoleServiceImpl) QueryRoleMenuList(roleId int64) (*dto.QueryRoleMenuLis
 	}
 
 	if roleId != 1 {
-		ids, err1 := r.Dao.RoleMenuDao.QueryRoleMenuList(roleId)
+		ids, err1 := r.RoleMenuDao.QueryRoleMenuList(roleId)
 		if err1 != nil {
 			return nil, errors.New(err1.Error())
 		}
@@ -88,7 +93,7 @@ func (r *RoleServiceImpl) UpdateRoleMenuList(roleMenu dto.RoleMenuDtoRequest) er
 	if roleMenu.RoleId == 1 {
 		return errors.New("不能修改超级管理员的权限")
 	}
-	role, err := r.Dao.RoleDao.QueryRoleById(roleMenu.RoleId)
+	role, err := r.Dao.QueryRoleById(roleMenu.RoleId)
 	if err != nil {
 		return errors.New("查询角色异常")
 	}
@@ -101,5 +106,5 @@ func (r *RoleServiceImpl) UpdateRoleMenuList(roleMenu dto.RoleMenuDtoRequest) er
 	if len(roleMenu.MenuIds) == 0 {
 		return errors.New("菜单不能为空")
 	}
-	return r.Dao.RoleMenuDao.UpdateRoleMenuList(roleMenu.RoleId, roleMenu.MenuIds)
+	return r.RoleMenuDao.UpdateRoleMenuList(roleMenu.RoleId, roleMenu.MenuIds)
 }

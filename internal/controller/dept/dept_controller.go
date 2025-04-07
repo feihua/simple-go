@@ -2,7 +2,7 @@ package dept
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/service"
+	"github.com/feihua/simple-go/internal/service/dept"
 	"github.com/feihua/simple-go/internal/vo/requests"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
@@ -14,10 +14,10 @@ Author: LiuFeiHua
 Date: 2024/4/15 16:37
 */
 type DeptController struct {
-	Service *service.ServiceImpl
+	Service dept.DeptService
 }
 
-func NewDeptController(Service *service.ServiceImpl) *DeptController {
+func NewDeptController(Service dept.DeptService) *DeptController {
 	return &DeptController{Service: Service}
 }
 
@@ -37,7 +37,7 @@ func (d DeptController) CreateDept(c *gin.Context) {
 		Remark:   req.Remark,
 	}
 
-	err = d.Service.DeptService.CreateDept(deptDto)
+	err = d.Service.CreateDept(deptDto)
 	if err != nil {
 		result.FailWithMsg(c, result.DeptError, err.Error())
 	} else {
@@ -54,7 +54,7 @@ func (d DeptController) QueryDeptList(c *gin.Context) {
 		return
 	}
 
-	deptList, err := d.Service.DeptService.QueryDeptList()
+	deptList, err := d.Service.QueryDeptList()
 	if err != nil {
 		result.FailWithMsg(c, result.DeptError, err.Error())
 	} else {
@@ -80,7 +80,7 @@ func (d DeptController) UpdateDept(c *gin.Context) {
 		Remark:   req.Remark,
 	}
 
-	err = d.Service.DeptService.UpdateDept(deptDto)
+	err = d.Service.UpdateDept(deptDto)
 	if err != nil {
 		result.FailWithMsg(c, result.DeptError, err.Error())
 	} else {
@@ -98,7 +98,7 @@ func (d DeptController) DeleteDeptByIds(c *gin.Context) {
 		return
 	}
 
-	err = d.Service.DeptService.DeleteDeptByIds(req.Ids)
+	err = d.Service.DeleteDeptByIds(req.Ids)
 	if err != nil {
 		result.FailWithMsg(c, result.DeptError, err.Error())
 	} else {

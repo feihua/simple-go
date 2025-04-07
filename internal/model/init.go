@@ -15,7 +15,7 @@ var (
 	err error
 )
 
-func Init() {
+func Init() *gorm.DB {
 	mysqlInfo := config.GlobalAppConfig.Mysql
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
@@ -37,6 +37,8 @@ func Init() {
 	}
 
 	utils.Logger.Debugf("mysql已连接: %s", dsn)
+
+	return DB
 	// 数据库迁移
 	// migrate()
 }
