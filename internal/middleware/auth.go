@@ -3,6 +3,8 @@ package middleware
 import (
 	"context"
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/pkg/redis"
 	"github.com/feihua/simple-go/pkg/utils"
 	"github.com/gin-gonic/gin"
@@ -36,7 +38,7 @@ func JwtMiddleware() gin.HandlerFunc {
 
 		claims := jwt.MapClaims{}
 		tkn, err := jwt.ParseWithClaims(token, claims, func(t *jwt.Token) (interface{}, error) {
-			return []byte(config.TokenInfo.AccessSecret), nil
+			return []byte(config.GlobalAppConfig.Jwt.AccessSecret), nil
 		})
 
 		if err != nil || !tkn.Valid {

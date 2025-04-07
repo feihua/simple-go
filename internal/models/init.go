@@ -2,7 +2,7 @@ package models
 
 import (
 	"fmt"
-	"github.com/feihua/simple-go/config"
+	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/pkg/utils"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

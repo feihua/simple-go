@@ -2,7 +2,7 @@ package redis
 
 import (
 	"context"
-	"github.com/feihua/simple-go/config"
+	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/pkg/utils"
 	"github.com/redis/go-redis/v9"
 )

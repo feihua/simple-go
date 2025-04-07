@@ -4,12 +4,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/feihua/simple-go/config"
 	"github.com/feihua/simple-go/internal/controller"
 	"github.com/feihua/simple-go/internal/dao"
 	"github.com/feihua/simple-go/internal/middleware"
 	"github.com/feihua/simple-go/internal/router"
 	"github.com/feihua/simple-go/internal/services"
+	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/pkg/redis"
 	"github.com/feihua/simple-go/pkg/utils"
 	"github.com/gin-gonic/gin"
