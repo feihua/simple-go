@@ -1,24 +1,19 @@
 package router
 
 import (
-	de1 "github.com/feihua/simple-go/internal/controller/dept"
-	d1 "github.com/feihua/simple-go/internal/controller/dict"
-	l1 "github.com/feihua/simple-go/internal/controller/log"
-	m1 "github.com/feihua/simple-go/internal/controller/menu"
-	r1 "github.com/feihua/simple-go/internal/controller/role"
-	u1 "github.com/feihua/simple-go/internal/controller/user"
+	u1 "github.com/feihua/simple-go/internal/controller/system"
 	"github.com/feihua/simple-go/internal/middleware"
-	"github.com/feihua/simple-go/internal/router/dept"
-	"github.com/feihua/simple-go/internal/router/dict"
-	"github.com/feihua/simple-go/internal/router/log"
-	"github.com/feihua/simple-go/internal/router/menu"
-	"github.com/feihua/simple-go/internal/router/role"
-	"github.com/feihua/simple-go/internal/router/user"
+	"github.com/feihua/simple-go/internal/router/system/dept"
+	"github.com/feihua/simple-go/internal/router/system/dict"
+	"github.com/feihua/simple-go/internal/router/system/log"
+	"github.com/feihua/simple-go/internal/router/system/menu"
+	"github.com/feihua/simple-go/internal/router/system/role"
+	"github.com/feihua/simple-go/internal/router/system/user"
 	"github.com/gin-gonic/gin"
 )
 
 // Init 初始化路由
-func Init(uController *u1.UserController, rController *r1.RoleController, mController *m1.MenuController, lController *l1.LogController, dController *d1.DictController, deController *de1.DeptController) *gin.Engine {
+func Init(uController *u1.UserController, rController *u1.RoleController, mController *u1.MenuController, lController *u1.LogController, dController *u1.DictController, deController *u1.DeptController) *gin.Engine {
 	r := gin.Default()
 	r.Use(middleware.JwtMiddleware())
 

@@ -7,21 +7,16 @@
 package main
 
 import (
-	dept2 "github.com/feihua/simple-go/internal/controller/dept"
-	dict2 "github.com/feihua/simple-go/internal/controller/dict"
-	log2 "github.com/feihua/simple-go/internal/controller/log"
-	menu2 "github.com/feihua/simple-go/internal/controller/menu"
-	role2 "github.com/feihua/simple-go/internal/controller/role"
-	user2 "github.com/feihua/simple-go/internal/controller/user"
-	"github.com/feihua/simple-go/internal/dao"
+	"github.com/feihua/simple-go/internal/controller/system"
+	system2 "github.com/feihua/simple-go/internal/dao/system"
 	"github.com/feihua/simple-go/internal/model"
 	"github.com/feihua/simple-go/internal/router"
-	"github.com/feihua/simple-go/internal/service/dept"
-	"github.com/feihua/simple-go/internal/service/dict"
-	"github.com/feihua/simple-go/internal/service/log"
-	"github.com/feihua/simple-go/internal/service/menu"
-	"github.com/feihua/simple-go/internal/service/role"
-	"github.com/feihua/simple-go/internal/service/user"
+	"github.com/feihua/simple-go/internal/service/system/dept"
+	"github.com/feihua/simple-go/internal/service/system/dict"
+	"github.com/feihua/simple-go/internal/service/system/log"
+	"github.com/feihua/simple-go/internal/service/system/menu"
+	"github.com/feihua/simple-go/internal/service/system/role"
+	"github.com/feihua/simple-go/internal/service/system/user"
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,26 +24,26 @@ import (
 
 func initApp() *gin.Engine {
 	db := model.Init()
-	userDao := dao.NewUserDao(db)
-	userRoleDao := dao.NewUserRoleDao(db)
-	menuDao := dao.NewMenuDao(db)
-	roleDao := dao.NewRoleDao(db)
+	userDao := system2.NewUserDao(db)
+	userRoleDao := system2.NewUserRoleDao(db)
+	menuDao := system2.NewMenuDao(db)
+	roleDao := system2.NewRoleDao(db)
 	userService := user.NewUserServiceImpl(userDao, userRoleDao, menuDao, roleDao)
-	userController := user2.NewUserController(userService)
-	roleMenuDao := dao.NewRoleMenuDao(db)
+	userController := system.NewUserController(userService)
+	roleMenuDao := system2.NewRoleMenuDao(db)
 	roleService := role.NewRoleServiceImpl(roleDao, menuDao, roleMenuDao)
-	roleController := role2.NewRoleController(roleService)
+	roleController := system.NewRoleController(roleService)
 	menuService := menu.NewMenuServiceImpl(menuDao)
-	menuController := menu2.NewMenuController(menuService)
-	logDao := dao.NewLogDao(db)
+	menuController := system.NewMenuController(menuService)
+	logDao := system2.NewLogDao(db)
 	logService := log.NewLogServiceImpl(logDao)
-	logController := log2.NewLogController(logService)
-	dictDao := dao.NewDictDao(db)
+	logController := system.NewLogController(logService)
+	dictDao := system2.NewDictDao(db)
 	dictService := dict.NewDictServiceImpl(dictDao)
-	dictController := dict2.NewDictController(dictService)
-	deptDao := dao.NewDeptDao(db)
+	dictController := system.NewDictController(dictService)
+	deptDao := system2.NewDeptDao(db)
 	deptService := dept.NewDeptServiceImpl(deptDao)
-	deptController := dept2.NewDeptController(deptService)
+	deptController := system.NewDeptController(deptService)
 	engine := router.Init(userController, roleController, menuController, logController, dictController, deptController)
 	return engine
 }
