@@ -2,7 +2,7 @@ package role
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 )
 
 // RoleService 角色操作接口
@@ -14,7 +14,7 @@ type RoleService interface {
 	// CreateRole 创建角色
 	CreateRole(dto dto.RoleDto) error
 	// QueryRoleList 查询角色列表
-	QueryRoleList(role dto.QueryRoleListDto) ([]models.Role, int64)
+	QueryRoleList(role dto.QueryRoleListDto) ([]model.Role, int64)
 	// UpdateRole 更新角色
 	UpdateRole(roleDto dto.RoleDto) error
 	// DeleteRoleByIds 删除角色

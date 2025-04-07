@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +18,7 @@ func (u UserRoleDao) IsAdministrator(userId int64) bool {
 
 	var count int64
 	// 1是预留超级管理员角色的id
-	u.db.Model(&models.UserRole{}).Where("user_id= ? and role_id = 1", userId).Count(&count)
+	u.db.Model(&model.UserRole{}).Where("user_id= ? and role_id = 1", userId).Count(&count)
 
 	return count == 1
 }
@@ -26,7 +26,7 @@ func (u UserRoleDao) IsAdministrator(userId int64) bool {
 // QueryUserRoleList 根据userId查询用户角色的roleId
 func (u UserRoleDao) QueryUserRoleList(userId int64) ([]int64, error) {
 
-	var userRoles []models.UserRole
+	var userRoles []model.UserRole
 	err := u.db.Where("user_id = ?", userId).Find(&userRoles).Error
 
 	var roleIds []int64
@@ -39,10 +39,10 @@ func (u UserRoleDao) QueryUserRoleList(userId int64) ([]int64, error) {
 }
 
 // UpdateUserRoleList 更新用户与角色关糸
-func (u UserRoleDao) UpdateUserRoleList(userId int64, userRoles []models.UserRole) error {
+func (u UserRoleDao) UpdateUserRoleList(userId int64, userRoles []model.UserRole) error {
 
 	// 先删除
-	u.db.Where("user_id = ?", userId).Delete(&models.UserRole{})
+	u.db.Where("user_id = ?", userId).Delete(&model.UserRole{})
 
-	return u.db.Model(&models.UserRole{}).CreateInBatches(&userRoles, len(userRoles)).Error
+	return u.db.Model(&model.UserRole{}).CreateInBatches(&userRoles, len(userRoles)).Error
 }

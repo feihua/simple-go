@@ -2,7 +2,7 @@ package dept
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 )
 
 // DeptService 部门操作接口
@@ -16,7 +16,7 @@ type DeptService interface {
 	CreateDept(dto dto.DeptDto) error
 
 	// QueryDeptList 查询部门列表
-	QueryDeptList() ([]models.Dept, error)
+	QueryDeptList() ([]model.Dept, error)
 
 	// UpdateDept 更新部门
 	UpdateDept(deptDto dto.DeptDto) error

@@ -3,7 +3,7 @@ package log
 import (
 	"github.com/feihua/simple-go/internal/dao"
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 )
 
 // LogServiceImpl 日志操作实现
@@ -25,7 +25,7 @@ func (l *LogServiceImpl) CreateLog(dto dto.LogDto) error {
 }
 
 // QueryLogList 查询操作日志
-func (l *LogServiceImpl) QueryLogList(current int, pageSize int) ([]models.OperateLog, int64) {
+func (l *LogServiceImpl) QueryLogList(current int, pageSize int) ([]model.OperateLog, int64) {
 	return l.Dao.LogDao.QueryLogList(current, pageSize)
 }
 
@@ -40,7 +40,7 @@ func (l *LogServiceImpl) CreateLoginLog(dto dto.LoginLogDto) error {
 }
 
 // QueryLoginLogList 查询登录日志
-func (l *LogServiceImpl) QueryLoginLogList(current int, pageSize int) ([]models.LoginLog, int64) {
+func (l *LogServiceImpl) QueryLoginLogList(current int, pageSize int) ([]model.LoginLog, int64) {
 	return l.Dao.LogDao.QueryLoginLogList(current, pageSize)
 }
 

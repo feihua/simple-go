@@ -1,6 +1,6 @@
 package dao
 
-import "github.com/feihua/simple-go/internal/models"
+import "github.com/feihua/simple-go/internal/model"
 
 type DaoImpl struct {
 	UserDao     *UserDao
@@ -15,7 +15,7 @@ type DaoImpl struct {
 
 func NewDaoImpl() *DaoImpl {
 
-	db := models.DB
+	db := model.DB
 	return &DaoImpl{
 		UserDao:     NewUserDao(db),
 		UserRoleDao: NewUserRoleDao(db),
@@ -31,7 +31,7 @@ func NewDaoImpl() *DaoImpl {
 var Dao *DaoImpl
 
 func InitDao() {
-	models.Init()
+	model.Init()
 	Dao = NewDaoImpl()
 
 }

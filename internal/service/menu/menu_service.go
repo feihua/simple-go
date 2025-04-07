@@ -2,7 +2,7 @@ package menu
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 )
 
 // MenuService 菜单操作接口
@@ -15,7 +15,7 @@ type MenuService interface {
 	CreateMenu(dto dto.MenuDto) error
 
 	// QueryMenuList 查询菜单
-	QueryMenuList() ([]models.Menu, error)
+	QueryMenuList() ([]model.Menu, error)
 
 	// UpdateMenu 更新菜单
 	UpdateMenu(menuDto dto.MenuDto) error

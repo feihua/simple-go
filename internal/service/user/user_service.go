@@ -2,7 +2,7 @@ package user
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 )
 
 // UserService 用户操作接口
@@ -19,7 +19,7 @@ type UserService interface {
 	// CreateUser 创建用户
 	CreateUser(dto dto.UserDto) error
 	// QueryUserList 查询用户列表
-	QueryUserList(userListDto dto.QueryUserListDto) ([]models.User, int64)
+	QueryUserList(userListDto dto.QueryUserListDto) ([]model.User, int64)
 	// UpdateUser 更新用户
 	UpdateUser(userDto dto.UserDto) error
 	// DeleteUserByIds 删除用户

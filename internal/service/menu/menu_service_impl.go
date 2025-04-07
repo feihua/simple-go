@@ -3,7 +3,7 @@ package menu
 import (
 	"github.com/feihua/simple-go/internal/dao"
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 )
 
 // MenuServiceImpl 菜单操作实现
@@ -25,7 +25,7 @@ func (menu *MenuServiceImpl) CreateMenu(dto dto.MenuDto) error {
 }
 
 // QueryMenuList 查询菜单
-func (menu *MenuServiceImpl) QueryMenuList() ([]models.Menu, error) {
+func (menu *MenuServiceImpl) QueryMenuList() ([]model.Menu, error) {
 	return menu.Dao.MenuDao.QueryMenuList()
 }
 

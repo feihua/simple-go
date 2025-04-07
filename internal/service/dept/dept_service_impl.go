@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/feihua/simple-go/internal/dao"
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 )
 
 // DeptServiceImpl
@@ -37,12 +37,12 @@ func (d *DeptServiceImpl) CreateDept(dto dto.DeptDto) error {
 }
 
 // QueryDeptList 查询部门列表
-func (d *DeptServiceImpl) QueryDeptList() ([]models.Dept, error) {
+func (d *DeptServiceImpl) QueryDeptList() ([]model.Dept, error) {
 	return d.Dao.DeptDao.QueryDeptList()
 }
 
 // QueryDeptByName 根据部门名称查询
-func (d *DeptServiceImpl) QueryDeptByName(deptName string) (*models.Dept, error) {
+func (d *DeptServiceImpl) QueryDeptByName(deptName string) (*model.Dept, error) {
 	return d.Dao.DeptDao.QueryDeptByName(deptName)
 }
 

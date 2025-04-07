@@ -2,7 +2,7 @@ package menu
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/services"
+	"github.com/feihua/simple-go/internal/service"
 	"github.com/feihua/simple-go/internal/vo/requests"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
@@ -14,10 +14,10 @@ Author: LiuFeiHua
 Date: 2024/4/15 18:03
 */
 type MenuController struct {
-	Service *services.ServiceImpl
+	Service *service.ServiceImpl
 }
 
-func NewMenuController(Service *services.ServiceImpl) *MenuController {
+func NewMenuController(Service *service.ServiceImpl) *MenuController {
 	return &MenuController{Service: Service}
 }
 

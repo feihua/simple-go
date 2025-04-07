@@ -3,7 +3,7 @@ package dao
 import (
 	"errors"
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +18,7 @@ func NewDictDao(DB *gorm.DB) *DictDao {
 // CreateDict 创建字典
 func (d DictDao) CreateDict(dto dto.DictDto) error {
 
-	dict := models.Dict{}
+	dict := model.Dict{}
 	dict.Value = dto.Value
 	dict.Label = dto.Label
 	dict.Type = dto.Type
@@ -30,20 +30,20 @@ func (d DictDao) CreateDict(dto dto.DictDto) error {
 }
 
 // QueryDictList 查询字典列表
-func (d DictDao) QueryDictList(current int, pageSize int) ([]models.Dict, int64) {
+func (d DictDao) QueryDictList(current int, pageSize int) ([]model.Dict, int64) {
 
 	var total int64 = 0
-	var dict []models.Dict
+	var dict []model.Dict
 	d.db.Limit(pageSize).Offset((current - 1) * pageSize).Find(&dict)
 
-	d.db.Model(&models.Dict{}).Count(&total)
+	d.db.Model(&model.Dict{}).Count(&total)
 
 	return dict, total
 }
 
-func (d DictDao) QueryDictByName(name, typeName string) (*models.Dict, error) {
+func (d DictDao) QueryDictByName(name, typeName string) (*model.Dict, error) {
 
-	var dict models.Dict
+	var dict model.Dict
 	err := d.db.First(&dict, "value = ? and 'type' = ?", name, typeName).Error
 
 	switch {
@@ -58,7 +58,7 @@ func (d DictDao) QueryDictByName(name, typeName string) (*models.Dict, error) {
 
 // UpdateDict 更新字典
 func (d DictDao) UpdateDict(dto dto.DictDto) error {
-	dict := models.Dict{}
+	dict := model.Dict{}
 	dict.Id = dto.Id
 	dict.Value = dto.Value
 	dict.Label = dto.Label
@@ -72,5 +72,5 @@ func (d DictDao) UpdateDict(dto dto.DictDto) error {
 
 // DeleteDictByIds 删除字典
 func (d DictDao) DeleteDictByIds(ids []int64) error {
-	return d.db.Where("id in (?)", ids).Delete(&models.Dict{}).Error
+	return d.db.Where("id in (?)", ids).Delete(&model.Dict{}).Error
 }

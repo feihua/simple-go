@@ -2,7 +2,7 @@ package user
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/services"
+	"github.com/feihua/simple-go/internal/service"
 	"github.com/feihua/simple-go/internal/vo/requests"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/feihua/simple-go/pkg/utils"
@@ -16,10 +16,10 @@ Author: LiuFeiHua
 Date: 2024/4/15 16:53
 */
 type UserController struct {
-	Service *services.ServiceImpl
+	Service *service.ServiceImpl
 }
 
-func NewUserController(Service *services.ServiceImpl) *UserController {
+func NewUserController(Service *service.ServiceImpl) *UserController {
 	return &UserController{
 		Service: Service,
 	}

@@ -7,7 +7,7 @@ import (
 	"github.com/feihua/simple-go/internal/controller/menu"
 	"github.com/feihua/simple-go/internal/controller/role"
 	"github.com/feihua/simple-go/internal/controller/user"
-	"github.com/feihua/simple-go/internal/services"
+	"github.com/feihua/simple-go/internal/service"
 )
 
 type ControllerImpl struct {
@@ -20,7 +20,7 @@ type ControllerImpl struct {
 }
 
 func NewControllerImpl() *ControllerImpl {
-	s := services.Service
+	s := service.Service
 	return &ControllerImpl{
 		UserController: user.NewUserController(s),
 		RoleController: role.NewRoleController(s),

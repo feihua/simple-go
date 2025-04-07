@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/feihua/simple-go/internal/dao"
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 )
 
 // RoleServiceImpl 角色操作实现
@@ -26,7 +26,7 @@ func (r *RoleServiceImpl) CreateRole(dto dto.RoleDto) error {
 }
 
 // QueryRoleList 查询角色列表
-func (r *RoleServiceImpl) QueryRoleList(role dto.QueryRoleListDto) ([]models.Role, int64) {
+func (r *RoleServiceImpl) QueryRoleList(role dto.QueryRoleListDto) ([]model.Role, int64) {
 	return r.Dao.RoleDao.QueryRoleList(role)
 }
 

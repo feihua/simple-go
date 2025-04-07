@@ -3,7 +3,7 @@ package dao
 import (
 	"errors"
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +18,7 @@ func NewRoleDao(DB *gorm.DB) *RoleDao {
 // CreateRole 创建角色
 func (r RoleDao) CreateRole(dto dto.RoleDto) error {
 
-	role := models.Role{
+	role := model.Role{
 		RoleName: dto.RoleName,
 		StatusId: dto.StatusId,
 		Sort:     dto.Sort,
@@ -31,13 +31,13 @@ func (r RoleDao) CreateRole(dto dto.RoleDto) error {
 }
 
 // QueryRoleList 查询角色列表
-func (r RoleDao) QueryRoleList(roleDto dto.QueryRoleListDto) ([]models.Role, int64) {
+func (r RoleDao) QueryRoleList(roleDto dto.QueryRoleListDto) ([]model.Role, int64) {
 	pageNo := roleDto.PageNo
 	pageSize := roleDto.PageSize
 
 	var total int64 = 0
-	var role []models.Role
-	tx := r.db.Model(&models.Role{})
+	var role []model.Role
+	tx := r.db.Model(&model.Role{})
 
 	if roleDto.RoleName != "" {
 		tx.Where("role_name=?", roleDto.RoleName)
@@ -52,27 +52,27 @@ func (r RoleDao) QueryRoleList(roleDto dto.QueryRoleListDto) ([]models.Role, int
 }
 
 // QueryAllRoleList 查询角色列表
-func (r RoleDao) QueryAllRoleList() ([]models.Role, error) {
+func (r RoleDao) QueryAllRoleList() ([]model.Role, error) {
 
-	var role []models.Role
-	err := r.db.Model(&models.Role{}).Where("status_id=?", 1).Find(&role).Error
+	var role []model.Role
+	err := r.db.Model(&model.Role{}).Where("status_id=?", 1).Find(&role).Error
 
 	return role, err
 }
 
 // QueryRoleById 根据角色Id查询角色
-func (r RoleDao) QueryRoleById(roleId int64) (*models.Role, error) {
+func (r RoleDao) QueryRoleById(roleId int64) (*model.Role, error) {
 
-	var role models.Role
+	var role model.Role
 
 	err := r.db.First(&role, r.db.Where("id = ?", roleId)).Error
 	return &role, err
 }
 
 // QueryRoleByName 根据角色名称查询角色
-func (r RoleDao) QueryRoleByName(name string) (*models.Role, error) {
+func (r RoleDao) QueryRoleByName(name string) (*model.Role, error) {
 
-	var role models.Role
+	var role model.Role
 
 	err := r.db.First(&role, r.db.Where("role_name = ?", name)).Error
 	switch {
@@ -88,7 +88,7 @@ func (r RoleDao) QueryRoleByName(name string) (*models.Role, error) {
 // UpdateRole 更新角色
 func (r RoleDao) UpdateRole(dto dto.RoleDto) error {
 
-	role := models.Role{
+	role := model.Role{
 		Id:       dto.Id,
 		RoleName: dto.RoleName,
 		StatusId: dto.StatusId,
@@ -101,5 +101,5 @@ func (r RoleDao) UpdateRole(dto dto.RoleDto) error {
 
 // DeleteRoleByIds 通过Id删除角色
 func (r RoleDao) DeleteRoleByIds(ids []int64) error {
-	return r.db.Where("id in (?)", ids).Delete(&models.Role{}).Error
+	return r.db.Where("id in (?)", ids).Delete(&model.Role{}).Error
 }

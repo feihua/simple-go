@@ -2,7 +2,7 @@ package role
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/services"
+	"github.com/feihua/simple-go/internal/service"
 	"github.com/feihua/simple-go/internal/vo/requests"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
@@ -15,10 +15,10 @@ Author: LiuFeiHua
 Date: 2024/4/15 16:55
 */
 type RoleController struct {
-	Service *services.ServiceImpl
+	Service *service.ServiceImpl
 }
 
-func NewRoleController(Service *services.ServiceImpl) *RoleController {
+func NewRoleController(Service *service.ServiceImpl) *RoleController {
 	return &RoleController{Service: Service}
 }
 

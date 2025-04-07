@@ -2,7 +2,7 @@ package dept
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/services"
+	"github.com/feihua/simple-go/internal/service"
 	"github.com/feihua/simple-go/internal/vo/requests"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
@@ -14,10 +14,10 @@ Author: LiuFeiHua
 Date: 2024/4/15 16:37
 */
 type DeptController struct {
-	Service *services.ServiceImpl
+	Service *service.ServiceImpl
 }
 
-func NewDeptController(Service *services.ServiceImpl) *DeptController {
+func NewDeptController(Service *service.ServiceImpl) *DeptController {
 	return &DeptController{Service: Service}
 }
 

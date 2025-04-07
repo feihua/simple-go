@@ -2,7 +2,7 @@ package dao
 
 import (
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 	"gorm.io/gorm"
 )
 
@@ -16,7 +16,7 @@ func NewMenuDao(DB *gorm.DB) *MenuDao {
 
 // CreateMenu 创建菜单
 func (m MenuDao) CreateMenu(dto dto.MenuDto) error {
-	menu := models.Menu{
+	menu := model.Menu{
 		MenuName: dto.MenuName,
 		MenuType: dto.MenuType,
 		StatusId: dto.StatusId,
@@ -32,17 +32,17 @@ func (m MenuDao) CreateMenu(dto dto.MenuDto) error {
 }
 
 // QueryMenuList 查询菜单
-func (m MenuDao) QueryMenuList() ([]models.Menu, error) {
+func (m MenuDao) QueryMenuList() ([]model.Menu, error) {
 
-	var menus []models.Menu
-	err := m.db.Model(&models.Menu{}).Where("status_id = ?", 1).Find(&menus).Error
+	var menus []model.Menu
+	err := m.db.Model(&model.Menu{}).Where("status_id = ?", 1).Find(&menus).Error
 
 	return menus, err
 }
 
 // UpdateMenu 更新菜单
 func (m MenuDao) UpdateMenu(dto dto.MenuDto) error {
-	menu := models.Menu{
+	menu := model.Menu{
 		Id:       dto.Id,
 		MenuName: dto.MenuName,
 		MenuType: dto.MenuType,
@@ -62,6 +62,6 @@ func (m MenuDao) UpdateMenu(dto dto.MenuDto) error {
 
 // DeleteMenuById 删除菜单
 func (m MenuDao) DeleteMenuById(id int64) error {
-	err := m.db.Delete(&models.Menu{Id: id}).Error
+	err := m.db.Delete(&model.Menu{Id: id}).Error
 	return err
 }

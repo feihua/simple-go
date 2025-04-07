@@ -3,7 +3,7 @@ package dao
 import (
 	"errors"
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 	"gorm.io/gorm"
 )
 
@@ -23,7 +23,7 @@ func NewUserDao(DB *gorm.DB) *UserDao {
 // CreateUser 创建用户
 func (u UserDao) CreateUser(dto dto.UserDto) error {
 
-	user := models.User{
+	user := model.User{
 		Mobile:   dto.Mobile,
 		UserName: dto.UserName,
 		Password: dto.Password,
@@ -38,8 +38,8 @@ func (u UserDao) CreateUser(dto dto.UserDto) error {
 }
 
 // QueryUserByUserId 根据用户id查询用户
-func (u UserDao) QueryUserByUserId(userId int64) (*models.User, error) {
-	var sysUser models.User
+func (u UserDao) QueryUserByUserId(userId int64) (*model.User, error) {
+	var sysUser model.User
 
 	err := u.db.First(&sysUser, u.db.Where("id = ?", userId)).Error
 
@@ -54,8 +54,8 @@ func (u UserDao) QueryUserByUserId(userId int64) (*models.User, error) {
 }
 
 // QueryUserByUsername 根据用户名称查询用户
-func (u UserDao) QueryUserByUsername(username string) (*models.User, error) {
-	var sysUser models.User
+func (u UserDao) QueryUserByUsername(username string) (*model.User, error) {
+	var sysUser model.User
 
 	err := u.db.First(&sysUser, u.db.Where("user_name = ?", username)).Error
 
@@ -70,10 +70,10 @@ func (u UserDao) QueryUserByUsername(username string) (*models.User, error) {
 }
 
 // QueryUserByUsernameOrMobile 根据用户名称或者收集查询用户信息
-func (u UserDao) QueryUserByUsernameOrMobile(account string) ([]models.User, error) {
-	var sysUser []models.User
+func (u UserDao) QueryUserByUsernameOrMobile(account string) ([]model.User, error) {
+	var sysUser []model.User
 
-	err := u.db.Model(&models.User{}).Where("user_name = ? or mobile = ?", account, account).Find(&sysUser).Error
+	err := u.db.Model(&model.User{}).Where("user_name = ? or mobile = ?", account, account).Find(&sysUser).Error
 
 	return sysUser, err
 }
@@ -98,7 +98,7 @@ where t.user_id = ?`
 }
 
 // QueryUserMenus 根据用户id查询用户权限
-func (u UserDao) QueryUserMenus(userId int64) ([]models.Menu, error) {
+func (u UserDao) QueryUserMenus(userId int64) ([]model.Menu, error) {
 	sql := `select u.*
 from sys_user_role t
          left join sys_role usr on t.role_id = usr.id
@@ -106,21 +106,21 @@ from sys_user_role t
          left join sys_menu u on srm.menu_id = u.id
 where t.user_id = ?`
 
-	var list []models.Menu
+	var list []model.Menu
 	u.db.Raw(sql, userId).Scan(&list)
 
 	return list, nil
 }
 
 // QueryUserList 查询用户列表
-func (u UserDao) QueryUserList(userListDto dto.QueryUserListDto) ([]models.User, int64) {
+func (u UserDao) QueryUserList(userListDto dto.QueryUserListDto) ([]model.User, int64) {
 
 	pageNo := userListDto.PageNo
 	pageSize := userListDto.PageSize
 	var total int64 = 0
-	var sysUser []models.User
+	var sysUser []model.User
 
-	tx := u.db.Model(&models.User{})
+	tx := u.db.Model(&model.User{})
 
 	if userListDto.Mobile != "" {
 		tx.Where("mobile=?", userListDto.Mobile)
@@ -141,7 +141,7 @@ func (u UserDao) QueryUserList(userListDto dto.QueryUserListDto) ([]models.User,
 // UpdateUser 更新用户
 func (u UserDao) UpdateUser(dto dto.UserDto) error {
 
-	user := models.User{
+	user := model.User{
 		Id:       dto.Id,
 		Mobile:   dto.Mobile,
 		UserName: dto.UserName,
@@ -158,5 +158,5 @@ func (u UserDao) UpdateUser(dto dto.UserDto) error {
 
 // DeleteUserByIds 删除用户
 func (u UserDao) DeleteUserByIds(ids []int64) error {
-	return u.db.Where("id in (?)", ids).Delete(&models.User{}).Error
+	return u.db.Where("id in (?)", ids).Delete(&model.User{}).Error
 }

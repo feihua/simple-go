@@ -1,13 +1,13 @@
-package services
+package service
 
 import (
 	"github.com/feihua/simple-go/internal/dao"
-	"github.com/feihua/simple-go/internal/services/dept"
-	"github.com/feihua/simple-go/internal/services/dict"
-	"github.com/feihua/simple-go/internal/services/log"
-	"github.com/feihua/simple-go/internal/services/menu"
-	"github.com/feihua/simple-go/internal/services/role"
-	"github.com/feihua/simple-go/internal/services/user"
+	"github.com/feihua/simple-go/internal/service/dept"
+	"github.com/feihua/simple-go/internal/service/dict"
+	"github.com/feihua/simple-go/internal/service/log"
+	"github.com/feihua/simple-go/internal/service/menu"
+	"github.com/feihua/simple-go/internal/service/role"
+	"github.com/feihua/simple-go/internal/service/user"
 )
 
 type ServiceImpl struct {

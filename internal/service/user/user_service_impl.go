@@ -6,7 +6,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/feihua/simple-go/internal/dao"
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/pkg/redis"
 	"github.com/feihua/simple-go/pkg/utils"
@@ -110,7 +110,7 @@ func (u *UserServiceImpl) QueryUserMenu(userId int64, userName string) (*dto.Que
 		return nil, errors.New("用户被禁用")
 	}
 
-	var menuList []models.Menu
+	var menuList []model.Menu
 	if u.Dao.UserRoleDao.IsAdministrator(userId) {
 		menuList, err = u.Dao.MenuDao.QueryMenuList()
 	} else {
@@ -156,7 +156,7 @@ func (u *UserServiceImpl) CreateUser(dto dto.UserDto) error {
 }
 
 // QueryUserList 查询用户列表
-func (u *UserServiceImpl) QueryUserList(userListDto dto.QueryUserListDto) ([]models.User, int64) {
+func (u *UserServiceImpl) QueryUserList(userListDto dto.QueryUserListDto) ([]model.User, int64) {
 	return u.Dao.UserDao.QueryUserList(userListDto)
 }
 
@@ -233,9 +233,9 @@ func (u *UserServiceImpl) UpdateUserRoleList(req dto.UpdateUserRoleDtoRequest) e
 		return errors.New("角色不能为空")
 	}
 
-	var userRoles []models.UserRole
+	var userRoles []model.UserRole
 	for _, roleId := range req.RoleId {
-		userRoles = append(userRoles, models.UserRole{
+		userRoles = append(userRoles, model.UserRole{
 			UserId:     userId,
 			RoleId:     roleId,
 			CreateTime: time.Now(),

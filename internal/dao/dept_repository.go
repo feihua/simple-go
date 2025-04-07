@@ -3,7 +3,7 @@ package dao
 import (
 	"errors"
 	"github.com/feihua/simple-go/internal/dto"
-	"github.com/feihua/simple-go/internal/models"
+	"github.com/feihua/simple-go/internal/model"
 	"gorm.io/gorm"
 )
 
@@ -19,7 +19,7 @@ func NewDeptDao(DB *gorm.DB) *DeptDao {
 
 // CreateDept 创建部门
 func (d DeptDao) CreateDept(dto dto.DeptDto) error {
-	dept := models.Dept{
+	dept := model.Dept{
 		DeptName: dto.DeptName,
 		ParentId: dto.ParentId,
 		Sort:     dto.Sort,
@@ -30,9 +30,9 @@ func (d DeptDao) CreateDept(dto dto.DeptDto) error {
 }
 
 // QueryDeptList 查询部门列表(不需要分页)
-func (d DeptDao) QueryDeptList() ([]models.Dept, error) {
+func (d DeptDao) QueryDeptList() ([]model.Dept, error) {
 
-	var dept []models.Dept
+	var dept []model.Dept
 	err := d.db.Find(&dept).Error
 
 	return dept, err
@@ -41,7 +41,7 @@ func (d DeptDao) QueryDeptList() ([]models.Dept, error) {
 // UpdateDept 更新部门
 func (d DeptDao) UpdateDept(dto dto.DeptDto) error {
 
-	dept := models.Dept{
+	dept := model.Dept{
 		Id:       dto.Id,
 		DeptName: dto.DeptName,
 		ParentId: dto.ParentId,
@@ -54,13 +54,13 @@ func (d DeptDao) UpdateDept(dto dto.DeptDto) error {
 
 // DeleteDeptByIds 根据id删除部门
 func (d DeptDao) DeleteDeptByIds(ids []int64) error {
-	return d.db.Where("id in (?)", ids).Delete(&models.Dept{}).Error
+	return d.db.Where("id in (?)", ids).Delete(&model.Dept{}).Error
 }
 
 // QueryDeptByName 根据部门名称查询
-func (d DeptDao) QueryDeptByName(name string) (*models.Dept, error) {
+func (d DeptDao) QueryDeptByName(name string) (*model.Dept, error) {
 
-	var dept models.Dept
+	var dept model.Dept
 	err := d.db.First(&dept, "dept_name = ?", name).Error
 
 	switch {

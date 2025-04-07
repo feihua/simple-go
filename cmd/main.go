@@ -8,7 +8,7 @@ import (
 	"github.com/feihua/simple-go/internal/dao"
 	"github.com/feihua/simple-go/internal/middleware"
 	"github.com/feihua/simple-go/internal/router"
-	"github.com/feihua/simple-go/internal/services"
+	"github.com/feihua/simple-go/internal/service"
 	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/pkg/redis"
 	"github.com/feihua/simple-go/pkg/utils"
@@ -32,7 +32,7 @@ func main() {
 	defer utils.Logger.Sync()
 
 	dao.InitDao()
-	services.InitService()
+	service.InitService()
 	controller.InitC()
 
 	routerGroup := r.Group("/api")
