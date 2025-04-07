@@ -4,14 +4,14 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/feihua/simple-go/controller"
-	"github.com/feihua/simple-go/dao"
-	"github.com/feihua/simple-go/middleware"
+	"github.com/feihua/simple-go/internal/controller"
+	"github.com/feihua/simple-go/internal/dao"
+	"github.com/feihua/simple-go/internal/middleware"
+	"github.com/feihua/simple-go/internal/router"
+	"github.com/feihua/simple-go/internal/services"
 	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/pkg/redis"
 	"github.com/feihua/simple-go/pkg/utils"
-	"github.com/feihua/simple-go/router"
-	"github.com/feihua/simple-go/services"
 	"github.com/gin-gonic/gin"
 )
 
@@ -36,7 +36,7 @@ func main() {
 	controller.InitC()
 
 	routerGroup := r.Group("/api")
-	//初始化路由
+	// 初始化路由
 	router.Init(routerGroup)
 
 	ctx := context.Background()
