@@ -27,6 +27,7 @@ func InitRedisClient(ctx context.Context) (err error) {
 
 	_, err = Rdb.Ping(ctx).Result()
 	if err != nil {
+		utils.Logger.Debugf("redis连接失败,host:%s, err:%s", redisInfo.Host, err.Error())
 		return err
 	}
 	utils.Logger.Debugf("redis已连接: %s", redisInfo.Host)
