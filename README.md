@@ -8,14 +8,20 @@ git clone https://github.com/feihua/simple-go.git
 ```
 
 ### 2.修改配置
-vim config/app.ini
-```ini
-[mysql]
-host = 127.0.0.1
-port = 3306
-database = simple-go
-username = root
-password = 123456
+vim config/app.yaml
+```yaml
+# MySQL数据库的连接配置
+mysql:
+    host: 127.0.0.1
+    port: 3306
+    database: simple-go
+    username: root
+    password: 123456
+
+# Redis数据库的连接配置
+redis:
+    host: 127.0.0.1:6379
+    password: 123456
 ```
 
 ### 3.启动
