@@ -36,13 +36,13 @@ func Init() {
 	}
 
 	utils.Logger.Debugf("mysql已连接: %s", dsn)
-	//数据库迁移
-	//migrate()
+	// 数据库迁移
+	// migrate()
 }
 
-//func migrate() {
+// func migrate() {
 //	DB.AutoMigrate(&User{})
-//}
+// }
 
 type Writer struct {
 }
