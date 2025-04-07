@@ -2,7 +2,7 @@ package redis
 
 import (
 	"context"
-	"github.com/feihua/simple-go/pkg/config"
+	"github.com/feihua/simple-go/config"
 	"github.com/feihua/simple-go/pkg/utils"
 	"github.com/redis/go-redis/v9"
 )
@@ -14,17 +14,18 @@ var Rdb *redis.Client
 func InitRedisClient(ctx context.Context) (err error) {
 	// NewClient将客户端返回给Options指定的Redis Server。
 	// Options保留设置以建立redis连接。
+	redisInfo := config.GlobalAppConfig.Redis
 	Rdb = redis.NewClient(&redis.Options{
-		Addr:     config.RedisConfig.Host,
-		Password: config.RedisConfig.Password, // 没有密码，默认值
-		DB:       0,                           // 默认DB 0 连接到服务器后要选择的数据库。
-		PoolSize: 20,                          // 最大套接字连接数。 默认情况下，每个可用CPU有10个连接，由runtime.GOMAXPROCS报告。
+		Addr:     redisInfo.Host,
+		Password: redisInfo.Password, // 没有密码，默认值
+		DB:       0,                  // 默认DB 0 连接到服务器后要选择的数据库。
+		PoolSize: 20,                 // 最大套接字连接数。 默认情况下，每个可用CPU有10个连接，由runtime.GOMAXPROCS报告。
 	})
 
 	_, err = Rdb.Ping(ctx).Result()
 	if err != nil {
 		return err
 	}
-	utils.Logger.Debugf("redis已连接: %s", config.RedisConfig.Host)
+	utils.Logger.Debugf("redis已连接: %s", redisInfo.Host)
 	return nil
 }

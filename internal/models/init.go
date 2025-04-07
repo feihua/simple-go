@@ -2,7 +2,7 @@ package models
 
 import (
 	"fmt"
-	"github.com/feihua/simple-go/pkg/config"
+	"github.com/feihua/simple-go/config"
 	"github.com/feihua/simple-go/pkg/utils"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -16,13 +16,14 @@ var (
 )
 
 func Init() {
+	mysqlInfo := config.GlobalAppConfig.Mysql
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
-		config.Mysql.Username,
-		config.Mysql.Password,
-		config.Mysql.Host,
-		config.Mysql.Port,
-		config.Mysql.Database,
+		mysqlInfo.Username,
+		mysqlInfo.Password,
+		mysqlInfo.Host,
+		mysqlInfo.Port,
+		mysqlInfo.Database,
 	)
 
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{

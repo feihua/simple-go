@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/feihua/simple-go/config"
 	"github.com/feihua/simple-go/internal/dao"
 	"github.com/feihua/simple-go/internal/dto"
 	"github.com/feihua/simple-go/internal/models"
-	"github.com/feihua/simple-go/pkg/config"
 	"github.com/feihua/simple-go/pkg/redis"
 	"github.com/feihua/simple-go/pkg/utils"
 	"strconv"
@@ -68,14 +68,15 @@ func (u *UserServiceImpl) Login(loginDto dto.UserLoginDto) (*dto.LoginDtoResp, e
 	}
 
 	now := time.Now().Unix()
-	token, err := createJwtToken(config.TokenInfo.AccessSecret, now, config.TokenInfo.AccessExpire, user.Id, user.UserName)
+	jwtInfo := config.GlobalAppConfig.Jwt
+	token, err := createJwtToken(jwtInfo.AccessSecret, now, jwtInfo.AccessExpire, user.Id, user.UserName)
 	if err != nil {
 		return nil, errors.New(err.Error())
 	}
 
 	apiUrlStr := strings.Join(apiUrl, ",")
 	ctx := context.Background()
-	redis.Rdb.Set(ctx, "simple:apiUrl:"+strconv.FormatInt(user.Id, 10), apiUrlStr, time.Duration(config.TokenInfo.AccessExpire)*time.Second)
+	redis.Rdb.Set(ctx, "simple:apiUrl:"+strconv.FormatInt(user.Id, 10), apiUrlStr, time.Duration(jwtInfo.AccessExpire)*time.Second)
 	return &dto.LoginDtoResp{
 		Id:       user.Id,
 		UserName: user.UserName,
