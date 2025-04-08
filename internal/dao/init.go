@@ -7,11 +7,17 @@ import (
 
 var ProviderSet = wire.NewSet(
 	system.NewDeptDao,
-	system.NewDictDao,
-	system.NewLogDao,
+	system.NewDictTypeDao,
+	system.NewDictDataDao,
+	system.NewLoginLogDao,
 	system.NewMenuDao,
-	system.NewRoleMenuDao,
+	system.NewNoticeDao,
+	system.NewOperateLogDao,
+	system.NewPostDao,
 	system.NewRoleDao,
+	system.NewRoleDeptDao,
+	system.NewRoleMenuDao,
 	system.NewUserDao,
+	system.NewUserPostDao,
 	system.NewUserRoleDao,
 )
