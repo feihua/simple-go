@@ -15,12 +15,12 @@ all: deps build ## 默认的构建目标
 
 clean: ## 清理目标
 	$(GOCLEAN)
-	rm -rf target
+	@rm -rf target
  
 
 deps: ## 安装依赖目标
 	@export GOPROXY=https://goproxy.cn,direct
-	$(GOGET) -v
+	@$(GOGET) -v
 
 create_folder: ## 创建目录
 	@if [ ! -d "$(TARGET_DIR)" ]; then \
@@ -29,20 +29,20 @@ create_folder: ## 创建目录
     fi
 
 build: create_folder ## 构建目标
-	$(GOBUILD) -o target/simple-go -v ./main.go
+	$(GOBUILD) -o target/simple-go -v ./cmd/main.go
 	@cp -R config target/
 
 
 
 start: ## 运行目标
 	@echo "start simple-go"
-	nohup ./target/simple-go  > /dev/null 2>&1 &
+	@nohup ./target/simple-go  > /dev/null 2>&1 &
 
 
 
 stop: ## 停止目标
 	@echo "stop simple-go"
-	-pkill -f simple-go
+	@-pkill -f simple-go
 	@sleep 3
 
 
