@@ -1,26 +1,22 @@
 package role
 
 import (
-	"github.com/feihua/simple-go/internal/dto/system"
-	system2 "github.com/feihua/simple-go/internal/model/system"
+	b "github.com/feihua/simple-go/internal/dto/system"
+	a "github.com/feihua/simple-go/internal/model/system"
 )
 
-// RoleService 角色操作接口
-/*
-Author: LiuFeiHua
-Date: 2024/4/16 13:47
-*/
+// RoleService 角色信息操作接口
 type RoleService interface {
-	// CreateRole 创建角色
-	CreateRole(dto system.RoleDto) error
-	// QueryRoleList 查询角色列表
-	QueryRoleList(role system.QueryRoleListDto) ([]system2.Role, int64)
-	// UpdateRole 更新角色
-	UpdateRole(roleDto system.RoleDto) error
-	// DeleteRoleByIds 删除角色
+	// CreateRole 添加角色信息
+	CreateRole(dto b.AddRoleDto) error
+	// DeleteRoleByIds 删除角色信息
 	DeleteRoleByIds(ids []int64) error
-	// QueryRoleMenuList 根据角色Id查询角色菜单
-	QueryRoleMenuList(id int64) (*system.QueryRoleMenuListDtoResp, error)
-	// UpdateRoleMenuList 更新角色菜单
-	UpdateRoleMenuList(dtoRequest system.RoleMenuDtoRequest) error
+	// UpdateRole 更新角色信息
+	UpdateRole(dto b.UpdateRoleDto) error
+	// UpdateRoleStatus 更新角色信息状态
+	UpdateRoleStatus(dto b.UpdateRoleStatusDto) error
+	// QueryRoleDetail 查询角色信息详情
+	QueryRoleDetail(dto b.QueryRoleDetailDto) (a.Role, error)
+	// QueryRoleList 查询角色信息列表
+	QueryRoleList(dto b.QueryRoleListDto) ([]a.Role, int64)
 }

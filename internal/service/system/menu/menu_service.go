@@ -1,25 +1,22 @@
 package menu
 
 import (
-	"github.com/feihua/simple-go/internal/dto/system"
-	system2 "github.com/feihua/simple-go/internal/model/system"
+	b "github.com/feihua/simple-go/internal/dto/system"
+	a "github.com/feihua/simple-go/internal/model/system"
 )
 
-// MenuService 菜单操作接口
-/*
-Author: LiuFeiHua
-Date: 2024/4/16 13:42
-*/
+// MenuService 菜单信息操作接口
 type MenuService interface {
-	// CreateMenu 创建菜单
-	CreateMenu(dto system.MenuDto) error
-
-	// QueryMenuList 查询菜单
-	QueryMenuList() ([]system2.Menu, error)
-
-	// UpdateMenu 更新菜单
-	UpdateMenu(menuDto system.MenuDto) error
-
-	// DeleteMenuById 删除菜单
-	DeleteMenuById(id int64) error
+	// CreateMenu 添加菜单信息
+	CreateMenu(dto b.AddMenuDto) error
+	// DeleteMenuByIds 删除菜单信息
+	DeleteMenuByIds(ids []int64) error
+	// UpdateMenu 更新菜单信息
+	UpdateMenu(dto b.UpdateMenuDto) error
+	// UpdateMenuStatus 更新菜单信息状态
+	UpdateMenuStatus(dto b.UpdateMenuStatusDto) error
+	// QueryMenuDetail 查询菜单信息详情
+	QueryMenuDetail(dto b.QueryMenuDetailDto) (a.Menu, error)
+	// QueryMenuList 查询菜单信息列表
+	QueryMenuList(dto b.QueryMenuListDto) ([]a.Menu, int64)
 }
