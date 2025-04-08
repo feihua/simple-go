@@ -10,7 +10,7 @@ WORKDIR /build/simple
 COPY . .
 RUN sh -c "[ -f go.mod ]" || exit
 COPY config /app/config
-RUN go build -ldflags="-s -w" -o /app/simple main.go
+RUN go build -ldflags="-s -w" -o /app/simple ./cmd/main.go
 
 
 FROM alpine
