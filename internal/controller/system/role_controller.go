@@ -1,19 +1,14 @@
 package system
 
 import (
-	"github.com/feihua/simple-go/internal/dto/system"
+	a "github.com/feihua/simple-go/internal/dto/system"
 	"github.com/feihua/simple-go/internal/service/system/role"
-	"github.com/feihua/simple-go/internal/vo/requests"
+	b "github.com/feihua/simple-go/internal/vo/system/req"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
-	"strconv"
 )
 
-// RoleController 角色相关
-/*
-Author: LiuFeiHua
-Date: 2024/4/15 16:55
-*/
+// RoleController 角色信息相关
 type RoleController struct {
 	Service role.RoleService
 }
@@ -22,24 +17,31 @@ func NewRoleController(Service role.RoleService) *RoleController {
 	return &RoleController{Service: Service}
 }
 
-// CreateRole 创建角色
+// CreateRole 添加角色信息
 func (r RoleController) CreateRole(c *gin.Context) {
 
-	req := requests.RoleRequest{}
+	req := b.AddRoleReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		result.Fail(c, result.ParamsError)
 		return
 	}
 
-	roleDto := system.RoleDto{
-		RoleName: req.RoleName,
-		StatusId: req.StatusId,
-		Sort:     req.Sort,
-		Remark:   req.Remark,
+	item := a.AddRoleDto{
+		Id:         req.Id,         // 主键
+		RoleName:   req.RoleName,   // 名称
+		RoleKey:    req.RoleKey,    // 角色权限字符串
+		DataScope:  req.DataScope,  // 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）
+		Status:     req.Status,     // 状态(1:正常，0:禁用)
+		Remark:     req.Remark,     // 备注
+		DelFlag:    req.DelFlag,    // 删除标志（0代表删除 1代表存在）
+		CreateBy:   req.CreateBy,   // 创建者
+		CreateTime: req.CreateTime, // 创建时间
+		UpdateBy:   req.UpdateBy,   // 更新者
+		UpdateTime: req.UpdateTime, // 更新时间
 	}
 
-	err = r.Service.CreateRole(roleDto)
+	err = r.Service.CreateRole(item)
 	if err != nil {
 		result.FailWithMsg(c, result.RoleError, err.Error())
 	} else {
@@ -47,54 +49,10 @@ func (r RoleController) CreateRole(c *gin.Context) {
 	}
 }
 
-// QueryRoleList 查询角色列表
-func (r RoleController) QueryRoleList(c *gin.Context) {
-	req := requests.QueryRoleListRequest{}
-	err := c.ShouldBind(&req)
-	if err != nil {
-		result.Fail(c, result.ParamsError)
-		return
-	}
-
-	roleListDto := system.QueryRoleListDto{
-		RoleName: req.RoleName,
-		StatusId: req.StatusId,
-		PageNo:   req.PageNo,
-		PageSize: req.PageSize,
-	}
-	list, total := r.Service.QueryRoleList(roleListDto)
-	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
-}
-
-// UpdateRole 更新角色
-func (r RoleController) UpdateRole(c *gin.Context) {
-
-	req := requests.RoleRequest{}
-	err := c.ShouldBind(&req)
-	if err != nil {
-		result.Fail(c, result.ParamsError)
-		return
-	}
-
-	roleDto := system.RoleDto{
-		Id:       req.Id,
-		RoleName: req.RoleName,
-		StatusId: req.StatusId,
-		Sort:     req.Sort,
-		Remark:   req.Remark,
-	}
-	err = r.Service.UpdateRole(roleDto)
-	if err != nil {
-		result.FailWithMsg(c, result.RoleError, err.Error())
-	} else {
-		result.Ok(c)
-	}
-}
-
-// DeleteRoleByIds 删除角色
+// DeleteRoleByIds 删除角色信息
 func (r RoleController) DeleteRoleByIds(c *gin.Context) {
 
-	req := requests.DeleteRoleRequest{}
+	req := b.DeleteRoleReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.Fail(c, result.ParamsError)
@@ -109,44 +67,97 @@ func (r RoleController) DeleteRoleByIds(c *gin.Context) {
 	}
 }
 
-// QueryRoleMenuList 根据角色Id查询角色菜单
-func (r RoleController) QueryRoleMenuList(c *gin.Context) {
+// UpdateRole 更新角色信息
+func (r RoleController) UpdateRole(c *gin.Context) {
 
-	roleId := c.DefaultQuery("roleId", "10")
-	id, err := strconv.ParseInt(roleId, 10, 64)
-
-	if err != nil {
-		result.Fail(c, result.ParamsError)
-		return
-	}
-
-	resp, err := r.Service.QueryRoleMenuList(id)
-
-	if err != nil {
-		result.FailWithMsg(c, result.RoleError, err.Error())
-	} else {
-		result.OkWithData(c, resp)
-	}
-}
-
-// UpdateRoleMenuList 更新角色菜单
-func (r RoleController) UpdateRoleMenuList(c *gin.Context) {
-
-	req := requests.RoleMenuRequest{}
+	req := b.UpdateRoleReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.Fail(c, result.ParamsError)
 		return
 	}
 
-	menuDtoRequest := system.RoleMenuDtoRequest{
-		RoleId:  req.RoleId,
-		MenuIds: req.MenuIds,
+	item := a.UpdateRoleDto{
+		Id:         req.Id,         // 主键
+		RoleName:   req.RoleName,   // 名称
+		RoleKey:    req.RoleKey,    // 角色权限字符串
+		DataScope:  req.DataScope,  // 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）
+		Status:     req.Status,     // 状态(1:正常，0:禁用)
+		Remark:     req.Remark,     // 备注
+		DelFlag:    req.DelFlag,    // 删除标志（0代表删除 1代表存在）
+		CreateBy:   req.CreateBy,   // 创建者
+		CreateTime: req.CreateTime, // 创建时间
+		UpdateBy:   req.UpdateBy,   // 更新者
+		UpdateTime: req.UpdateTime, // 更新时间
 	}
-	err = r.Service.UpdateRoleMenuList(menuDtoRequest)
+	err = r.Service.UpdateRole(item)
 	if err != nil {
-		result.FailWithMsg(c, result.UserError, err.Error())
+		result.FailWithMsg(c, result.RoleError, err.Error())
 	} else {
 		result.Ok(c)
 	}
+}
+
+// UpdateRoleStatus 更新角色信息状态
+func (r RoleController) UpdateRoleStatus(c *gin.Context) {
+
+	req := b.UpdateRoleStatusReqVo{}
+	err := c.ShouldBind(&req)
+	if err != nil {
+		result.Fail(c, result.ParamsError)
+		return
+	}
+
+	item := a.UpdateRoleStatusDto{
+		Ids:    req.Ids,
+		Status: req.Status,
+	}
+	err = r.Service.UpdateRoleStatus(item)
+	if err != nil {
+		result.FailWithMsg(c, result.RoleError, err.Error())
+	} else {
+		result.Ok(c)
+	}
+}
+
+// QueryRoleDetail 查询角色信息详情
+func (r RoleController) QueryRoleDetail(c *gin.Context) {
+	req := b.QueryRoleDetailReqVo{}
+	err := c.ShouldBind(&req)
+	if err != nil {
+		result.Fail(c, result.ParamsError)
+		return
+	}
+
+	item := a.QueryRoleDetailDto{
+		Id: req.Id,
+	}
+	data, err := r.Service.QueryRoleDetail(item)
+	if err != nil {
+		result.FailWithMsg(c, result.RoleError, err.Error())
+	} else {
+		result.OkWithData(c, gin.H{"data": data})
+	}
+}
+
+// QueryRoleList 查询角色信息列表
+func (r RoleController) QueryRoleList(c *gin.Context) {
+	req := b.QueryRoleListReqVo{}
+	err := c.ShouldBind(&req)
+	if err != nil {
+		result.Fail(c, result.ParamsError)
+		return
+	}
+
+	item := a.QueryRoleListDto{
+		PageNo:    req.PageNo,
+		PageSize:  req.PageSize,
+		RoleName:  req.RoleName,  // 名称
+		RoleKey:   req.RoleKey,   // 角色权限字符串
+		DataScope: req.DataScope, // 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）
+		Status:    req.Status,    // 状态(1:正常，0:禁用)
+		DelFlag:   req.DelFlag,   // 删除标志（0代表删除 1代表存在）
+	}
+	list, total := r.Service.QueryRoleList(item)
+	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
 }

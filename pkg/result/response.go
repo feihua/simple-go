@@ -6,7 +6,7 @@ import (
 )
 
 // Response 统一返回
-//参考：https://blog.csdn.net/upstream480/article/details/128168125
+// 参考：https://blog.csdn.net/upstream480/article/details/128168125
 /*
 Author: LiuFeiHua
 Date: 2024/4/16 9:31
@@ -78,7 +78,11 @@ var (
 	MenuError = Error(4001, "menu error")
 	DeptError = Error(5001, "dept error")
 
-	DictError = Error(6001, "dict error")
+	DictTypeError = Error(6001, "dict error")
+	DictDataError = Error(6001, "dict error")
+	PostError     = Error(6001, "dict error")
+	NoticeError   = Error(6001, "dict error")
 
-	LogError = Error(7001, "log error")
+	LoginLogError   = Error(7001, "log error")
+	OperateLogError = Error(7001, "log error")
 )

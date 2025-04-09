@@ -1,18 +1,14 @@
 package system
 
 import (
-	"github.com/feihua/simple-go/internal/dto/system"
+	a "github.com/feihua/simple-go/internal/dto/system"
 	"github.com/feihua/simple-go/internal/service/system/dept"
-	"github.com/feihua/simple-go/internal/vo/requests"
+	b "github.com/feihua/simple-go/internal/vo/system/req"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
 )
 
-// DeptController 部门相关操作
-/*
-Author: LiuFeiHua
-Date: 2024/4/15 16:37
-*/
+// DeptController 部门相关
 type DeptController struct {
 	Service dept.DeptService
 }
@@ -22,65 +18,33 @@ func NewDeptController(Service dept.DeptService) *DeptController {
 }
 
 // CreateDept 添加部门
-func (d DeptController) CreateDept(c *gin.Context) {
-	req := requests.DeptRequest{}
+func (r DeptController) CreateDept(c *gin.Context) {
+
+	req := b.AddDeptReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		result.Fail(c, result.ParamsError)
 		return
 	}
 
-	deptDto := system.DeptDto{
-		DeptName: req.DeptName,
-		ParentId: req.ParentId,
-		Sort:     req.Sort,
-		Remark:   req.Remark,
+	item := a.AddDeptDto{
+		Id:         req.Id,         // 部门id
+		ParentId:   req.ParentId,   // 父部门id
+		Ancestors:  req.Ancestors,  // 祖级列表
+		DeptName:   req.DeptName,   // 部门名称
+		Sort:       req.Sort,       // 显示顺序
+		Leader:     req.Leader,     // 负责人
+		Phone:      req.Phone,      // 联系电话
+		Email:      req.Email,      // 邮箱
+		Status:     req.Status,     // 部门状态（0：停用，1:正常）
+		DelFlag:    req.DelFlag,    // 删除标志（0代表删除 1代表存在）
+		CreateBy:   req.CreateBy,   // 创建者
+		CreateTime: req.CreateTime, // 创建时间
+		UpdateBy:   req.UpdateBy,   // 更新者
+		UpdateTime: req.UpdateTime, // 更新时间
 	}
 
-	err = d.Service.CreateDept(deptDto)
-	if err != nil {
-		result.FailWithMsg(c, result.DeptError, err.Error())
-	} else {
-		result.Ok(c)
-	}
-}
-
-// QueryDeptList 查询部门列表
-func (d DeptController) QueryDeptList(c *gin.Context) {
-	req := requests.DeptRequest{}
-	err := c.ShouldBind(&req)
-	if err != nil {
-		result.Fail(c, result.ParamsError)
-		return
-	}
-
-	deptList, err := d.Service.QueryDeptList()
-	if err != nil {
-		result.FailWithMsg(c, result.DeptError, err.Error())
-	} else {
-		result.OkWithData(c, deptList)
-	}
-}
-
-// UpdateDept 修改部门
-func (d DeptController) UpdateDept(c *gin.Context) {
-
-	req := requests.DeptRequest{}
-	err := c.ShouldBind(&req)
-	if err != nil {
-		result.Fail(c, result.ParamsError)
-		return
-	}
-
-	deptDto := system.DeptDto{
-		Id:       req.Id,
-		DeptName: req.DeptName,
-		ParentId: req.ParentId,
-		Sort:     req.Sort,
-		Remark:   req.Remark,
-	}
-
-	err = d.Service.UpdateDept(deptDto)
+	err = r.Service.CreateDept(item)
 	if err != nil {
 		result.FailWithMsg(c, result.DeptError, err.Error())
 	} else {
@@ -89,19 +53,120 @@ func (d DeptController) UpdateDept(c *gin.Context) {
 }
 
 // DeleteDeptByIds 删除部门
-func (d DeptController) DeleteDeptByIds(c *gin.Context) {
+func (r DeptController) DeleteDeptByIds(c *gin.Context) {
 
-	req := requests.DeleteDeptRequest{}
+	req := b.DeleteDeptReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.Fail(c, result.ParamsError)
 		return
 	}
 
-	err = d.Service.DeleteDeptByIds(req.Ids)
+	err = r.Service.DeleteDeptByIds(req.Ids)
 	if err != nil {
 		result.FailWithMsg(c, result.DeptError, err.Error())
 	} else {
 		result.Ok(c)
 	}
+}
+
+// UpdateDept 更新部门
+func (r DeptController) UpdateDept(c *gin.Context) {
+
+	req := b.UpdateDeptReqVo{}
+	err := c.ShouldBind(&req)
+	if err != nil {
+		result.Fail(c, result.ParamsError)
+		return
+	}
+
+	item := a.UpdateDeptDto{
+		Id:         req.Id,         // 部门id
+		ParentId:   req.ParentId,   // 父部门id
+		Ancestors:  req.Ancestors,  // 祖级列表
+		DeptName:   req.DeptName,   // 部门名称
+		Sort:       req.Sort,       // 显示顺序
+		Leader:     req.Leader,     // 负责人
+		Phone:      req.Phone,      // 联系电话
+		Email:      req.Email,      // 邮箱
+		Status:     req.Status,     // 部门状态（0：停用，1:正常）
+		DelFlag:    req.DelFlag,    // 删除标志（0代表删除 1代表存在）
+		CreateBy:   req.CreateBy,   // 创建者
+		CreateTime: req.CreateTime, // 创建时间
+		UpdateBy:   req.UpdateBy,   // 更新者
+		UpdateTime: req.UpdateTime, // 更新时间
+	}
+	err = r.Service.UpdateDept(item)
+	if err != nil {
+		result.FailWithMsg(c, result.DeptError, err.Error())
+	} else {
+		result.Ok(c)
+	}
+}
+
+// UpdateDeptStatus 更新部门状态
+func (r DeptController) UpdateDeptStatus(c *gin.Context) {
+
+	req := b.UpdateDeptStatusReqVo{}
+	err := c.ShouldBind(&req)
+	if err != nil {
+		result.Fail(c, result.ParamsError)
+		return
+	}
+
+	item := a.UpdateDeptStatusDto{
+		Ids:    req.Ids,
+		Status: req.Status,
+	}
+	err = r.Service.UpdateDeptStatus(item)
+	if err != nil {
+		result.FailWithMsg(c, result.DeptError, err.Error())
+	} else {
+		result.Ok(c)
+	}
+}
+
+// QueryDeptDetail 查询部门详情
+func (r DeptController) QueryDeptDetail(c *gin.Context) {
+	req := b.QueryDeptDetailReqVo{}
+	err := c.ShouldBind(&req)
+	if err != nil {
+		result.Fail(c, result.ParamsError)
+		return
+	}
+
+	item := a.QueryDeptDetailDto{
+		Id: req.Id,
+	}
+	data, err := r.Service.QueryDeptDetail(item)
+	if err != nil {
+		result.FailWithMsg(c, result.DeptError, err.Error())
+	} else {
+		result.OkWithData(c, gin.H{"data": data})
+	}
+}
+
+// QueryDeptList 查询部门列表
+func (r DeptController) QueryDeptList(c *gin.Context) {
+	req := b.QueryDeptListReqVo{}
+	err := c.ShouldBind(&req)
+	if err != nil {
+		result.Fail(c, result.ParamsError)
+		return
+	}
+
+	item := a.QueryDeptListDto{
+		PageNo:    req.PageNo,
+		PageSize:  req.PageSize,
+		ParentId:  req.ParentId,  // 父部门id
+		Ancestors: req.Ancestors, // 祖级列表
+		DeptName:  req.DeptName,  // 部门名称
+		Leader:    req.Leader,    // 负责人
+		Phone:     req.Phone,     // 联系电话
+		Email:     req.Email,     // 邮箱
+		Status:    req.Status,    // 部门状态（0：停用，1:正常）
+		DelFlag:   req.DelFlag,   // 删除标志（0代表删除 1代表存在）
+	}
+	list, total := r.Service.QueryDeptList(item)
+	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
 }

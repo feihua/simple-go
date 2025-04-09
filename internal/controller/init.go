@@ -7,9 +7,13 @@ import (
 
 var ProviderSet = wire.NewSet(
 	system.NewDeptController,
-	system.NewDictController,
-	system.NewLogController,
+	system.NewDictTypeController,
+	system.NewDictDataController,
+	system.NewLoginLogController,
 	system.NewMenuController,
+	system.NewNoticeController,
+	system.NewOperateLogController,
+	system.NewPostController,
 	system.NewRoleController,
 	system.NewUserController,
 )

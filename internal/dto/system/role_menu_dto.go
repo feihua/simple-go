@@ -1,12 +1,10 @@
 package system
 
-import "time"
-
 // AddRoleMenuDto 添加菜单角色关联请求参数
 type AddRoleMenuDto struct {
-	Id     int64 `json:"id"`     //主键
-	RoleId int64 `json:"roleId"` //角色ID
-	MenuId int64 `json:"menuId"` //菜单ID
+	Id     int64 `json:"id"`     // 主键
+	RoleId int64 `json:"roleId"` // 角色ID
+	MenuId int64 `json:"menuId"` // 菜单ID
 }
 
 // DeleteRoleMenuDto 删除菜单角色关联请求参数
@@ -16,27 +14,27 @@ type DeleteRoleMenuDto struct {
 
 // UpdateRoleMenuDto 修改菜单角色关联请求参数
 type UpdateRoleMenuDto struct {
-	Id     int64 `json:"id"`     //主键
-	RoleId int64 `json:"roleId"` //角色ID
-	MenuId int64 `json:"menuId"` //菜单ID
+	Id     int64 `json:"id"`     // 主键
+	RoleId int64 `json:"roleId"` // 角色ID
+	MenuId int64 `json:"menuId"` // 菜单ID
 }
 
 // UpdateRoleMenuStatusDto 修改菜单角色关联状态请求参数
 type UpdateRoleMenuStatusDto struct {
-	Ids    []int64 `json:"ids"`    //id
-	Status int32   `json:"status"` //状态（0:关闭,1:正常 ）
+	Ids    []int64 `json:"ids"`    // id
+	Status int32   `json:"status"` // 状态（0:关闭,1:正常 ）
 }
 
 // QueryRoleMenuDetailDto 查询菜单角色关联详情请求参数
 type QueryRoleMenuDetailDto struct {
-	Id int64 `json:"id"` //id
+	Id int64 `json:"id"` // id
 }
 
 // QueryRoleMenuListDto 查询菜单角色关联列表请求参数
 type QueryRoleMenuListDto struct {
-	PageNo   int   `json:"pageNo" default:"1"`    //第几页
-	PageSize int   `json:"pageSize" default:"10"` //每页的数量
-	Id       int64 `json:"id"`                    //主键
-	RoleId   int64 `json:"roleId"`                //角色ID
-	MenuId   int64 `json:"menuId"`                //菜单ID
+	PageNo   int   `json:"pageNo" default:"1"`    // 第几页
+	PageSize int   `json:"pageSize" default:"10"` // 每页的数量
+	Id       int64 `json:"id"`                    // 主键
+	RoleId   int64 `json:"roleId"`                // 角色ID
+	MenuId   int64 `json:"menuId"`                // 菜单ID
 }
