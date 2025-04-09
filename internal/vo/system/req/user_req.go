@@ -50,11 +50,11 @@ type QueryUserDetailReqVo struct {
 type QueryUserListReqVo struct {
 	PageNo   int    `json:"pageNo" default:"1" binding:"required"`    // 第几页
 	PageSize int    `json:"pageSize" default:"10" binding:"required"` // 每页的数量
-	Mobile   string `json:"mobile" binding:"required"`                // 手机号码
-	UserName string `json:"userName" binding:"required"`              // 用户账号
-	NickName string `json:"nickName" binding:"required"`              // 用户昵称
-	Status   int32  `json:"status" binding:"required"`                // 状态(1:正常，0:禁用)
-	DeptId   int64  `json:"deptId" binding:"required"`                // 部门ID
+	Mobile   string `json:"mobile" `                                  // 手机号码
+	UserName string `json:"userName" `                                // 用户账号
+	NickName string `json:"nickName" `                                // 用户昵称
+	Status   int32  `json:"status" `                                  // 状态(1:正常，0:禁用)
+	DeptId   int64  `json:"deptId" `                                  // 部门ID
 
 }
 

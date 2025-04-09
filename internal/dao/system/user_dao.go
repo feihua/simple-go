@@ -106,7 +106,7 @@ func (b UserDao) QueryUserList(dto system.QueryUserListDto) ([]a.User, int64) {
 	if dto.Status != 2 {
 		tx.Where("status=?", dto.Status) // 状态(1:正常，0:禁用)
 	}
-	if dto.DeptId != 2 {
+	if dto.DeptId != 0 {
 		tx.Where("dept_id=?", dto.DeptId) // 部门ID
 	}
 

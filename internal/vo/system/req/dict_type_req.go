@@ -39,8 +39,8 @@ type QueryDictTypeDetailReqVo struct {
 type QueryDictTypeListReqVo struct {
 	PageNo   int    `json:"pageNo" default:"1" binding:"required"`    // 第几页
 	PageSize int    `json:"pageSize" default:"10" binding:"required"` // 每页的数量
-	DictName string `json:"dictName" binding:"required"`              // 字典名称
-	DictType string `json:"dictType" binding:"required"`              // 字典类型
-	Status   int32  `json:"status" binding:"required"`                // 状态（0：停用，1:正常）
+	DictName string `json:"dictName" `                                // 字典名称
+	DictType string `json:"dictType" `                                // 字典类型
+	Status   int32  `json:"status" `                                  // 状态（0：停用，1:正常）
 
 }
