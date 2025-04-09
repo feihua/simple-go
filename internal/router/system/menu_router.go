@@ -8,11 +8,11 @@ import (
 // MenuRouter 菜单信息相关路由
 func MenuRouter(r *gin.RouterGroup, b *a.MenuController) {
 
-	r.POST("/dept/addMenu", b.CreateMenu)
-	r.POST("/dept/deleteMenuByIds", b.DeleteMenuByIds)
-	r.POST("/dept/updateMenu", b.UpdateMenu)
-	r.POST("/dept/updateMenuStatus", b.UpdateMenuStatus)
-	r.POST("/dept/queryMenuDetail", b.QueryMenuDetail)
-	r.POST("/dept/queryMenuList", b.QueryMenuList)
+	r.POST("/system/menu/addMenu", b.CreateMenu)
+	r.POST("/system/menu/deleteMenuByIds", b.DeleteMenuByIds)
+	r.POST("/system/menu/updateMenu", b.UpdateMenu)
+	r.POST("/system/menu/updateMenuStatus", b.UpdateMenuStatus)
+	r.POST("/system/menu/queryMenuDetail", b.QueryMenuDetail)
+	r.POST("/system/menu/queryMenuList", b.QueryMenuList)
 
 }

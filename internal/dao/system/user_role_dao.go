@@ -76,3 +76,13 @@ func (b UserRoleDao) QueryUserRoleList(dto system.QueryUserRoleListDto) ([]a.Use
 	tx.Count(&total)
 	return list, total
 }
+
+// IsAdministrator 根据用户id判断是否是管理员
+func (u UserRoleDao) IsAdministrator(userId int64) bool {
+
+	var count int64
+	// 1是预留超级管理员角色的id
+	u.db.Model(&a.UserRole{}).Where("user_id= ? and role_id = 1", userId).Count(&count)
+
+	return count > 0
+}

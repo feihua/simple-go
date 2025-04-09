@@ -8,11 +8,11 @@ import (
 // PostRouter 岗位信息相关路由
 func PostRouter(r *gin.RouterGroup, b *a.PostController) {
 
-	r.POST("/dept/addPost", b.CreatePost)
-	r.POST("/dept/deletePostByIds", b.DeletePostByIds)
-	r.POST("/dept/updatePost", b.UpdatePost)
-	r.POST("/dept/updatePostStatus", b.UpdatePostStatus)
-	r.POST("/dept/queryPostDetail", b.QueryPostDetail)
-	r.POST("/dept/queryPostList", b.QueryPostList)
+	r.POST("/system/post/addPost", b.CreatePost)
+	r.POST("/system/post/deletePostByIds", b.DeletePostByIds)
+	r.POST("/system/post/updatePost", b.UpdatePost)
+	r.POST("/system/post/updatePostStatus", b.UpdatePostStatus)
+	r.POST("/system/post/queryPostDetail", b.QueryPostDetail)
+	r.POST("/system/post/queryPostList", b.QueryPostList)
 
 }

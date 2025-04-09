@@ -23,7 +23,7 @@ func (r DictTypeController) CreateDictType(c *gin.Context) {
 	req := b.AddDictTypeReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -53,7 +53,7 @@ func (r DictTypeController) DeleteDictTypeByIds(c *gin.Context) {
 	req := b.DeleteDictTypeReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -71,7 +71,7 @@ func (r DictTypeController) UpdateDictType(c *gin.Context) {
 	req := b.UpdateDictTypeReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -100,7 +100,7 @@ func (r DictTypeController) UpdateDictTypeStatus(c *gin.Context) {
 	req := b.UpdateDictTypeStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -121,7 +121,7 @@ func (r DictTypeController) QueryDictTypeDetail(c *gin.Context) {
 	req := b.QueryDictTypeDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -141,7 +141,7 @@ func (r DictTypeController) QueryDictTypeList(c *gin.Context) {
 	req := b.QueryDictTypeListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 

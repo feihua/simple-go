@@ -23,7 +23,7 @@ func (r PostController) CreatePost(c *gin.Context) {
 	req := b.AddPostReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -54,7 +54,7 @@ func (r PostController) DeletePostByIds(c *gin.Context) {
 	req := b.DeletePostReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -72,7 +72,7 @@ func (r PostController) UpdatePost(c *gin.Context) {
 	req := b.UpdatePostReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -102,7 +102,7 @@ func (r PostController) UpdatePostStatus(c *gin.Context) {
 	req := b.UpdatePostStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -123,7 +123,7 @@ func (r PostController) QueryPostDetail(c *gin.Context) {
 	req := b.QueryPostDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -143,7 +143,7 @@ func (r PostController) QueryPostList(c *gin.Context) {
 	req := b.QueryPostListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 

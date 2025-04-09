@@ -23,7 +23,7 @@ func (r RoleController) CreateRole(c *gin.Context) {
 	req := b.AddRoleReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -55,7 +55,7 @@ func (r RoleController) DeleteRoleByIds(c *gin.Context) {
 	req := b.DeleteRoleReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -73,7 +73,7 @@ func (r RoleController) UpdateRole(c *gin.Context) {
 	req := b.UpdateRoleReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -104,7 +104,7 @@ func (r RoleController) UpdateRoleStatus(c *gin.Context) {
 	req := b.UpdateRoleStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -125,7 +125,7 @@ func (r RoleController) QueryRoleDetail(c *gin.Context) {
 	req := b.QueryRoleDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -145,7 +145,7 @@ func (r RoleController) QueryRoleList(c *gin.Context) {
 	req := b.QueryRoleListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 

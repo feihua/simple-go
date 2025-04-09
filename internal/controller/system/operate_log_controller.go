@@ -23,7 +23,7 @@ func (r OperateLogController) CreateOperateLog(c *gin.Context) {
 	req := b.AddOperateLogReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -69,7 +69,7 @@ func (r OperateLogController) DeleteOperateLogByIds(c *gin.Context) {
 	req := b.DeleteOperateLogReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -87,7 +87,7 @@ func (r OperateLogController) UpdateOperateLog(c *gin.Context) {
 	req := b.UpdateOperateLogReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -132,7 +132,7 @@ func (r OperateLogController) UpdateOperateLogStatus(c *gin.Context) {
 	req := b.UpdateOperateLogStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -153,7 +153,7 @@ func (r OperateLogController) QueryOperateLogDetail(c *gin.Context) {
 	req := b.QueryOperateLogDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -173,7 +173,7 @@ func (r OperateLogController) QueryOperateLogList(c *gin.Context) {
 	req := b.QueryOperateLogListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 

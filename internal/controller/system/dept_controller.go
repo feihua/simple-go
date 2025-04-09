@@ -23,7 +23,7 @@ func (r DeptController) CreateDept(c *gin.Context) {
 	req := b.AddDeptReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -58,7 +58,7 @@ func (r DeptController) DeleteDeptByIds(c *gin.Context) {
 	req := b.DeleteDeptReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -76,7 +76,7 @@ func (r DeptController) UpdateDept(c *gin.Context) {
 	req := b.UpdateDeptReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -110,7 +110,7 @@ func (r DeptController) UpdateDeptStatus(c *gin.Context) {
 	req := b.UpdateDeptStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -131,7 +131,7 @@ func (r DeptController) QueryDeptDetail(c *gin.Context) {
 	req := b.QueryDeptDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -151,7 +151,7 @@ func (r DeptController) QueryDeptList(c *gin.Context) {
 	req := b.QueryDeptListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 

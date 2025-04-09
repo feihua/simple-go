@@ -8,11 +8,11 @@ import (
 // NoticeRouter 通知公告相关路由
 func NoticeRouter(r *gin.RouterGroup, b *a.NoticeController) {
 
-	r.POST("/dept/addNotice", b.CreateNotice)
-	r.POST("/dept/deleteNoticeByIds", b.DeleteNoticeByIds)
-	r.POST("/dept/updateNotice", b.UpdateNotice)
-	r.POST("/dept/updateNoticeStatus", b.UpdateNoticeStatus)
-	r.POST("/dept/queryNoticeDetail", b.QueryNoticeDetail)
-	r.POST("/dept/queryNoticeList", b.QueryNoticeList)
+	r.POST("/system/notice/addNotice", b.CreateNotice)
+	r.POST("/system/notice/deleteNoticeByIds", b.DeleteNoticeByIds)
+	r.POST("/system/notice/updateNotice", b.UpdateNotice)
+	r.POST("/system/notice/updateNoticeStatus", b.UpdateNoticeStatus)
+	r.POST("/system/notice/queryNoticeDetail", b.QueryNoticeDetail)
+	r.POST("/system/notice/queryNoticeList", b.QueryNoticeList)
 
 }

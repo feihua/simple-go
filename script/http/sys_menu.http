@@ -1,0 +1,76 @@
+###添加菜单信息 addMenu
+POST {{host}}/api/system/menu/addMenu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "menuName": "查询菜单信息列表1",
+  "menuType": 3,
+  "status": 1,
+  "sort": 6,
+  "parentId": 24,
+  "menuUrl": "",
+  "apiUrl": "/api/system/menu/queryMenuList",
+  "menu_icon": "",
+  "remark": "查询菜单信息列表"
+}
+
+###删除菜单信息 deleteMenu
+POST {{host}}/api/system/menu/deleteMenu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": 31
+}
+
+###更新菜单信息 updateMenu
+POST {{host}}/api/system/menu/updateMenu
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "id": 31,
+  "menuName": "查询菜单信息列表12",
+  "menuType": 3,
+  "status": 1,
+  "sort": 6,
+  "parentId": 24,
+  "menuUrl": "",
+  "apiUrl": "/api/system/menu/queryMenuList",
+  "menu_icon": "",
+  "remark": "查询菜单信息列表"
+}
+
+###更新菜单信息 updateMenuStatus状态
+POST {{host}}/api/system/menu/updateMenuStatus
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "ids": [31],
+  "status": 0
+}
+###查询菜单信息详情 queryMenu
+POST {{host}}/api/system/menu/queryMenuDetail
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": 1
+}
+
+
+###查询菜单信息列表 queryMenuList
+POST {{host}}/api/system/menu/queryMenuList
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+
+}
+
+###查询菜单信息列表 queryMenuListSimple
+GET {{host}}/api/system/menu/queryMenuListSimple
+Authorization: Bearer {{token}}
+

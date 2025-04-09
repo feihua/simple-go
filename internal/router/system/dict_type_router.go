@@ -8,11 +8,11 @@ import (
 // DictTypeRouter 字典类型相关路由
 func DictTypeRouter(r *gin.RouterGroup, b *a.DictTypeController) {
 
-	r.POST("/dept/addDictType", b.CreateDictType)
-	r.POST("/dept/deleteDictTypeByIds", b.DeleteDictTypeByIds)
-	r.POST("/dept/updateDictType", b.UpdateDictType)
-	r.POST("/dept/updateDictTypeStatus", b.UpdateDictTypeStatus)
-	r.POST("/dept/queryDictTypeDetail", b.QueryDictTypeDetail)
-	r.POST("/dept/queryDictTypeList", b.QueryDictTypeList)
+	r.POST("/system/dictType/addDictType", b.CreateDictType)
+	r.POST("/system/dictType/deleteDictTypeByIds", b.DeleteDictTypeByIds)
+	r.POST("/system/dictType/updateDictType", b.UpdateDictType)
+	r.POST("/system/dictType/updateDictTypeStatus", b.UpdateDictTypeStatus)
+	r.POST("/system/dictType/queryDictTypeDetail", b.QueryDictTypeDetail)
+	r.POST("/system/dictType/queryDictTypeList", b.QueryDictTypeList)
 
 }

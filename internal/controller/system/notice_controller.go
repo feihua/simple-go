@@ -23,7 +23,7 @@ func (r NoticeController) CreateNotice(c *gin.Context) {
 	req := b.AddNoticeReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -54,7 +54,7 @@ func (r NoticeController) DeleteNoticeByIds(c *gin.Context) {
 	req := b.DeleteNoticeReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -72,7 +72,7 @@ func (r NoticeController) UpdateNotice(c *gin.Context) {
 	req := b.UpdateNoticeReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -102,7 +102,7 @@ func (r NoticeController) UpdateNoticeStatus(c *gin.Context) {
 	req := b.UpdateNoticeStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -123,7 +123,7 @@ func (r NoticeController) QueryNoticeDetail(c *gin.Context) {
 	req := b.QueryNoticeDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -143,7 +143,7 @@ func (r NoticeController) QueryNoticeList(c *gin.Context) {
 	req := b.QueryNoticeListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 

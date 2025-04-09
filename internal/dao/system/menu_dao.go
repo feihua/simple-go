@@ -118,3 +118,10 @@ func (b MenuDao) QueryMenuList(dto system.QueryMenuListDto) ([]a.Menu, int64) {
 	tx.Count(&total)
 	return list, total
 }
+
+// QueryApiUrlList 查询菜单apiUrl
+func (b MenuDao) QueryApiUrlList() ([]string, error) {
+	var apiUrls []string
+	err := b.db.Model(&a.Menu{}).Select("api_url").Where("api_url is not null").Scan(&apiUrls).Error
+	return apiUrls, err
+}

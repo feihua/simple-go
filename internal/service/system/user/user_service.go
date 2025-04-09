@@ -19,4 +19,7 @@ type UserService interface {
 	QueryUserDetail(dto b.QueryUserDetailDto) (a.User, error)
 	// QueryUserList 查询用户信息列表
 	QueryUserList(dto b.QueryUserListDto) ([]a.User, int64)
+
+	// Login 用户登录
+	Login(dto b.LoginDto) (*b.LoginDtoResp, error)
 }

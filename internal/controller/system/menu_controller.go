@@ -23,7 +23,7 @@ func (r MenuController) CreateMenu(c *gin.Context) {
 	req := b.AddMenuReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -59,7 +59,7 @@ func (r MenuController) DeleteMenuByIds(c *gin.Context) {
 	req := b.DeleteMenuReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -77,7 +77,7 @@ func (r MenuController) UpdateMenu(c *gin.Context) {
 	req := b.UpdateMenuReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -112,7 +112,7 @@ func (r MenuController) UpdateMenuStatus(c *gin.Context) {
 	req := b.UpdateMenuStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -133,7 +133,7 @@ func (r MenuController) QueryMenuDetail(c *gin.Context) {
 	req := b.QueryMenuDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -153,7 +153,7 @@ func (r MenuController) QueryMenuList(c *gin.Context) {
 	req := b.QueryMenuListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 

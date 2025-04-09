@@ -17,7 +17,7 @@ func JwtMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		path := c.Request.URL.Path
 		utils.Logger.Debugf("请求url: %s", path)
-		if path == "/api/user/login" {
+		if path == "/api/system/user/login" {
 			c.Next()
 			return
 		}

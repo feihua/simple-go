@@ -23,7 +23,7 @@ func (r UserController) CreateUser(c *gin.Context) {
 	req := b.AddUserReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -65,7 +65,7 @@ func (r UserController) DeleteUserByIds(c *gin.Context) {
 	req := b.DeleteUserReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -83,7 +83,7 @@ func (r UserController) UpdateUser(c *gin.Context) {
 	req := b.UpdateUserReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -124,7 +124,7 @@ func (r UserController) UpdateUserStatus(c *gin.Context) {
 	req := b.UpdateUserStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -145,7 +145,7 @@ func (r UserController) QueryUserDetail(c *gin.Context) {
 	req := b.QueryUserDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -165,7 +165,7 @@ func (r UserController) QueryUserList(c *gin.Context) {
 	req := b.QueryUserListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -189,3 +189,78 @@ func (r UserController) QueryUserList(c *gin.Context) {
 	list, total := r.Service.QueryUserList(item)
 	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
 }
+
+// Login 登录
+func (u UserController) Login(c *gin.Context) {
+	loginReq := b.LoginReqVo{}
+	err := c.ShouldBind(&loginReq)
+	if err != nil {
+		result.FailWithMsg(c, result.ParamsError, err.Error())
+		return
+	}
+
+	loginDto := a.LoginDto{
+		Account:  loginReq.Account,
+		Password: loginReq.Password,
+	}
+
+	loginDtoResp, err := u.Service.Login(loginDto)
+	if err != nil {
+		result.FailWithMsg(c, result.UserLoginError, err.Error())
+	} else {
+		result.OkWithData(c, loginDtoResp)
+	}
+}
+
+// // QueryUserMenuList 查询用户菜单权限信息
+// func (u UserController) QueryUserMenuList(c *gin.Context) {
+// 	userId := c.MustGet("userId").(float64)
+// 	userName := c.MustGet("userName").(string)
+// 	resp, err := u.Service.QueryUserMenu(int64(userId), userName)
+//
+// 	if err != nil {
+// 		result.FailWithMsg(c, result.UserLoginError, err.Error())
+// 	} else {
+// 		result.OkWithData(c, resp)
+// 	}
+// }
+//
+// // QueryUserRoleList 根据用户id查询用户与角色关糸
+// func (u UserController) QueryUserRoleList(c *gin.Context) {
+// 	userId := c.DefaultQuery("userId", "10")
+// 	id, err := strconv.ParseInt(userId, 10, 64)
+//
+// 	if err != nil {
+// 		result.Fail(c, result.ParamsError)
+// 		return
+// 	}
+//
+// 	resp, err := u.Service.QueryUserRoleList(id)
+// 	if err != nil {
+// 		result.FailWithMsg(c, result.UserError, err.Error())
+// 	} else {
+// 		result.OkWithData(c, resp)
+// 	}
+// }
+//
+// // UpdateUserRoleList 更新用户与角色关糸
+// func (u UserController) UpdateUserRoleList(c *gin.Context) {
+// 	req := requests.UpdateUserRoleRequest{}
+// 	err := c.ShouldBind(&req)
+// 	if err != nil {
+// 		result.Fail(c, result.ParamsError)
+// 		return
+// 	}
+//
+// 	roleDtoRequest := system.UpdateUserRoleDtoRequest{
+// 		UserId: req.UserId,
+// 		RoleId: req.RoleId,
+// 	}
+//
+// 	err = u.Service.UpdateUserRoleList(roleDtoRequest)
+// 	if err != nil {
+// 		result.FailWithMsg(c, result.UserError, err.Error())
+// 	} else {
+// 		result.Ok(c)
+// 	}
+// }

@@ -23,7 +23,7 @@ func (r DictDataController) CreateDictData(c *gin.Context) {
 	req := b.AddDictDataReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -58,7 +58,7 @@ func (r DictDataController) DeleteDictDataByIds(c *gin.Context) {
 	req := b.DeleteDictDataReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -76,7 +76,7 @@ func (r DictDataController) UpdateDictData(c *gin.Context) {
 	req := b.UpdateDictDataReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -110,7 +110,7 @@ func (r DictDataController) UpdateDictDataStatus(c *gin.Context) {
 	req := b.UpdateDictDataStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -131,7 +131,7 @@ func (r DictDataController) QueryDictDataDetail(c *gin.Context) {
 	req := b.QueryDictDataDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -151,7 +151,7 @@ func (r DictDataController) QueryDictDataList(c *gin.Context) {
 	req := b.QueryDictDataListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 

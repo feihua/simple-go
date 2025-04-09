@@ -145,3 +145,25 @@ func (b UserDao) QueryUserList(dto system.QueryUserListDto) ([]a.User, int64) {
 	tx.Count(&total)
 	return list, total
 }
+
+// QueryUserByAccount 查询用户信息
+func (b UserDao) QueryUserByAccount(account string) (a.User, error) {
+	var item a.User
+	err := b.db.Where("mobile=? or user_name =?", account, account).First(&item).Error
+	return item, err
+}
+
+// QueryApiUrls 根据用户id查询用户权限
+func (u UserDao) QueryApiUrls(userId int64) ([]string, error) {
+	sql := `select u.api_url
+from sys_user_role t
+         left join sys_role usr on t.role_id = usr.id
+         left join sys_role_menu srm on usr.id = srm.role_id
+         left join sys_menu u on srm.menu_id = u.id
+where t.user_id = ?`
+
+	var apiUrls []string
+	err := u.db.Raw(sql, userId).Scan(&apiUrls).Error
+
+	return apiUrls, err
+}

@@ -8,11 +8,11 @@ import (
 // RoleRouter 角色信息相关路由
 func RoleRouter(r *gin.RouterGroup, b *a.RoleController) {
 
-	r.POST("/dept/addRole", b.CreateRole)
-	r.POST("/dept/deleteRoleByIds", b.DeleteRoleByIds)
-	r.POST("/dept/updateRole", b.UpdateRole)
-	r.POST("/dept/updateRoleStatus", b.UpdateRoleStatus)
-	r.POST("/dept/queryRoleDetail", b.QueryRoleDetail)
-	r.POST("/dept/queryRoleList", b.QueryRoleList)
+	r.POST("/system/role/addRole", b.CreateRole)
+	r.POST("/system/role/deleteRoleByIds", b.DeleteRoleByIds)
+	r.POST("/system/role/updateRole", b.UpdateRole)
+	r.POST("/system/role/updateRoleStatus", b.UpdateRoleStatus)
+	r.POST("/system/role/queryRoleDetail", b.QueryRoleDetail)
+	r.POST("/system/role/queryRoleList", b.QueryRoleList)
 
 }

@@ -23,7 +23,7 @@ func (r LoginLogController) CreateLoginLog(c *gin.Context) {
 	req := b.AddLoginLogReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -59,7 +59,7 @@ func (r LoginLogController) DeleteLoginLogByIds(c *gin.Context) {
 	req := b.DeleteLoginLogReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -77,7 +77,7 @@ func (r LoginLogController) UpdateLoginLog(c *gin.Context) {
 	req := b.UpdateLoginLogReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -112,7 +112,7 @@ func (r LoginLogController) UpdateLoginLogStatus(c *gin.Context) {
 	req := b.UpdateLoginLogStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -133,7 +133,7 @@ func (r LoginLogController) QueryLoginLogDetail(c *gin.Context) {
 	req := b.QueryLoginLogDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
@@ -153,7 +153,7 @@ func (r LoginLogController) QueryLoginLogList(c *gin.Context) {
 	req := b.QueryLoginLogListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
-		result.Fail(c, result.ParamsError)
+		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
