@@ -43,20 +43,20 @@ func (b DictDataDao) DeleteDictDataByIds(ids []int64) error {
 func (b DictDataDao) UpdateDictData(dto system.UpdateDictDataDto) error {
 
 	item := a.DictData{
-		Id:         dto.Id,         // 字典编码
-		DictSort:   dto.DictSort,   // 字典排序
-		DictLabel:  dto.DictLabel,  // 字典标签
-		DictValue:  dto.DictValue,  // 字典键值
-		DictType:   dto.DictType,   // 字典类型
-		CssClass:   dto.CssClass,   // 样式属性（其他样式扩展）
-		ListClass:  dto.ListClass,  // 表格回显样式
-		IsDefault:  dto.IsDefault,  // 是否默认（Y是 N否）
-		Status:     dto.Status,     // 状态（0：停用，1:正常）
-		Remark:     dto.Remark,     // 备注
-		CreateBy:   dto.CreateBy,   // 创建者
-		CreateTime: dto.CreateTime, // 创建时间
-		UpdateBy:   dto.UpdateBy,   // 更新者
-		UpdateTime: dto.UpdateTime, // 更新时间
+		Id:         dto.Id,          // 字典编码
+		DictSort:   dto.DictSort,    // 字典排序
+		DictLabel:  dto.DictLabel,   // 字典标签
+		DictValue:  dto.DictValue,   // 字典键值
+		DictType:   dto.DictType,    // 字典类型
+		CssClass:   dto.CssClass,    // 样式属性（其他样式扩展）
+		ListClass:  dto.ListClass,   // 表格回显样式
+		IsDefault:  dto.IsDefault,   // 是否默认（Y是 N否）
+		Status:     dto.Status,      // 状态（0：停用，1:正常）
+		Remark:     dto.Remark,      // 备注
+		CreateBy:   dto.CreateBy,    // 创建者
+		CreateTime: dto.CreateTime,  // 创建时间
+		UpdateBy:   dto.UpdateBy,    // 更新者
+		UpdateTime: &dto.UpdateTime, // 更新时间
 	}
 
 	return b.db.Updates(&item).Error

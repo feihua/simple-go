@@ -36,7 +36,7 @@ func (r DeptController) CreateDept(c *gin.Context) {
 		Phone:     req.Phone,     // 联系电话
 		Email:     req.Email,     // 邮箱
 		Status:    req.Status,    // 部门状态（0：停用，1:正常）
-
+		CreateBy:  c.MustGet("userName").(string),
 	}
 
 	err = r.Service.CreateDept(item)
@@ -85,7 +85,7 @@ func (r DeptController) UpdateDept(c *gin.Context) {
 		Phone:     req.Phone,     // 联系电话
 		Email:     req.Email,     // 邮箱
 		Status:    req.Status,    // 部门状态（0：停用，1:正常）
-
+		CreateBy:  c.MustGet("userName").(string),
 	}
 	err = r.Service.UpdateDept(item)
 	if err != nil {
@@ -106,8 +106,9 @@ func (r DeptController) UpdateDeptStatus(c *gin.Context) {
 	}
 
 	item := a.UpdateDeptStatusDto{
-		Ids:    req.Ids,
-		Status: req.Status,
+		Ids:      req.Ids,
+		Status:   req.Status,
+		UpdateBy: c.MustGet("userName").(string),
 	}
 	err = r.Service.UpdateDeptStatus(item)
 	if err != nil {

@@ -99,3 +99,18 @@ Authorization: Bearer {{token}}
   "userId": 2,
   "roleIds": [1,2]
 }
+###添加部门表 addDept
+POST {{host}}/api/system/dept/addDept
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "parentId": 1,
+  "ancestors": "1,2,3",
+  "deptName": "测试",
+  "sort": 1,
+  "leader": "测试1",
+  "phone": "123",
+  "email": "123",
+  "status": 1
+}

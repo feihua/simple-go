@@ -23,7 +23,6 @@ func NewDeptServiceImpl(dao *system.DeptDao) DeptService {
 
 // CreateDept 添加部门
 func (s *DeptServiceImpl) CreateDept(dto a.AddDeptDto) error {
-	dto.CreateBy = "todo"
 	return s.deptDao.CreateDept(dto)
 }
 
@@ -48,7 +47,6 @@ func (s *DeptServiceImpl) UpdateDept(dto a.UpdateDeptDto) error {
 	dto.DelFlag = deptInfo.DelFlag
 	dto.CreateBy = deptInfo.CreateBy
 	dto.CreateTime = deptInfo.CreateTime
-	dto.UpdateBy = "todo"
 	dto.UpdateTime = time.Now()
 	return s.deptDao.UpdateDept(dto)
 }

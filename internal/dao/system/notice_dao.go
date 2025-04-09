@@ -49,7 +49,7 @@ func (b NoticeDao) UpdateNotice(dto system.UpdateNoticeDto) error {
 		CreateBy:      dto.CreateBy,      // 创建者
 		CreateTime:    dto.CreateTime,    // 创建时间
 		UpdateBy:      dto.UpdateBy,      // 更新者
-		UpdateTime:    dto.UpdateTime,    // 更新时间
+		UpdateTime:    &dto.UpdateTime,   // 更新时间
 	}
 
 	return b.db.Updates(&item).Error

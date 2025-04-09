@@ -43,20 +43,20 @@ func (b DeptDao) DeleteDeptByIds(ids []int64) error {
 func (b DeptDao) UpdateDept(dto system.UpdateDeptDto) error {
 
 	item := a.Dept{
-		Id:         dto.Id,         // 部门id
-		ParentId:   dto.ParentId,   // 父部门id
-		Ancestors:  dto.Ancestors,  // 祖级列表
-		DeptName:   dto.DeptName,   // 部门名称
-		Sort:       dto.Sort,       // 显示顺序
-		Leader:     dto.Leader,     // 负责人
-		Phone:      dto.Phone,      // 联系电话
-		Email:      dto.Email,      // 邮箱
-		Status:     dto.Status,     // 部门状态（0：停用，1:正常）
-		DelFlag:    dto.DelFlag,    // 删除标志（0代表删除 1代表存在）
-		CreateBy:   dto.CreateBy,   // 创建者
-		CreateTime: dto.CreateTime, // 创建时间
-		UpdateBy:   dto.UpdateBy,   // 更新者
-		UpdateTime: dto.UpdateTime, // 更新时间
+		Id:         dto.Id,          // 部门id
+		ParentId:   dto.ParentId,    // 父部门id
+		Ancestors:  dto.Ancestors,   // 祖级列表
+		DeptName:   dto.DeptName,    // 部门名称
+		Sort:       dto.Sort,        // 显示顺序
+		Leader:     dto.Leader,      // 负责人
+		Phone:      dto.Phone,       // 联系电话
+		Email:      dto.Email,       // 邮箱
+		Status:     dto.Status,      // 部门状态（0：停用，1:正常）
+		DelFlag:    dto.DelFlag,     // 删除标志（0代表删除 1代表存在）
+		CreateBy:   dto.CreateBy,    // 创建者
+		CreateTime: dto.CreateTime,  // 创建时间
+		UpdateBy:   dto.UpdateBy,    // 更新者
+		UpdateTime: &dto.UpdateTime, // 更新时间
 	}
 
 	return b.db.Updates(&item).Error
