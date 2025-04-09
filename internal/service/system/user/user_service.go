@@ -21,5 +21,5 @@ type UserService interface {
 	QueryUserList(dto b.QueryUserListDto) ([]a.User, int64)
 
 	// Login 用户登录
-	Login(dto b.LoginDto) (*b.LoginDtoResp, error)
+	Login(dto b.LoginDto) (*string, error)
 }

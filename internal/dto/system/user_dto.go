@@ -100,10 +100,3 @@ type LoginDto struct {
 	Account  string `json:"account"`  // 手机或者用户名
 	Password string `json:"password"` // 密码
 }
-
-// LoginDtoResp 登录响应
-type LoginDtoResp struct {
-	Id       int64  `json:"id"`
-	UserName string `json:"userName"`
-	Token    string `json:"token"`
-}

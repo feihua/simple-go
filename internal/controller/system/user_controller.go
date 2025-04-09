@@ -204,11 +204,11 @@ func (u UserController) Login(c *gin.Context) {
 		Password: loginReq.Password,
 	}
 
-	loginDtoResp, err := u.Service.Login(loginDto)
+	token, err := u.Service.Login(loginDto)
 	if err != nil {
 		result.FailWithMsg(c, result.UserLoginError, err.Error())
 	} else {
-		result.OkWithData(c, loginDtoResp)
+		result.OkWithData(c, token)
 	}
 }
 

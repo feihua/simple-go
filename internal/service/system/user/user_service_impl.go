@@ -64,7 +64,7 @@ func (s *UserServiceImpl) QueryUserList(dto a.QueryUserListDto) ([]b.User, int64
 }
 
 // Login 登录
-func (u *UserServiceImpl) Login(loginDto a.LoginDto) (*a.LoginDtoResp, error) {
+func (u *UserServiceImpl) Login(loginDto a.LoginDto) (*string, error) {
 	utils.Logger.Debugf("登录参数: %+v", loginDto)
 	user, err := u.userDao.QueryUserByAccount(loginDto.Account)
 	switch {
@@ -109,11 +109,7 @@ func (u *UserServiceImpl) Login(loginDto a.LoginDto) (*a.LoginDtoResp, error) {
 	apiUrlStr := strings.Join(apiUrl, ",")
 	ctx := context.Background()
 	redis.Rdb.Set(ctx, "simple:apiUrl:"+strconv.FormatInt(user.Id, 10), apiUrlStr, time.Duration(jwtInfo.AccessExpire)*time.Second)
-	return &a.LoginDtoResp{
-		Id:       user.Id,
-		UserName: user.UserName,
-		Token:    token,
-	}, nil
+	return &token, nil
 
 }
 
