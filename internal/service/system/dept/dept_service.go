@@ -18,5 +18,5 @@ type DeptService interface {
 	// QueryDeptDetail 查询部门详情
 	QueryDeptDetail(dto b.QueryDeptDetailDto) (a.Dept, error)
 	// QueryDeptList 查询部门列表
-	QueryDeptList(dto b.QueryDeptListDto) ([]a.Dept, int64)
+	QueryDeptList(dto b.QueryDeptListDto) ([]a.Dept, error)
 }

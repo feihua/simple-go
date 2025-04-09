@@ -19,20 +19,16 @@ func NewDeptDao(DB *gorm.DB) *DeptDao {
 // CreateDept 添加部门
 func (b DeptDao) CreateDept(dto system.AddDeptDto) error {
 	item := a.Dept{
-		Id:         dto.Id,         // 部门id
-		ParentId:   dto.ParentId,   // 父部门id
-		Ancestors:  dto.Ancestors,  // 祖级列表
-		DeptName:   dto.DeptName,   // 部门名称
-		Sort:       dto.Sort,       // 显示顺序
-		Leader:     dto.Leader,     // 负责人
-		Phone:      dto.Phone,      // 联系电话
-		Email:      dto.Email,      // 邮箱
-		Status:     dto.Status,     // 部门状态（0：停用，1:正常）
-		DelFlag:    dto.DelFlag,    // 删除标志（0代表删除 1代表存在）
-		CreateBy:   dto.CreateBy,   // 创建者
-		CreateTime: dto.CreateTime, // 创建时间
-		UpdateBy:   dto.UpdateBy,   // 更新者
-		UpdateTime: dto.UpdateTime, // 更新时间
+		ParentId:  dto.ParentId,  // 父部门id
+		Ancestors: dto.Ancestors, // 祖级列表
+		DeptName:  dto.DeptName,  // 部门名称
+		Sort:      dto.Sort,      // 显示顺序
+		Leader:    dto.Leader,    // 负责人
+		Phone:     dto.Phone,     // 联系电话
+		Email:     dto.Email,     // 邮箱
+		Status:    dto.Status,    // 部门状态（0：停用，1:正常）
+		DelFlag:   1,             // 删除标志（0代表删除 1代表存在）
+		CreateBy:  dto.CreateBy,  // 创建者
 	}
 
 	return b.db.Create(&item).Error
@@ -80,39 +76,17 @@ func (b DeptDao) QueryDeptDetail(dto system.QueryDeptDetailDto) (a.Dept, error) 
 }
 
 // QueryDeptList 查询部门列表
-func (b DeptDao) QueryDeptList(dto system.QueryDeptListDto) ([]a.Dept, int64) {
-	pageNo := dto.PageNo
-	pageSize := dto.PageSize
+func (b DeptDao) QueryDeptList(dto system.QueryDeptListDto) ([]a.Dept, error) {
 
-	var total int64 = 0
 	var list []a.Dept
-	tx := b.db.Model(&a.Dept{})
-	if dto.ParentId != 2 {
-		tx.Where("parent_id=?", dto.ParentId) // 父部门id
-	}
-	if len(dto.Ancestors) > 0 {
-		tx.Where("ancestors like %?%", dto.Ancestors) // 祖级列表
-	}
-	if len(dto.DeptName) > 0 {
-		tx.Where("dept_name like %?%", dto.DeptName) // 部门名称
-	}
-	if len(dto.Leader) > 0 {
-		tx.Where("leader like %?%", dto.Leader) // 负责人
-	}
-	if len(dto.Phone) > 0 {
-		tx.Where("phone like %?%", dto.Phone) // 联系电话
-	}
-	if len(dto.Email) > 0 {
-		tx.Where("email like %?%", dto.Email) // 邮箱
-	}
-	if dto.Status != 2 {
-		tx.Where("status=?", dto.Status) // 部门状态（0：停用，1:正常）
-	}
-	if dto.DelFlag != 2 {
-		tx.Where("del_flag=?", dto.DelFlag) // 删除标志（0代表删除 1代表存在）
-	}
-	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
+	err := b.db.Model(&a.Dept{}).Find(&list).Error
 
-	tx.Count(&total)
-	return list, total
+	return list, err
+}
+
+// QueryDeptById 根据id查询部门详情
+func (b DeptDao) QueryDeptById(id int64) (a.Dept, error) {
+	var item a.Dept
+	err := b.db.Where("id", id).First(&item).Error
+	return item, err
 }

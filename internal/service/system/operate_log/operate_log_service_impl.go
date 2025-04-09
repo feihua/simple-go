@@ -27,16 +27,6 @@ func (s *OperateLogServiceImpl) DeleteOperateLogByIds(ids []int64) error {
 	return s.Dao.DeleteOperateLogByIds(ids)
 }
 
-// UpdateOperateLog 更新操作日志记录
-func (s *OperateLogServiceImpl) UpdateOperateLog(dto a.UpdateOperateLogDto) error {
-	return s.Dao.UpdateOperateLog(dto)
-}
-
-// UpdateOperateLogStatus 更新操作日志记录状态
-func (s *OperateLogServiceImpl) UpdateOperateLogStatus(dto a.UpdateOperateLogStatusDto) error {
-	return s.Dao.UpdateOperateLogStatus(dto)
-}
-
 // QueryOperateLogDetail 查询操作日志记录详情
 func (s *OperateLogServiceImpl) QueryOperateLogDetail(dto a.QueryOperateLogDetailDto) (b.OperateLog, error) {
 	return s.Dao.QueryOperateLogDetail(dto)

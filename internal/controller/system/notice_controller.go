@@ -28,16 +28,12 @@ func (r NoticeController) CreateNotice(c *gin.Context) {
 	}
 
 	item := a.AddNoticeDto{
-		Id:            req.Id,            // 公告ID
 		NoticeTitle:   req.NoticeTitle,   // 公告标题
 		NoticeType:    req.NoticeType,    // 公告类型（1:通知,2:公告）
 		NoticeContent: req.NoticeContent, // 公告内容
 		Status:        req.Status,        // 公告状态（0:关闭,1:正常 ）
 		Remark:        req.Remark,        // 备注
-		CreateBy:      req.CreateBy,      // 创建者
-		CreateTime:    req.CreateTime,    // 创建时间
-		UpdateBy:      req.UpdateBy,      // 更新者
-		UpdateTime:    req.UpdateTime,    // 更新时间
+
 	}
 
 	err = r.Service.CreateNotice(item)
@@ -83,10 +79,7 @@ func (r NoticeController) UpdateNotice(c *gin.Context) {
 		NoticeContent: req.NoticeContent, // 公告内容
 		Status:        req.Status,        // 公告状态（0:关闭,1:正常 ）
 		Remark:        req.Remark,        // 备注
-		CreateBy:      req.CreateBy,      // 创建者
-		CreateTime:    req.CreateTime,    // 创建时间
-		UpdateBy:      req.UpdateBy,      // 更新者
-		UpdateTime:    req.UpdateTime,    // 更新时间
+
 	}
 	err = r.Service.UpdateNotice(item)
 	if err != nil {
@@ -148,12 +141,11 @@ func (r NoticeController) QueryNoticeList(c *gin.Context) {
 	}
 
 	item := a.QueryNoticeListDto{
-		PageNo:        req.PageNo,
-		PageSize:      req.PageSize,
-		NoticeTitle:   req.NoticeTitle,   // 公告标题
-		NoticeType:    req.NoticeType,    // 公告类型（1:通知,2:公告）
-		NoticeContent: req.NoticeContent, // 公告内容
-		Status:        req.Status,        // 公告状态（0:关闭,1:正常 ）
+		PageNo:      req.PageNo,
+		PageSize:    req.PageSize,
+		NoticeTitle: req.NoticeTitle, // 公告标题
+		NoticeType:  req.NoticeType,  // 公告类型（1:通知,2:公告）
+		Status:      req.Status,      // 公告状态（0:关闭,1:正常 ）
 	}
 	list, total := r.Service.QueryNoticeList(item)
 	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})

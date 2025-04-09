@@ -28,20 +28,15 @@ func (r DeptController) CreateDept(c *gin.Context) {
 	}
 
 	item := a.AddDeptDto{
-		Id:         req.Id,         // 部门id
-		ParentId:   req.ParentId,   // 父部门id
-		Ancestors:  req.Ancestors,  // 祖级列表
-		DeptName:   req.DeptName,   // 部门名称
-		Sort:       req.Sort,       // 显示顺序
-		Leader:     req.Leader,     // 负责人
-		Phone:      req.Phone,      // 联系电话
-		Email:      req.Email,      // 邮箱
-		Status:     req.Status,     // 部门状态（0：停用，1:正常）
-		DelFlag:    req.DelFlag,    // 删除标志（0代表删除 1代表存在）
-		CreateBy:   req.CreateBy,   // 创建者
-		CreateTime: req.CreateTime, // 创建时间
-		UpdateBy:   req.UpdateBy,   // 更新者
-		UpdateTime: req.UpdateTime, // 更新时间
+		ParentId:  req.ParentId,  // 父部门id
+		Ancestors: req.Ancestors, // 祖级列表
+		DeptName:  req.DeptName,  // 部门名称
+		Sort:      req.Sort,      // 显示顺序
+		Leader:    req.Leader,    // 负责人
+		Phone:     req.Phone,     // 联系电话
+		Email:     req.Email,     // 邮箱
+		Status:    req.Status,    // 部门状态（0：停用，1:正常）
+
 	}
 
 	err = r.Service.CreateDept(item)
@@ -81,20 +76,16 @@ func (r DeptController) UpdateDept(c *gin.Context) {
 	}
 
 	item := a.UpdateDeptDto{
-		Id:         req.Id,         // 部门id
-		ParentId:   req.ParentId,   // 父部门id
-		Ancestors:  req.Ancestors,  // 祖级列表
-		DeptName:   req.DeptName,   // 部门名称
-		Sort:       req.Sort,       // 显示顺序
-		Leader:     req.Leader,     // 负责人
-		Phone:      req.Phone,      // 联系电话
-		Email:      req.Email,      // 邮箱
-		Status:     req.Status,     // 部门状态（0：停用，1:正常）
-		DelFlag:    req.DelFlag,    // 删除标志（0代表删除 1代表存在）
-		CreateBy:   req.CreateBy,   // 创建者
-		CreateTime: req.CreateTime, // 创建时间
-		UpdateBy:   req.UpdateBy,   // 更新者
-		UpdateTime: req.UpdateTime, // 更新时间
+		Id:        req.Id,        // 部门id
+		ParentId:  req.ParentId,  // 父部门id
+		Ancestors: req.Ancestors, // 祖级列表
+		DeptName:  req.DeptName,  // 部门名称
+		Sort:      req.Sort,      // 显示顺序
+		Leader:    req.Leader,    // 负责人
+		Phone:     req.Phone,     // 联系电话
+		Email:     req.Email,     // 邮箱
+		Status:    req.Status,    // 部门状态（0：停用，1:正常）
+
 	}
 	err = r.Service.UpdateDept(item)
 	if err != nil {
@@ -155,18 +146,12 @@ func (r DeptController) QueryDeptList(c *gin.Context) {
 		return
 	}
 
-	item := a.QueryDeptListDto{
-		PageNo:    req.PageNo,
-		PageSize:  req.PageSize,
-		ParentId:  req.ParentId,  // 父部门id
-		Ancestors: req.Ancestors, // 祖级列表
-		DeptName:  req.DeptName,  // 部门名称
-		Leader:    req.Leader,    // 负责人
-		Phone:     req.Phone,     // 联系电话
-		Email:     req.Email,     // 邮箱
-		Status:    req.Status,    // 部门状态（0：停用，1:正常）
-		DelFlag:   req.DelFlag,   // 删除标志（0代表删除 1代表存在）
+	item := a.QueryDeptListDto{}
+	list, err := r.Service.QueryDeptList(item)
+	if err != nil {
+		result.FailWithMsg(c, result.DeptError, err.Error())
+	} else {
+		result.OkWithData(c, gin.H{"list": list, "success": true})
 	}
-	list, total := r.Service.QueryDeptList(item)
-	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+
 }

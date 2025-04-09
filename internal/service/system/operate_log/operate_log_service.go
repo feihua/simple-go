@@ -11,10 +11,7 @@ type OperateLogService interface {
 	CreateOperateLog(dto b.AddOperateLogDto) error
 	// DeleteOperateLogByIds 删除操作日志记录
 	DeleteOperateLogByIds(ids []int64) error
-	// UpdateOperateLog 更新操作日志记录
-	UpdateOperateLog(dto b.UpdateOperateLogDto) error
-	// UpdateOperateLogStatus 更新操作日志记录状态
-	UpdateOperateLogStatus(dto b.UpdateOperateLogStatusDto) error
+
 	// QueryOperateLogDetail 查询操作日志记录详情
 	QueryOperateLogDetail(dto b.QueryOperateLogDetailDto) (a.OperateLog, error)
 	// QueryOperateLogList 查询操作日志记录列表

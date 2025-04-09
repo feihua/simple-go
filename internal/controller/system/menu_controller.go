@@ -28,21 +28,17 @@ func (r MenuController) CreateMenu(c *gin.Context) {
 	}
 
 	item := a.AddMenuDto{
-		Id:         req.Id,         // 主键
-		MenuName:   req.MenuName,   // 菜单名称
-		MenuType:   req.MenuType,   // 菜单类型(1：目录   2：菜单   3：按钮)
-		Visible:    req.Visible,    // 显示状态（0:隐藏, 显示:1）
-		Status:     req.Status,     // 菜单状态(1:正常，0:禁用)
-		Sort:       req.Sort,       // 排序
-		ParentId:   req.ParentId,   // 父ID
-		MenuUrl:    req.MenuUrl,    // 路由路径
-		ApiUrl:     req.ApiUrl,     // 接口URL
-		MenuIcon:   req.MenuIcon,   // 菜单图标
-		Remark:     req.Remark,     // 备注
-		CreateBy:   req.CreateBy,   // 创建者
-		CreateTime: req.CreateTime, // 创建时间
-		UpdateBy:   req.UpdateBy,   // 更新者
-		UpdateTime: req.UpdateTime, // 更新时间
+		MenuName: req.MenuName, // 菜单名称
+		MenuType: req.MenuType, // 菜单类型(1：目录   2：菜单   3：按钮)
+		Visible:  req.Visible,  // 显示状态（0:隐藏, 显示:1）
+		Status:   req.Status,   // 菜单状态(1:正常，0:禁用)
+		Sort:     req.Sort,     // 排序
+		ParentId: req.ParentId, // 父ID
+		MenuUrl:  req.MenuUrl,  // 路由路径
+		ApiUrl:   req.ApiUrl,   // 接口URL
+		MenuIcon: req.MenuIcon, // 菜单图标
+		Remark:   req.Remark,   // 备注
+
 	}
 
 	err = r.Service.CreateMenu(item)
@@ -82,21 +78,18 @@ func (r MenuController) UpdateMenu(c *gin.Context) {
 	}
 
 	item := a.UpdateMenuDto{
-		Id:         req.Id,         // 主键
-		MenuName:   req.MenuName,   // 菜单名称
-		MenuType:   req.MenuType,   // 菜单类型(1：目录   2：菜单   3：按钮)
-		Visible:    req.Visible,    // 显示状态（0:隐藏, 显示:1）
-		Status:     req.Status,     // 菜单状态(1:正常，0:禁用)
-		Sort:       req.Sort,       // 排序
-		ParentId:   req.ParentId,   // 父ID
-		MenuUrl:    req.MenuUrl,    // 路由路径
-		ApiUrl:     req.ApiUrl,     // 接口URL
-		MenuIcon:   req.MenuIcon,   // 菜单图标
-		Remark:     req.Remark,     // 备注
-		CreateBy:   req.CreateBy,   // 创建者
-		CreateTime: req.CreateTime, // 创建时间
-		UpdateBy:   req.UpdateBy,   // 更新者
-		UpdateTime: req.UpdateTime, // 更新时间
+		Id:       req.Id,       // 主键
+		MenuName: req.MenuName, // 菜单名称
+		MenuType: req.MenuType, // 菜单类型(1：目录   2：菜单   3：按钮)
+		Visible:  req.Visible,  // 显示状态（0:隐藏, 显示:1）
+		Status:   req.Status,   // 菜单状态(1:正常，0:禁用)
+		Sort:     req.Sort,     // 排序
+		ParentId: req.ParentId, // 父ID
+		MenuUrl:  req.MenuUrl,  // 路由路径
+		ApiUrl:   req.ApiUrl,   // 接口URL
+		MenuIcon: req.MenuIcon, // 菜单图标
+		Remark:   req.Remark,   // 备注
+
 	}
 	err = r.Service.UpdateMenu(item)
 	if err != nil {
@@ -160,14 +153,6 @@ func (r MenuController) QueryMenuList(c *gin.Context) {
 	item := a.QueryMenuListDto{
 		PageNo:   req.PageNo,
 		PageSize: req.PageSize,
-		MenuName: req.MenuName, // 菜单名称
-		MenuType: req.MenuType, // 菜单类型(1：目录   2：菜单   3：按钮)
-		Visible:  req.Visible,  // 显示状态（0:隐藏, 显示:1）
-		Status:   req.Status,   // 菜单状态(1:正常，0:禁用)
-		ParentId: req.ParentId, // 父ID
-		MenuUrl:  req.MenuUrl,  // 路由路径
-		ApiUrl:   req.ApiUrl,   // 接口URL
-		MenuIcon: req.MenuIcon, // 菜单图标
 	}
 	list, total := r.Service.QueryMenuList(item)
 	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})

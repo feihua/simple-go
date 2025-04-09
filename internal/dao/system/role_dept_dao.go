@@ -31,23 +31,6 @@ func (b RoleDeptDao) DeleteRoleDeptByIds(ids []int64) error {
 	return b.db.Where("id in (?)", ids).Delete(&a.RoleDept{}).Error
 }
 
-// UpdateRoleDept 更新角色和部门关联
-func (b RoleDeptDao) UpdateRoleDept(dto system.UpdateRoleDeptDto) error {
-
-	item := a.RoleDept{
-		RoleId: dto.RoleId, // 角色id
-		DeptId: dto.DeptId, // 部门id
-	}
-
-	return b.db.Updates(&item).Error
-}
-
-// UpdateRoleDeptStatus 更新角色和部门关联状态
-func (b RoleDeptDao) UpdateRoleDeptStatus(dto system.UpdateRoleDeptStatusDto) error {
-
-	return b.db.Model(&a.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
-}
-
 // QueryRoleDeptDetail 查询角色和部门关联详情
 func (b RoleDeptDao) QueryRoleDeptDetail(dto system.QueryRoleDeptDetailDto) (a.RoleDept, error) {
 	var item a.RoleDept

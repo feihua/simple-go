@@ -28,15 +28,11 @@ func (r DictTypeController) CreateDictType(c *gin.Context) {
 	}
 
 	item := a.AddDictTypeDto{
-		Id:         req.Id,         // 字典主键
-		DictName:   req.DictName,   // 字典名称
-		DictType:   req.DictType,   // 字典类型
-		Status:     req.Status,     // 状态（0：停用，1:正常）
-		Remark:     req.Remark,     // 备注
-		CreateBy:   req.CreateBy,   // 创建者
-		CreateTime: req.CreateTime, // 创建时间
-		UpdateBy:   req.UpdateBy,   // 更新者
-		UpdateTime: req.UpdateTime, // 更新时间
+		DictName: req.DictName, // 字典名称
+		DictType: req.DictType, // 字典类型
+		Status:   req.Status,   // 状态（0：停用，1:正常）
+		Remark:   req.Remark,   // 备注
+
 	}
 
 	err = r.Service.CreateDictType(item)
@@ -76,15 +72,12 @@ func (r DictTypeController) UpdateDictType(c *gin.Context) {
 	}
 
 	item := a.UpdateDictTypeDto{
-		Id:         req.Id,         // 字典主键
-		DictName:   req.DictName,   // 字典名称
-		DictType:   req.DictType,   // 字典类型
-		Status:     req.Status,     // 状态（0：停用，1:正常）
-		Remark:     req.Remark,     // 备注
-		CreateBy:   req.CreateBy,   // 创建者
-		CreateTime: req.CreateTime, // 创建时间
-		UpdateBy:   req.UpdateBy,   // 更新者
-		UpdateTime: req.UpdateTime, // 更新时间
+		Id:       req.Id,       // 字典主键
+		DictName: req.DictName, // 字典名称
+		DictType: req.DictType, // 字典类型
+		Status:   req.Status,   // 状态（0：停用，1:正常）
+		Remark:   req.Remark,   // 备注
+
 	}
 	err = r.Service.UpdateDictType(item)
 	if err != nil {

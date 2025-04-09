@@ -19,15 +19,12 @@ func NewDictTypeDao(DB *gorm.DB) *DictTypeDao {
 // CreateDictType 添加字典类型
 func (b DictTypeDao) CreateDictType(dto system.AddDictTypeDto) error {
 	item := a.DictType{
-		Id:         dto.Id,         // 字典主键
-		DictName:   dto.DictName,   // 字典名称
-		DictType:   dto.DictType,   // 字典类型
-		Status:     dto.Status,     // 状态（0：停用，1:正常）
-		Remark:     dto.Remark,     // 备注
-		CreateBy:   dto.CreateBy,   // 创建者
-		CreateTime: dto.CreateTime, // 创建时间
-		UpdateBy:   dto.UpdateBy,   // 更新者
-		UpdateTime: dto.UpdateTime, // 更新时间
+		DictName: dto.DictName, // 字典名称
+		DictType: dto.DictType, // 字典类型
+		Status:   dto.Status,   // 状态（0：停用，1:正常）
+		Remark:   dto.Remark,   // 备注
+		CreateBy: dto.CreateBy, // 创建者
+
 	}
 
 	return b.db.Create(&item).Error

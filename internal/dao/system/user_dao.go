@@ -19,27 +19,19 @@ func NewUserDao(DB *gorm.DB) *UserDao {
 // CreateUser 添加用户信息
 func (b UserDao) CreateUser(dto system.AddUserDto) error {
 	item := a.User{
-		Id:            dto.Id,            // 主键
-		Mobile:        dto.Mobile,        // 手机号码
-		UserName:      dto.UserName,      // 用户账号
-		NickName:      dto.NickName,      // 用户昵称
-		UserType:      dto.UserType,      // 用户类型（00系统用户）
-		Avatar:        dto.Avatar,        // 头像路径
-		Email:         dto.Email,         // 用户邮箱
-		Password:      dto.Password,      // 密码
-		Status:        dto.Status,        // 状态(1:正常，0:禁用)
-		DeptId:        dto.DeptId,        // 部门ID
-		LoginIp:       dto.LoginIp,       // 最后登录IP
-		LoginDate:     dto.LoginDate,     // 最后登录时间
-		LoginBrowser:  dto.LoginBrowser,  // 浏览器类型
-		LoginOs:       dto.LoginOs,       // 操作系统
-		PwdUpdateDate: dto.PwdUpdateDate, // 密码最后更新时间
-		Remark:        dto.Remark,        // 备注
-		DelFlag:       dto.DelFlag,       // 删除标志（0代表删除 1代表存在）
-		CreateBy:      dto.CreateBy,      // 创建者
-		CreateTime:    dto.CreateTime,    // 创建时间
-		UpdateBy:      dto.UpdateBy,      // 更新者
-		UpdateTime:    dto.UpdateTime,    // 更新时间
+		Mobile:   dto.Mobile,   // 手机号码
+		UserName: dto.UserName, // 用户账号
+		NickName: dto.NickName, // 用户昵称
+		UserType: dto.UserType, // 用户类型（00系统用户）
+		Avatar:   dto.Avatar,   // 头像路径
+		Email:    dto.Email,    // 用户邮箱
+		Password: dto.Password, // 密码
+		Status:   dto.Status,   // 状态(1:正常，0:禁用)
+		DeptId:   dto.DeptId,   // 部门ID
+		Remark:   dto.Remark,   // 备注
+		DelFlag:  1,            // 删除标志（0代表删除 1代表存在）
+		CreateBy: dto.CreateBy, // 创建者
+
 	}
 
 	return b.db.Create(&item).Error
@@ -110,36 +102,14 @@ func (b UserDao) QueryUserList(dto system.QueryUserListDto) ([]a.User, int64) {
 	if len(dto.NickName) > 0 {
 		tx.Where("nick_name like %?%", dto.NickName) // 用户昵称
 	}
-	if len(dto.UserType) > 0 {
-		tx.Where("user_type like %?%", dto.UserType) // 用户类型（00系统用户）
-	}
-	if len(dto.Avatar) > 0 {
-		tx.Where("avatar like %?%", dto.Avatar) // 头像路径
-	}
-	if len(dto.Email) > 0 {
-		tx.Where("email like %?%", dto.Email) // 用户邮箱
-	}
-	if len(dto.Password) > 0 {
-		tx.Where("password like %?%", dto.Password) // 密码
-	}
+
 	if dto.Status != 2 {
 		tx.Where("status=?", dto.Status) // 状态(1:正常，0:禁用)
 	}
 	if dto.DeptId != 2 {
 		tx.Where("dept_id=?", dto.DeptId) // 部门ID
 	}
-	if len(dto.LoginIp) > 0 {
-		tx.Where("login_ip like %?%", dto.LoginIp) // 最后登录IP
-	}
-	if len(dto.LoginBrowser) > 0 {
-		tx.Where("login_browser like %?%", dto.LoginBrowser) // 浏览器类型
-	}
-	if len(dto.LoginOs) > 0 {
-		tx.Where("login_os like %?%", dto.LoginOs) // 操作系统
-	}
-	if dto.DelFlag != 2 {
-		tx.Where("del_flag=?", dto.DelFlag) // 删除标志（0代表删除 1代表存在）
-	}
+
 	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
 
 	tx.Count(&total)

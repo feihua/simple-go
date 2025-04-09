@@ -28,20 +28,16 @@ func (r DictDataController) CreateDictData(c *gin.Context) {
 	}
 
 	item := a.AddDictDataDto{
-		Id:         req.Id,         // 字典编码
-		DictSort:   req.DictSort,   // 字典排序
-		DictLabel:  req.DictLabel,  // 字典标签
-		DictValue:  req.DictValue,  // 字典键值
-		DictType:   req.DictType,   // 字典类型
-		CssClass:   req.CssClass,   // 样式属性（其他样式扩展）
-		ListClass:  req.ListClass,  // 表格回显样式
-		IsDefault:  req.IsDefault,  // 是否默认（Y是 N否）
-		Status:     req.Status,     // 状态（0：停用，1:正常）
-		Remark:     req.Remark,     // 备注
-		CreateBy:   req.CreateBy,   // 创建者
-		CreateTime: req.CreateTime, // 创建时间
-		UpdateBy:   req.UpdateBy,   // 更新者
-		UpdateTime: req.UpdateTime, // 更新时间
+		DictSort:  req.DictSort,  // 字典排序
+		DictLabel: req.DictLabel, // 字典标签
+		DictValue: req.DictValue, // 字典键值
+		DictType:  req.DictType,  // 字典类型
+		CssClass:  req.CssClass,  // 样式属性（其他样式扩展）
+		ListClass: req.ListClass, // 表格回显样式
+		IsDefault: req.IsDefault, // 是否默认（Y是 N否）
+		Status:    req.Status,    // 状态（0：停用，1:正常）
+		Remark:    req.Remark,    // 备注
+
 	}
 
 	err = r.Service.CreateDictData(item)
@@ -81,20 +77,17 @@ func (r DictDataController) UpdateDictData(c *gin.Context) {
 	}
 
 	item := a.UpdateDictDataDto{
-		Id:         req.Id,         // 字典编码
-		DictSort:   req.DictSort,   // 字典排序
-		DictLabel:  req.DictLabel,  // 字典标签
-		DictValue:  req.DictValue,  // 字典键值
-		DictType:   req.DictType,   // 字典类型
-		CssClass:   req.CssClass,   // 样式属性（其他样式扩展）
-		ListClass:  req.ListClass,  // 表格回显样式
-		IsDefault:  req.IsDefault,  // 是否默认（Y是 N否）
-		Status:     req.Status,     // 状态（0：停用，1:正常）
-		Remark:     req.Remark,     // 备注
-		CreateBy:   req.CreateBy,   // 创建者
-		CreateTime: req.CreateTime, // 创建时间
-		UpdateBy:   req.UpdateBy,   // 更新者
-		UpdateTime: req.UpdateTime, // 更新时间
+		Id:        req.Id,        // 字典编码
+		DictSort:  req.DictSort,  // 字典排序
+		DictLabel: req.DictLabel, // 字典标签
+		DictValue: req.DictValue, // 字典键值
+		DictType:  req.DictType,  // 字典类型
+		CssClass:  req.CssClass,  // 样式属性（其他样式扩展）
+		ListClass: req.ListClass, // 表格回显样式
+		IsDefault: req.IsDefault, // 是否默认（Y是 N否）
+		Status:    req.Status,    // 状态（0：停用，1:正常）
+		Remark:    req.Remark,    // 备注
+
 	}
 	err = r.Service.UpdateDictData(item)
 	if err != nil {
@@ -159,11 +152,7 @@ func (r DictDataController) QueryDictDataList(c *gin.Context) {
 		PageNo:    req.PageNo,
 		PageSize:  req.PageSize,
 		DictLabel: req.DictLabel, // 字典标签
-		DictValue: req.DictValue, // 字典键值
 		DictType:  req.DictType,  // 字典类型
-		CssClass:  req.CssClass,  // 样式属性（其他样式扩展）
-		ListClass: req.ListClass, // 表格回显样式
-		IsDefault: req.IsDefault, // 是否默认（Y是 N否）
 		Status:    req.Status,    // 状态（0：停用，1:正常）
 	}
 	list, total := r.Service.QueryDictDataList(item)

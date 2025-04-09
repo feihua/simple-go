@@ -1,19 +1,13 @@
 package system
 
-import "time"
-
 // AddPostReqVo 添加岗位信息请求参数
 type AddPostReqVo struct {
-	Id         int64     `json:"id" binding:"required"`         // 岗位id
-	PostCode   string    `json:"postCode" binding:"required"`   // 岗位编码
-	PostName   string    `json:"postName" binding:"required"`   // 岗位名称
-	Sort       int32     `json:"sort" binding:"required"`       // 显示顺序
-	Status     int32     `json:"status" binding:"required"`     // 岗位状态（0：停用，1:正常）
-	Remark     string    `json:"remark" binding:"required"`     // 备注
-	CreateBy   string    `json:"createBy" binding:"required"`   // 创建者
-	CreateTime time.Time `json:"createTime" binding:"required"` // 创建时间
-	UpdateBy   string    `json:"updateBy" binding:"required"`   // 更新者
-	UpdateTime time.Time `json:"updateTime" binding:"required"` // 更新时间
+	PostCode string `json:"postCode" binding:"required"` // 岗位编码
+	PostName string `json:"postName" binding:"required"` // 岗位名称
+	Sort     int32  `json:"sort" binding:"required"`     // 显示顺序
+	Status   int32  `json:"status" binding:"required"`   // 岗位状态（0：停用，1:正常）
+	Remark   string `json:"remark" binding:"required"`   // 备注
+
 }
 
 // DeletePostReqVo 删除岗位信息请求参数
@@ -23,16 +17,13 @@ type DeletePostReqVo struct {
 
 // UpdatePostReqVo 修改岗位信息请求参数
 type UpdatePostReqVo struct {
-	Id         int64     `json:"id" binding:"required"`         // 岗位id
-	PostCode   string    `json:"postCode" binding:"required"`   // 岗位编码
-	PostName   string    `json:"postName" binding:"required"`   // 岗位名称
-	Sort       int32     `json:"sort" binding:"required"`       // 显示顺序
-	Status     int32     `json:"status" binding:"required"`     // 岗位状态（0：停用，1:正常）
-	Remark     string    `json:"remark" binding:"required"`     // 备注
-	CreateBy   string    `json:"createBy" binding:"required"`   // 创建者
-	CreateTime time.Time `json:"createTime" binding:"required"` // 创建时间
-	UpdateBy   string    `json:"updateBy" binding:"required"`   // 更新者
-	UpdateTime time.Time `json:"updateTime" binding:"required"` // 更新时间
+	Id       int64  `json:"id" binding:"required"`       // 岗位id
+	PostCode string `json:"postCode" binding:"required"` // 岗位编码
+	PostName string `json:"postName" binding:"required"` // 岗位名称
+	Sort     int32  `json:"sort" binding:"required"`     // 显示顺序
+	Status   int32  `json:"status" binding:"required"`   // 岗位状态（0：停用，1:正常）
+	Remark   string `json:"remark" binding:"required"`   // 备注
+
 }
 
 // UpdatePostStatusReqVo 修改岗位信息状态请求参数
@@ -48,16 +39,10 @@ type QueryPostDetailReqVo struct {
 
 // QueryPostListReqVo 查询岗位信息列表请求参数
 type QueryPostListReqVo struct {
-	PageNo     int       `json:"pageNo" default:"1" binding:"required"`    // 第几页
-	PageSize   int       `json:"pageSize" default:"10" binding:"required"` // 每页的数量
-	Id         int64     `json:"id" binding:"required"`                    // 岗位id
-	PostCode   string    `json:"postCode" binding:"required"`              // 岗位编码
-	PostName   string    `json:"postName" binding:"required"`              // 岗位名称
-	Sort       int32     `json:"sort" binding:"required"`                  // 显示顺序
-	Status     int32     `json:"status" binding:"required"`                // 岗位状态（0：停用，1:正常）
-	Remark     string    `json:"remark" binding:"required"`                // 备注
-	CreateBy   string    `json:"createBy" binding:"required"`              // 创建者
-	CreateTime time.Time `json:"createTime" binding:"required"`            // 创建时间
-	UpdateBy   string    `json:"updateBy" binding:"required"`              // 更新者
-	UpdateTime time.Time `json:"updateTime" binding:"required"`            // 更新时间
+	PageNo   int    `json:"pageNo" default:"1" binding:"required"`    // 第几页
+	PageSize int    `json:"pageSize" default:"10" binding:"required"` // 每页的数量
+	PostCode string `json:"postCode" binding:"required"`              // 岗位编码
+	PostName string `json:"postName" binding:"required"`              // 岗位名称
+	Status   int32  `json:"status" binding:"required"`                // 岗位状态（0：停用，1:正常）
+
 }

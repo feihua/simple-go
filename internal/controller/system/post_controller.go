@@ -28,16 +28,12 @@ func (r PostController) CreatePost(c *gin.Context) {
 	}
 
 	item := a.AddPostDto{
-		Id:         req.Id,         // 岗位id
-		PostCode:   req.PostCode,   // 岗位编码
-		PostName:   req.PostName,   // 岗位名称
-		Sort:       req.Sort,       // 显示顺序
-		Status:     req.Status,     // 岗位状态（0：停用，1:正常）
-		Remark:     req.Remark,     // 备注
-		CreateBy:   req.CreateBy,   // 创建者
-		CreateTime: req.CreateTime, // 创建时间
-		UpdateBy:   req.UpdateBy,   // 更新者
-		UpdateTime: req.UpdateTime, // 更新时间
+		PostCode: req.PostCode, // 岗位编码
+		PostName: req.PostName, // 岗位名称
+		Sort:     req.Sort,     // 显示顺序
+		Status:   req.Status,   // 岗位状态（0：停用，1:正常）
+		Remark:   req.Remark,   // 备注
+
 	}
 
 	err = r.Service.CreatePost(item)
@@ -77,16 +73,13 @@ func (r PostController) UpdatePost(c *gin.Context) {
 	}
 
 	item := a.UpdatePostDto{
-		Id:         req.Id,         // 岗位id
-		PostCode:   req.PostCode,   // 岗位编码
-		PostName:   req.PostName,   // 岗位名称
-		Sort:       req.Sort,       // 显示顺序
-		Status:     req.Status,     // 岗位状态（0：停用，1:正常）
-		Remark:     req.Remark,     // 备注
-		CreateBy:   req.CreateBy,   // 创建者
-		CreateTime: req.CreateTime, // 创建时间
-		UpdateBy:   req.UpdateBy,   // 更新者
-		UpdateTime: req.UpdateTime, // 更新时间
+		Id:       req.Id,       // 岗位id
+		PostCode: req.PostCode, // 岗位编码
+		PostName: req.PostName, // 岗位名称
+		Sort:     req.Sort,     // 显示顺序
+		Status:   req.Status,   // 岗位状态（0：停用，1:正常）
+		Remark:   req.Remark,   // 备注
+
 	}
 	err = r.Service.UpdatePost(item)
 	if err != nil {

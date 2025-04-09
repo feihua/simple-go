@@ -11,10 +11,6 @@ type LoginLogService interface {
 	CreateLoginLog(dto b.AddLoginLogDto) error
 	// DeleteLoginLogByIds 删除系统访问记录
 	DeleteLoginLogByIds(ids []int64) error
-	// UpdateLoginLog 更新系统访问记录
-	UpdateLoginLog(dto b.UpdateLoginLogDto) error
-	// UpdateLoginLogStatus 更新系统访问记录状态
-	UpdateLoginLogStatus(dto b.UpdateLoginLogStatusDto) error
 	// QueryLoginLogDetail 查询系统访问记录详情
 	QueryLoginLogDetail(dto b.QueryLoginLogDetailDto) (a.LoginLog, error)
 	// QueryLoginLogList 查询系统访问记录列表

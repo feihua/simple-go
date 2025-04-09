@@ -27,16 +27,6 @@ func (s *LoginLogServiceImpl) DeleteLoginLogByIds(ids []int64) error {
 	return s.Dao.DeleteLoginLogByIds(ids)
 }
 
-// UpdateLoginLog 更新系统访问记录
-func (s *LoginLogServiceImpl) UpdateLoginLog(dto a.UpdateLoginLogDto) error {
-	return s.Dao.UpdateLoginLog(dto)
-}
-
-// UpdateLoginLogStatus 更新系统访问记录状态
-func (s *LoginLogServiceImpl) UpdateLoginLogStatus(dto a.UpdateLoginLogStatusDto) error {
-	return s.Dao.UpdateLoginLogStatus(dto)
-}
-
 // QueryLoginLogDetail 查询系统访问记录详情
 func (s *LoginLogServiceImpl) QueryLoginLogDetail(dto a.QueryLoginLogDetailDto) (b.LoginLog, error) {
 	return s.Dao.QueryLoginLogDetail(dto)

@@ -32,24 +32,6 @@ func (b RoleMenuDao) DeleteRoleMenuByIds(ids []int64) error {
 	return b.db.Where("id in (?)", ids).Delete(&a.RoleMenu{}).Error
 }
 
-// UpdateRoleMenu 更新菜单角色关联
-func (b RoleMenuDao) UpdateRoleMenu(dto system.UpdateRoleMenuDto) error {
-
-	item := a.RoleMenu{
-		Id:     dto.Id,     // 主键
-		RoleId: dto.RoleId, // 角色ID
-		MenuId: dto.MenuId, // 菜单ID
-	}
-
-	return b.db.Updates(&item).Error
-}
-
-// UpdateRoleMenuStatus 更新菜单角色关联状态
-func (b RoleMenuDao) UpdateRoleMenuStatus(dto system.UpdateRoleMenuStatusDto) error {
-
-	return b.db.Model(&a.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
-}
-
 // QueryRoleMenuDetail 查询菜单角色关联详情
 func (b RoleMenuDao) QueryRoleMenuDetail(dto system.QueryRoleMenuDetailDto) (a.RoleMenu, error) {
 	var item a.RoleMenu

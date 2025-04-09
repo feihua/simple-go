@@ -19,16 +19,13 @@ func NewPostDao(DB *gorm.DB) *PostDao {
 // CreatePost 添加岗位信息
 func (b PostDao) CreatePost(dto system.AddPostDto) error {
 	item := a.Post{
-		Id:         dto.Id,         // 岗位id
-		PostCode:   dto.PostCode,   // 岗位编码
-		PostName:   dto.PostName,   // 岗位名称
-		Sort:       dto.Sort,       // 显示顺序
-		Status:     dto.Status,     // 岗位状态（0：停用，1:正常）
-		Remark:     dto.Remark,     // 备注
-		CreateBy:   dto.CreateBy,   // 创建者
-		CreateTime: dto.CreateTime, // 创建时间
-		UpdateBy:   dto.UpdateBy,   // 更新者
-		UpdateTime: dto.UpdateTime, // 更新时间
+		PostCode: dto.PostCode, // 岗位编码
+		PostName: dto.PostName, // 岗位名称
+		Sort:     dto.Sort,     // 显示顺序
+		Status:   dto.Status,   // 岗位状态（0：停用，1:正常）
+		Remark:   dto.Remark,   // 备注
+		CreateBy: dto.CreateBy, // 创建者
+
 	}
 
 	return b.db.Create(&item).Error
