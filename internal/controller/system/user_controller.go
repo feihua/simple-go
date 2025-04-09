@@ -212,18 +212,19 @@ func (u UserController) Login(c *gin.Context) {
 	}
 }
 
-// // QueryUserMenuList 查询用户菜单权限信息
-// func (u UserController) QueryUserMenuList(c *gin.Context) {
-// 	userId := c.MustGet("userId").(float64)
-// 	userName := c.MustGet("userName").(string)
-// 	resp, err := u.Service.QueryUserMenu(int64(userId), userName)
-//
-// 	if err != nil {
-// 		result.FailWithMsg(c, result.UserLoginError, err.Error())
-// 	} else {
-// 		result.OkWithData(c, resp)
-// 	}
-// }
+// QueryUserMenuList 查询用户菜单权限信息
+func (u UserController) QueryUserMenuList(c *gin.Context) {
+	userId := c.MustGet("userId").(float64)
+	userName := c.MustGet("userName").(string)
+	resp, err := u.Service.QueryUserMenu(int64(userId), userName)
+
+	if err != nil {
+		result.FailWithMsg(c, result.UserLoginError, err.Error())
+	} else {
+		result.OkWithData(c, resp)
+	}
+}
+
 //
 // // QueryUserRoleList 根据用户id查询用户与角色关糸
 // func (u UserController) QueryUserRoleList(c *gin.Context) {

@@ -167,3 +167,25 @@ where t.user_id = ?`
 
 	return apiUrls, err
 }
+
+// QueryUserById 根据id查询用户信息
+func (b UserDao) QueryUserById(id int64) (a.User, error) {
+	var item a.User
+	err := b.db.Where("id", id).First(&item).Error
+	return item, err
+}
+
+// QueryUserMenus 根据用户id查询用户权限
+func (u UserDao) QueryUserMenus(userId int64) ([]a.Menu, error) {
+	sql := `select u.*
+from sys_user_role t
+         left join sys_role usr on t.role_id = usr.id
+         left join sys_role_menu srm on usr.id = srm.role_id
+         left join sys_menu u on srm.menu_id = u.id
+where t.user_id = ?`
+
+	var list []a.Menu
+	err := u.db.Raw(sql, userId).Scan(&list).Error
+
+	return list, err
+}

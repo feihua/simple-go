@@ -125,3 +125,12 @@ func (b MenuDao) QueryApiUrlList() ([]string, error) {
 	err := b.db.Model(&a.Menu{}).Select("api_url").Where("api_url is not null").Scan(&apiUrls).Error
 	return apiUrls, err
 }
+
+// QueryAllMenuList 查询所有菜单信息列表
+func (b MenuDao) QueryAllMenuList() ([]a.Menu, error) {
+
+	var list []a.Menu
+	err := b.db.Model(&a.Menu{}).Find(&list).Error
+
+	return list, err
+}
