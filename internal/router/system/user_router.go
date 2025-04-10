@@ -16,5 +16,7 @@ func UserRouter(r *gin.RouterGroup, b *a.UserController) {
 	r.POST("/system/user/queryUserList", b.QueryUserList)
 	r.POST("/system/user/login", b.Login)
 	r.GET("/system/user/queryUserMenu", b.QueryUserMenuList)
+	r.GET("/system/user/queryUserRoleList", b.QueryUserRoleList)
+	r.GET("/system/user/updateUserRole", b.UpdateUserRoleList)
 
 }

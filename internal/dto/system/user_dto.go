@@ -4,18 +4,19 @@ import "time"
 
 // AddUserDto 添加用户信息请求参数
 type AddUserDto struct {
-	Mobile   string `json:"mobile"`   // 手机号码
-	UserName string `json:"userName"` // 用户账号
-	NickName string `json:"nickName"` // 用户昵称
-	UserType string `json:"userType"` // 用户类型（00系统用户）
-	Avatar   string `json:"avatar"`   // 头像路径
-	Email    string `json:"email"`    // 用户邮箱
-	Password string `json:"password"` // 密码
-	Status   int32  `json:"status"`   // 状态(1:正常，0:禁用)
-	DeptId   int64  `json:"deptId"`   // 部门ID
-	Remark   string `json:"remark"`   // 备注
-	CreateBy string `json:"createBy"` // 创建者
-
+	Id       int64   `json:"id"`       // 主键
+	Mobile   string  `json:"mobile"`   // 手机号码
+	UserName string  `json:"userName"` // 用户账号
+	NickName string  `json:"nickName"` // 用户昵称
+	UserType string  `json:"userType"` // 用户类型（00系统用户）
+	Avatar   string  `json:"avatar"`   // 头像路径
+	Email    string  `json:"email"`    // 用户邮箱
+	Password string  `json:"password"` // 密码
+	Status   int32   `json:"status"`   // 状态(1:正常，0:禁用)
+	DeptId   int64   `json:"deptId"`   // 部门ID
+	Remark   string  `json:"remark"`   // 备注
+	CreateBy string  `json:"createBy"` // 创建者
+	PostIds  []int64 `json:"postIds"`  // 部门id
 }
 
 // DeleteUserDto 删除用户信息请求参数
@@ -46,6 +47,7 @@ type UpdateUserDto struct {
 	CreateTime    time.Time  `json:"createTime"`    // 创建时间
 	UpdateBy      string     `json:"updateBy"`      // 更新者
 	UpdateTime    time.Time  `json:"updateTime"`    // 更新时间
+	PostIds       []int64    `json:"postIds"`       // 部门id
 }
 
 // UpdateUserStatusDto 修改用户信息状态请求参数
@@ -62,14 +64,14 @@ type QueryUserDetailDto struct {
 
 // QueryUserListDto 查询用户信息列表请求参数
 type QueryUserListDto struct {
-	PageNo   int    `json:"pageNo" default:"1"`    // 第几页
-	PageSize int    `json:"pageSize" default:"10"` // 每页的数量
-	Mobile   string `json:"mobile"`                // 手机号码
-	UserName string `json:"userName"`              // 用户账号
-	NickName string `json:"nickName"`              // 用户昵称
-	Status   int32  `json:"status"`                // 状态(1:正常，0:禁用)
-	DeptId   int64  `json:"deptId"`                // 部门ID
-
+	PageNo   int     `json:"pageNo" default:"1"`    // 第几页
+	PageSize int     `json:"pageSize" default:"10"` // 每页的数量
+	Mobile   string  `json:"mobile"`                // 手机号码
+	UserName string  `json:"userName"`              // 用户账号
+	NickName string  `json:"nickName"`              // 用户昵称
+	Status   int32   `json:"status"`                // 状态(1:正常，0:禁用)
+	DeptId   int64   `json:"deptId"`                // 部门ID
+	PostIds  []int64 `json:"postIds"`               // 部门id
 }
 
 // QueryUserListDtoResp 查询用户信息列表响应参数
@@ -117,4 +119,21 @@ type UserMenuDto struct {
 	ParentId int64  `json:"parentId"` // 父ID
 	MenuUrl  string `json:"path"`     // 路由路径
 	MenuIcon string `json:"menuIcon"` // 菜单图标
+}
+
+// QueryUserRoleListDto 查询用户已分配角色请求参数
+type QueryUserRoleListDto struct {
+	PageNo   int   `json:"pageNo"`   // 第几页
+	PageSize int   `json:"pageSize"` // 每页的数量
+	UserId   int64 `json:"userId" `
+}
+type QueryUserRoleListDataDtoResp struct {
+	RoleList []QueryRoleListDtoResp `json:"sysRoleList"` // 角色列表
+	RoleIds  []int64                `json:"userRoleIds"` // 角色Id
+}
+
+// UpdateUserRoleDto 更新用户角色参数
+type UpdateUserRoleDto struct {
+	UserId  int64   `json:"userId" binding:"required"`
+	RoleIds []int64 `json:"roleIds" binding:"required"`
 }

@@ -10,17 +10,49 @@ import (
 
 // DictDataServiceImpl 字典数据操作实现
 type DictDataServiceImpl struct {
-	Dao *system.DictDataDao
+	Dao         *system.DictDataDao
+	DictTypeDao *system.DictTypeDao
 }
 
-func NewDictDataServiceImpl(dao *system.DictDataDao) DictDataService {
+func NewDictDataServiceImpl(dao *system.DictDataDao, DictTypeDao *system.DictTypeDao) DictDataService {
 	return &DictDataServiceImpl{
-		Dao: dao,
+		Dao:         dao,
+		DictTypeDao: DictTypeDao,
 	}
 }
 
 // CreateDictData 添加字典数据
 func (s *DictDataServiceImpl) CreateDictData(dto d.AddDictDataDto) error {
+	byType, err := s.DictTypeDao.QueryDictTypeByType(dto.DictType)
+	if err != nil {
+		return err
+	}
+	if byType == nil {
+		return errors.New("字典类型不存在")
+	}
+
+	label, err := s.Dao.QueryDictDataByLabel(dto.DictLabel, dto.DictType)
+	if err != nil {
+		return err
+	}
+	if label != nil {
+		return errors.New("字典标签已存在")
+	}
+
+	byValue, err := s.Dao.QueryDictDataByValue(dto.DictValue, dto.DictType)
+	if err != nil {
+		return err
+	}
+	if byValue != nil {
+		return errors.New("字典键值已存在")
+	}
+
+	if dto.IsDefault == "Y" {
+		err = s.Dao.UpdateDictDataDefault(dto.DictType)
+		if err != nil {
+			return err
+		}
+	}
 	return s.Dao.CreateDictData(dto)
 }
 
@@ -41,6 +73,36 @@ func (s *DictDataServiceImpl) UpdateDictData(dto d.UpdateDictDataDto) error {
 		return errors.New("字典数据不存在")
 	}
 
+	byType, err := s.DictTypeDao.QueryDictTypeByType(dto.DictType)
+	if err != nil {
+		return err
+	}
+	if byType == nil {
+		return errors.New("字典类型不存在")
+	}
+
+	label, err := s.Dao.QueryDictDataByLabel(dto.DictLabel, dto.DictType)
+	if err != nil {
+		return err
+	}
+	if label != nil && item.Id != dto.Id {
+		return errors.New("字典标签已存在")
+	}
+
+	byValue, err := s.Dao.QueryDictDataByValue(dto.DictValue, dto.DictType)
+	if err != nil {
+		return err
+	}
+	if byValue != nil && item.Id != dto.Id {
+		return errors.New("字典键值已存在")
+	}
+
+	if dto.IsDefault == "Y" {
+		err = s.Dao.UpdateDictDataDefault(dto.DictType)
+		if err != nil {
+			return err
+		}
+	}
 	dto.CreateBy = item.CreateBy
 	dto.CreateTime = item.CreateTime
 	dto.UpdateTime = time.Now()

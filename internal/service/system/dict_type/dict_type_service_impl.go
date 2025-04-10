@@ -21,6 +21,22 @@ func NewDictTypeServiceImpl(dao *system.DictTypeDao) DictTypeService {
 
 // CreateDictType 添加字典类型
 func (s *DictTypeServiceImpl) CreateDictType(dto d.AddDictTypeDto) error {
+	byName, err := s.Dao.QueryDictTypeByName(dto.DictName)
+	if err != nil {
+		return err
+	}
+	if byName != nil {
+		return errors.New("字典类型名称已存在")
+	}
+
+	byType, err := s.Dao.QueryDictTypeByType(dto.DictType)
+	if err != nil {
+		return err
+	}
+
+	if byType != nil {
+		return errors.New("字典类型编码已存在")
+	}
 	return s.Dao.CreateDictType(dto)
 }
 
@@ -39,6 +55,23 @@ func (s *DictTypeServiceImpl) UpdateDictType(dto d.UpdateDictTypeDto) error {
 
 	if item == nil {
 		return errors.New("字典类型不存在")
+	}
+
+	byName, err := s.Dao.QueryDictTypeByName(dto.DictName)
+	if err != nil {
+		return err
+	}
+	if byName != nil && item.Id != dto.Id {
+		return errors.New("字典类型名称已存在")
+	}
+
+	byType, err := s.Dao.QueryDictTypeByType(dto.DictType)
+	if err != nil {
+		return err
+	}
+
+	if byType != nil && item.Id != dto.Id {
+		return errors.New("字典类型编码已存在")
 	}
 
 	dto.CreateBy = item.CreateBy

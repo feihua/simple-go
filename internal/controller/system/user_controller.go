@@ -137,7 +137,7 @@ func (r UserController) QueryUserDetail(c *gin.Context) {
 	if err != nil {
 		result.FailWithMsg(c, result.UserError, err.Error())
 	} else {
-		result.OkWithData(c, gin.H{"data": data})
+		result.OkWithData(c, data)
 	}
 }
 
@@ -203,43 +203,46 @@ func (u UserController) QueryUserMenuList(c *gin.Context) {
 	}
 }
 
-//
-// // QueryUserRoleList 根据用户id查询用户与角色关糸
-// func (u UserController) QueryUserRoleList(c *gin.Context) {
-// 	userId := c.DefaultQuery("userId", "10")
-// 	id, err := strconv.ParseInt(userId, 10, 64)
-//
-// 	if err != nil {
-// 		result.Fail(c, result.ParamsError)
-// 		return
-// 	}
-//
-// 	resp, err := u.Service.QueryUserRoleList(id)
-// 	if err != nil {
-// 		result.FailWithMsg(c, result.UserError, err.Error())
-// 	} else {
-// 		result.OkWithData(c, resp)
-// 	}
-// }
-//
-// // UpdateUserRoleList 更新用户与角色关糸
-// func (u UserController) UpdateUserRoleList(c *gin.Context) {
-// 	req := requests.UpdateUserRoleRequest{}
-// 	err := c.ShouldBind(&req)
-// 	if err != nil {
-// 		result.Fail(c, result.ParamsError)
-// 		return
-// 	}
-//
-// 	roleDtoRequest := system.UpdateUserRoleDtoRequest{
-// 		UserId: req.UserId,
-// 		RoleId: req.RoleId,
-// 	}
-//
-// 	err = u.Service.UpdateUserRoleList(roleDtoRequest)
-// 	if err != nil {
-// 		result.FailWithMsg(c, result.UserError, err.Error())
-// 	} else {
-// 		result.Ok(c)
-// 	}
-// }
+// QueryUserRoleList 根据用户id查询用户与角色关糸
+func (u UserController) QueryUserRoleList(c *gin.Context) {
+	reqVo := rq.QueryUserRoleListReqVo{}
+	err := c.ShouldBind(&reqVo)
+	if err != nil {
+		result.FailWithMsg(c, result.ParamsError, err.Error())
+		return
+	}
+
+	dto := d.QueryUserRoleListDto{
+		PageNo:   reqVo.PageNo,
+		PageSize: reqVo.PageSize,
+		UserId:   reqVo.UserId,
+	}
+	resp, err := u.Service.QueryUserRoleList(dto)
+	if err != nil {
+		result.FailWithMsg(c, result.UserError, err.Error())
+	} else {
+		result.OkWithData(c, resp)
+	}
+}
+
+// UpdateUserRoleList 更新用户与角色关糸
+func (u UserController) UpdateUserRoleList(c *gin.Context) {
+	req := rq.UpdateUserRoleReqVo{}
+	err := c.ShouldBind(&req)
+	if err != nil {
+		result.FailWithMsg(c, result.ParamsError, err.Error())
+		return
+	}
+
+	dto := d.UpdateUserRoleDto{
+		UserId: req.UserId,
+		RoleId: req.RoleId,
+	}
+
+	err = u.Service.UpdateUserRole(dto)
+	if err != nil {
+		result.FailWithMsg(c, result.UserError, err.Error())
+	} else {
+		result.Ok(c)
+	}
+}

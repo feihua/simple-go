@@ -21,6 +21,14 @@ func NewNoticeServiceImpl(dao *system.NoticeDao) NoticeService {
 
 // CreateNotice 添加通知公告
 func (s *NoticeServiceImpl) CreateNotice(dto d.AddNoticeDto) error {
+	notice, err := s.Dao.IsExistTitle(dto.NoticeTitle)
+	if err != nil {
+		return err
+	}
+
+	if notice != nil {
+		return errors.New("通知公告标题已存在")
+	}
 	return s.Dao.CreateNotice(dto)
 }
 
@@ -32,13 +40,21 @@ func (s *NoticeServiceImpl) DeleteNoticeByIds(ids []int64) error {
 // UpdateNotice 更新通知公告
 func (s *NoticeServiceImpl) UpdateNotice(dto d.UpdateNoticeDto) error {
 	item, err := s.Dao.QueryNoticeById(dto.Id)
-
 	if err != nil {
 		return err
 	}
 
 	if item == nil {
 		return errors.New("通知公告不存在")
+	}
+
+	notice, err := s.Dao.IsExistTitle(dto.NoticeTitle)
+	if err != nil {
+		return err
+	}
+
+	if notice != nil && notice.Id != dto.Id {
+		return errors.New("通知公告标题已存在")
 	}
 
 	dto.CreateBy = item.CreateBy

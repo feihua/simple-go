@@ -21,6 +21,21 @@ func NewPostServiceImpl(dao *system.PostDao) PostService {
 
 // CreatePost 添加岗位信息
 func (s *PostServiceImpl) CreatePost(dto d.AddPostDto) error {
+	post, err := s.Dao.QueryPostByName(dto.PostName)
+	if err != nil {
+		return err
+	}
+	if post != nil {
+		return errors.New("岗位名称已存在")
+	}
+
+	code, err := s.Dao.QueryPostByCode(dto.PostCode)
+	if err != nil {
+		return err
+	}
+	if code != nil {
+		return errors.New("岗位编码已存在")
+	}
 	return s.Dao.CreatePost(dto)
 }
 
@@ -39,6 +54,22 @@ func (s *PostServiceImpl) UpdatePost(dto d.UpdatePostDto) error {
 
 	if item == nil {
 		return errors.New("岗位信息不存在")
+	}
+
+	post, err := s.Dao.QueryPostByName(dto.PostName)
+	if err != nil {
+		return err
+	}
+	if post != nil && item.Id != dto.Id {
+		return errors.New("岗位名称已存在")
+	}
+
+	code, err := s.Dao.QueryPostByCode(dto.PostCode)
+	if err != nil {
+		return err
+	}
+	if code != nil && item.Id != dto.Id {
+		return errors.New("岗位编码已存在")
 	}
 
 	dto.CreateBy = item.CreateBy

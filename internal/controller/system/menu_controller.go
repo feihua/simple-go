@@ -138,7 +138,7 @@ func (r MenuController) QueryMenuDetail(c *gin.Context) {
 	if err != nil {
 		result.FailWithMsg(c, result.MenuError, err.Error())
 	} else {
-		result.OkWithData(c, gin.H{"data": data})
+		result.OkWithData(c, data)
 	}
 }
 

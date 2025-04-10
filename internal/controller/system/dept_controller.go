@@ -134,7 +134,7 @@ func (r DeptController) QueryDeptDetail(c *gin.Context) {
 	if err != nil {
 		result.FailWithMsg(c, result.DeptError, err.Error())
 	} else {
-		result.OkWithData(c, gin.H{"data": data})
+		result.OkWithData(c, data)
 	}
 }
 

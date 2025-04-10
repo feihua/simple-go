@@ -18,7 +18,7 @@ func NewUserDao(DB *gorm.DB) *UserDao {
 }
 
 // CreateUser 添加用户信息
-func (b UserDao) CreateUser(dto system.AddUserDto) error {
+func (b UserDao) CreateUser(dto system.AddUserDto) (int64, error) {
 	item := m.User{
 		Mobile:   dto.Mobile,   // 手机号码
 		UserName: dto.UserName, // 用户账号
@@ -35,7 +35,11 @@ func (b UserDao) CreateUser(dto system.AddUserDto) error {
 
 	}
 
-	return b.db.Create(&item).Error
+	err := b.db.Create(&item).Error
+	if err != nil {
+		return 0, err
+	}
+	return item.Id, err
 }
 
 // DeleteUserByIds 根据id删除用户信息

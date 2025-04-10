@@ -21,6 +21,20 @@ func NewRoleServiceImpl(dao *system.RoleDao) RoleService {
 
 // CreateRole 添加角色信息
 func (s *RoleServiceImpl) CreateRole(dto d.AddRoleDto) error {
+	byName, err := s.Dao.QueryRoleByName(dto.RoleName)
+	if err != nil {
+		return err
+	}
+	if byName != nil {
+		return errors.New("角色名称已存在")
+	}
+	byKey, err := s.Dao.QueryRoleByKey(dto.RoleKey)
+	if err != nil {
+		return err
+	}
+	if byKey != nil {
+		return errors.New("角色权限字符串已存在")
+	}
 	return s.Dao.CreateRole(dto)
 }
 
@@ -31,6 +45,9 @@ func (s *RoleServiceImpl) DeleteRoleByIds(ids []int64) error {
 
 // UpdateRole 更新角色信息
 func (s *RoleServiceImpl) UpdateRole(dto d.UpdateRoleDto) error {
+	if dto.Id == 1 {
+		return errors.New("不允许操作超级管理员角色")
+	}
 	item, err := s.Dao.QueryRoleById(dto.Id)
 
 	if err != nil {
@@ -41,6 +58,21 @@ func (s *RoleServiceImpl) UpdateRole(dto d.UpdateRoleDto) error {
 		return errors.New("角色信息不存在")
 	}
 
+	byName, err := s.Dao.QueryRoleByName(dto.RoleName)
+	if err != nil {
+		return err
+	}
+	if byName != nil && item.Id != dto.Id {
+		return errors.New("角色名称已存在")
+	}
+	byKey, err := s.Dao.QueryRoleByKey(dto.RoleKey)
+	if err != nil {
+		return err
+	}
+	if byKey != nil && item.Id != dto.Id {
+		return errors.New("角色权限字符串已存在")
+	}
+
 	dto.CreateBy = item.CreateBy
 	dto.CreateTime = item.CreateTime
 	dto.UpdateTime = time.Now()
@@ -49,6 +81,18 @@ func (s *RoleServiceImpl) UpdateRole(dto d.UpdateRoleDto) error {
 
 // UpdateRoleStatus 更新角色信息状态
 func (s *RoleServiceImpl) UpdateRoleStatus(dto d.UpdateRoleStatusDto) error {
+	for _, id := range dto.Ids {
+		if id == 1 {
+			return errors.New("不允许操作超级管理员角色")
+		}
+		byId, err := s.Dao.QueryRoleById(id)
+		if err != nil {
+			return err
+		}
+		if byId == nil {
+			return errors.New("角色不存在")
+		}
+	}
 	return s.Dao.UpdateRoleStatus(dto)
 }
 

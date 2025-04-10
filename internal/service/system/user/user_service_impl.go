@@ -22,9 +22,10 @@ type UserServiceImpl struct {
 	userRoleDao *system.UserRoleDao
 	MenuDao     *system.MenuDao
 	RoleDao     *system.RoleDao
+	UserPostDao *system.UserPostDao
 }
 
-func NewUserServiceImpl(dao *system.UserDao, userRoleDao *system.UserRoleDao, MenuDao *system.MenuDao, RoleDao *system.RoleDao) UserService {
+func NewUserServiceImpl(dao *system.UserDao, userRoleDao *system.UserRoleDao, MenuDao *system.MenuDao, RoleDao *system.RoleDao, UserPostDao *system.UserPostDao) UserService {
 	return &UserServiceImpl{
 		userDao:     dao,
 		userRoleDao: userRoleDao,
@@ -35,16 +36,85 @@ func NewUserServiceImpl(dao *system.UserDao, userRoleDao *system.UserRoleDao, Me
 
 // CreateUser 添加用户信息
 func (s *UserServiceImpl) CreateUser(dto d.AddUserDto) error {
-	return s.userDao.CreateUser(dto)
+	byName, err := s.userDao.QueryUserByName(dto.UserName)
+	if err != nil {
+		return err
+	}
+	if byName != nil {
+		return errors.New("用户名已存在")
+	}
+	byMobile, err := s.userDao.QueryUserByMobile(dto.Mobile)
+	if err != nil {
+		return err
+	}
+	if byMobile != nil {
+		return errors.New("手机号码已存在")
+	}
+	byEmail, err := s.userDao.QueryUserByEmail(dto.Email)
+	if err != nil {
+		return err
+	}
+	if byEmail != nil {
+		return errors.New("邮箱已存在")
+	}
+	avatar := dto.Avatar
+	if len(avatar) == 0 {
+		avatar = "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
+	}
+	dto.Avatar = avatar
+
+	id, err := s.userDao.CreateUser(dto)
+	if err != nil {
+		return err
+	}
+
+	err = s.UserPostDao.DeleteUserPostByUserId(id)
+	if err != nil {
+		return err
+	}
+
+	for _, postId := range dto.PostIds {
+		err = s.UserPostDao.CreateUserPost(d.AddUserPostDto{
+			UserId: id,
+			PostId: postId,
+		})
+		if err != nil {
+			return err
+		}
+	}
+
+	return s.userRoleDao.DeleteUserRoleByUserId(id)
 }
 
 // DeleteUserByIds 删除用户信息
 func (s *UserServiceImpl) DeleteUserByIds(ids []int64) error {
+	for _, id := range ids {
+		b := s.userRoleDao.IsAdministrator(id)
+		if b {
+			return errors.New("不允许操作超级管理员用户")
+		}
+	}
+
+	err := s.UserPostDao.DeleteUserPostByUserIds(ids)
+	if err != nil {
+		return err
+	}
+
+	err = s.userRoleDao.DeleteUserRoleByUserIds(ids)
+	if err != nil {
+		return err
+	}
+
 	return s.userDao.DeleteUserByIds(ids)
 }
 
 // UpdateUser 更新用户信息
 func (s *UserServiceImpl) UpdateUser(dto d.UpdateUserDto) error {
+	b := s.userRoleDao.IsAdministrator(dto.Id)
+	if b {
+		return errors.New("不允许操作超级管理员用户")
+	}
+
 	item, err := s.userDao.QueryUserById(dto.Id)
 
 	if err != nil {
@@ -53,6 +123,48 @@ func (s *UserServiceImpl) UpdateUser(dto d.UpdateUserDto) error {
 
 	if item == nil {
 		return errors.New("用户信息不存在")
+	}
+
+	byName, err := s.userDao.QueryUserByName(dto.UserName)
+	if err != nil {
+		return err
+	}
+	if byName != nil && item.Id != dto.Id {
+		return errors.New("用户名已存在")
+	}
+	byMobile, err := s.userDao.QueryUserByMobile(dto.Mobile)
+	if err != nil {
+		return err
+	}
+	if byMobile != nil && item.Id != dto.Id {
+		return errors.New("手机号码已存在")
+	}
+	byEmail, err := s.userDao.QueryUserByEmail(dto.Email)
+	if err != nil {
+		return err
+	}
+	if byEmail != nil && item.Id != dto.Id {
+		return errors.New("邮箱已存在")
+	}
+	avatar := dto.Avatar
+	if len(avatar) == 0 {
+		avatar = "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
+	}
+	dto.Avatar = avatar
+
+	err = s.UserPostDao.DeleteUserPostByUserId(dto.Id)
+	if err != nil {
+		return err
+	}
+
+	for _, postId := range dto.PostIds {
+		err = s.UserPostDao.CreateUserPost(d.AddUserPostDto{
+			UserId: dto.Id,
+			PostId: postId,
+		})
+		if err != nil {
+			return err
+		}
 	}
 
 	dto.LoginIp = item.LoginIp             // 最后登录IP
@@ -70,6 +182,12 @@ func (s *UserServiceImpl) UpdateUser(dto d.UpdateUserDto) error {
 
 // UpdateUserStatus 更新用户信息状态
 func (s *UserServiceImpl) UpdateUserStatus(dto d.UpdateUserStatusDto) error {
+	for _, id := range dto.Ids {
+		b := s.userRoleDao.IsAdministrator(id)
+		if b {
+			return errors.New("不允许操作超级管理员用户")
+		}
+	}
 	return s.userDao.UpdateUserStatus(dto)
 }
 
@@ -265,4 +383,81 @@ func (u *UserServiceImpl) QueryUserMenu(userId int64, userName string) (*d.Query
 		Menus:    list,
 		ApiUrls:  apiUrl,
 	}, nil
+}
+
+func (u *UserServiceImpl) QueryUserRoleList(dto d.QueryUserRoleListDto) (*d.QueryUserRoleListDataDtoResp, error) {
+	byId, err := u.userDao.QueryUserById(dto.UserId)
+	if err != nil {
+		return nil, err
+	}
+	if byId == nil {
+		return nil, errors.New("用户不存在")
+	}
+
+	roleList, _, err := u.RoleDao.QueryRoleList(d.QueryRoleListDto{
+		PageNo:   dto.PageNo,
+		PageSize: dto.PageSize,
+		// RoleName:  "",
+		// RoleKey:   "",
+		// DataScope: 0,
+		// Status:    0,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	var roleIds []int64
+	var list []d.QueryRoleListDtoResp
+	for _, item := range roleList {
+		roleIds = append(roleIds, item.Id)
+		list = append(list, d.QueryRoleListDtoResp{
+			Id:         item.Id,                             // 主键
+			RoleName:   item.RoleName,                       // 名称
+			RoleKey:    item.RoleKey,                        // 角色权限字符串
+			DataScope:  item.DataScope,                      // 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）
+			Status:     item.Status,                         // 状态(1:正常，0:禁用)
+			Remark:     item.Remark,                         // 备注
+			DelFlag:    item.DelFlag,                        // 删除标志（0代表删除 1代表存在）
+			CreateBy:   item.CreateBy,                       // 创建者
+			CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
+			UpdateBy:   item.UpdateBy,                       // 更新者
+			UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+		})
+	}
+
+	b := u.userRoleDao.IsAdministrator(dto.UserId)
+	if !b {
+		roleIds, err = u.userRoleDao.QueryUserRoleIds(dto.UserId)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return &d.QueryUserRoleListDataDtoResp{
+		RoleList: list,
+		RoleIds:  roleIds,
+	}, nil
+}
+
+func (s *UserServiceImpl) UpdateUserRole(dto d.UpdateUserRoleDto) error {
+	b := s.userRoleDao.IsAdministrator(dto.UserId)
+	if b {
+		return errors.New("不允许操作超级管理员用户")
+	}
+
+	err := s.userRoleDao.DeleteUserRoleByUserId(dto.UserId)
+	if err != nil {
+		return err
+	}
+
+	for _, id := range dto.RoleIds {
+		err = s.userRoleDao.CreateUserRole(d.AddUserRoleDto{
+			UserId: dto.UserId,
+			RoleId: id,
+		})
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

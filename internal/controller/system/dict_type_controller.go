@@ -126,7 +126,7 @@ func (r DictTypeController) QueryDictTypeDetail(c *gin.Context) {
 	if err != nil {
 		result.FailWithMsg(c, result.DictTypeError, err.Error())
 	} else {
-		result.OkWithData(c, gin.H{"data": data})
+		result.OkWithData(c, data)
 	}
 }
 

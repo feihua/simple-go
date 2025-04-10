@@ -51,7 +51,7 @@ func (r LoginLogController) QueryLoginLogDetail(c *gin.Context) {
 	if err != nil {
 		result.FailWithMsg(c, result.LoginLogError, err.Error())
 	} else {
-		result.OkWithData(c, gin.H{"data": data})
+		result.OkWithData(c, data)
 	}
 }
 

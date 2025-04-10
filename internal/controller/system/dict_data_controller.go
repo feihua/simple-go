@@ -136,7 +136,7 @@ func (r DictDataController) QueryDictDataDetail(c *gin.Context) {
 	if err != nil {
 		result.FailWithMsg(c, result.DictDataError, err.Error())
 	} else {
-		result.OkWithData(c, gin.H{"data": data})
+		result.OkWithData(c, data)
 	}
 }
 

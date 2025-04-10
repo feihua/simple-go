@@ -124,8 +124,8 @@ func (b DictDataDao) QueryDictDataById(id int64) (*m.DictData, error) {
 	}
 }
 
-// QueryDictDataByName 根据label和type查询字典数据
-func (b DictDataDao) QueryDictDataByName(label, dictType string) (*m.DictData, error) {
+// QueryDictDataByLabel 根据label和type查询字典数据
+func (b DictDataDao) QueryDictDataByLabel(label, dictType string) (*m.DictData, error) {
 	var item m.DictData
 	err := b.db.Where(map[string]interface{}{"dict_label": label, "dict_type": dictType}).First(&item).Error
 
@@ -137,4 +137,25 @@ func (b DictDataDao) QueryDictDataByName(label, dictType string) (*m.DictData, e
 	default:
 		return nil, err
 	}
+}
+
+// QueryDictDataByValue 根据value和type查询字典数据
+func (b DictDataDao) QueryDictDataByValue(value, dictType string) (*m.DictData, error) {
+	var item m.DictData
+	err := b.db.Where(map[string]interface{}{"dict_value": value, "dict_type": dictType}).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
+}
+
+// UpdateDictDataDefault 更新字典数据默认选项
+func (b DictDataDao) UpdateDictDataDefault(dictType string) error {
+
+	return b.db.Model(&m.Dept{}).Where("is_default = ? and dict_type =? ", "Y", dictType).Update("is_default", "N").Error
 }

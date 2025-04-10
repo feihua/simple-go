@@ -147,3 +147,18 @@ func (b MenuDao) QueryMenuByName(name string) (*m.Menu, error) {
 		return nil, err
 	}
 }
+
+// QueryMenuByMenuUrl 根据menuUrl查询菜单
+func (b MenuDao) QueryMenuByMenuUrl(menuUrl string) (*m.Menu, error) {
+	var item m.Menu
+	err := b.db.Where("menu_url = ?", menuUrl).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
+}

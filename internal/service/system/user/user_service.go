@@ -23,4 +23,9 @@ type UserService interface {
 	Login(dto d.LoginDto) (*string, error)
 	// QueryUserMenu 查询用户菜单权限信息
 	QueryUserMenu(userId int64, userName string) (*d.QueryUserMenuDtoResp, error)
+
+	// QueryUserRoleList 查询用户已分配的角色
+	QueryUserRoleList(dto d.QueryUserRoleListDto) (*d.QueryUserRoleListDataDtoResp, error)
+	// UpdateUserRole 更新用户的角色
+	UpdateUserRole(dto d.UpdateUserRoleDto) error
 }

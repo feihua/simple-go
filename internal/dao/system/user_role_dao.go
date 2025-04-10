@@ -19,7 +19,6 @@ func NewUserRoleDao(DB *gorm.DB) *UserRoleDao {
 // CreateUserRole 添加角色用户关联
 func (b UserRoleDao) CreateUserRole(dto system.AddUserRoleDto) error {
 	item := m.UserRole{
-		Id:     dto.Id,     // 主键
 		UserId: dto.UserId, // 用户ID
 		RoleId: dto.RoleId, // 角色ID
 	}
@@ -27,29 +26,23 @@ func (b UserRoleDao) CreateUserRole(dto system.AddUserRoleDto) error {
 	return b.db.Create(&item).Error
 }
 
-// DeleteUserRoleByIds 根据id删除角色用户关联
-func (b UserRoleDao) DeleteUserRoleByIds(ids []int64) error {
-	return b.db.Where("id in (?)", ids).Delete(&m.UserRole{}).Error
+// DeleteUserRoleByUserId 根据userId删除角色用户关联
+func (b UserRoleDao) DeleteUserRoleByUserId(userId int64) error {
+	return b.db.Where("user_id = ?", userId).Delete(&m.UserRole{}).Error
 }
 
-// QueryUserRoleList 查询角色用户关联列表
-func (b UserRoleDao) QueryUserRoleList(dto system.QueryUserRoleListDto) ([]m.UserRole, int64) {
-	pageNo := dto.PageNo
-	pageSize := dto.PageSize
+// DeleteUserRoleByUserIds 根据userIds删除角色用户关联
+func (b UserRoleDao) DeleteUserRoleByUserIds(userIds []int64) error {
+	return b.db.Where("user_id in (?)", userIds).Delete(&m.UserRole{}).Error
+}
 
-	var total int64 = 0
-	var list []m.UserRole
-	tx := b.db.Model(&m.UserRole{})
-	if dto.UserId != 2 {
-		tx.Where("user_id=?", dto.UserId) // 用户ID
-	}
-	if dto.RoleId != 2 {
-		tx.Where("role_id=?", dto.RoleId) // 角色ID
-	}
-	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
+// QueryUserRoleIds 查询角色ids
+func (b UserRoleDao) QueryUserRoleIds(userId int64) ([]int64, error) {
 
-	tx.Count(&total)
-	return list, total
+	var ids []int64
+	err := b.db.Model(&m.UserRole{}).Select("role_id").Where("user_id=?", userId).Scan(&ids).Error
+	return ids, err
+
 }
 
 // IsAdministrator 根据用户id判断是否是管理员

@@ -26,9 +26,14 @@ func (b UserPostDao) CreateUserPost(dto system.AddUserPostDto) error {
 	return b.db.Create(&item).Error
 }
 
-// DeleteUserPostByIds 根据id删除用户与岗位关联
-func (b UserPostDao) DeleteUserPostByIds(ids []int64) error {
-	return b.db.Where("id in (?)", ids).Delete(&m.UserPost{}).Error
+// DeleteUserPostByUserId 根据userId删除用户与岗位关联
+func (b UserPostDao) DeleteUserPostByUserId(userId int64) error {
+	return b.db.Where("user_id = ?", userId).Delete(&m.UserPost{}).Error
+}
+
+// DeleteUserPostByUserIds 根据userIds删除用户与岗位关联
+func (b UserPostDao) DeleteUserPostByUserIds(userIds []int64) error {
+	return b.db.Where("user_id in (?)", userIds).Delete(&m.UserPost{}).Error
 }
 
 // QueryUserPostList 查询用户与岗位关联列表

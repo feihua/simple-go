@@ -128,7 +128,7 @@ func (r NoticeController) QueryNoticeDetail(c *gin.Context) {
 	if err != nil {
 		result.FailWithMsg(c, result.NoticeError, err.Error())
 	} else {
-		result.OkWithData(c, gin.H{"data": data})
+		result.OkWithData(c, data)
 	}
 }
 

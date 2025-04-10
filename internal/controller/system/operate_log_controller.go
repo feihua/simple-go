@@ -51,7 +51,7 @@ func (r OperateLogController) QueryOperateLogDetail(c *gin.Context) {
 	if err != nil {
 		result.FailWithMsg(c, result.OperateLogError, err.Error())
 	} else {
-		result.OkWithData(c, gin.H{"data": data})
+		result.OkWithData(c, data)
 	}
 }
 

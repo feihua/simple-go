@@ -21,6 +21,24 @@ func NewMenuServiceImpl(dao *system.MenuDao) MenuService {
 
 // CreateMenu 添加菜单信息
 func (s *MenuServiceImpl) CreateMenu(dto d.AddMenuDto) error {
+	byName, err := s.Dao.QueryMenuByName(dto.MenuName)
+	if err != nil {
+		return err
+	}
+	if byName != nil {
+		return errors.New("菜单名称已存在")
+	}
+
+	if len(dto.MenuUrl) != 0 {
+		byUrl, err1 := s.Dao.QueryMenuByMenuUrl(dto.MenuUrl)
+		if err1 != nil {
+			return err1
+		}
+		if byUrl != nil {
+			return errors.New("菜单URL已存在")
+		}
+	}
+
 	return s.Dao.CreateMenu(dto)
 }
 
@@ -39,6 +57,24 @@ func (s *MenuServiceImpl) UpdateMenu(dto d.UpdateMenuDto) error {
 
 	if item == nil {
 		return errors.New("菜单信息不存在")
+	}
+
+	byName, err := s.Dao.QueryMenuByName(dto.MenuName)
+	if err != nil {
+		return err
+	}
+	if byName != nil && item.Id != dto.Id {
+		return errors.New("菜单名称已存在")
+	}
+
+	if len(dto.MenuUrl) != 0 {
+		byUrl, err1 := s.Dao.QueryMenuByMenuUrl(dto.MenuUrl)
+		if err1 != nil {
+			return err1
+		}
+		if byUrl != nil && item.Id != dto.Id {
+			return errors.New("菜单URL已存在")
+		}
 	}
 
 	dto.CreateBy = item.CreateBy
