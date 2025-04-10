@@ -1,8 +1,9 @@
 package system
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/internal/dto/system"
-	a "github.com/feihua/simple-go/internal/model/system"
+	m "github.com/feihua/simple-go/internal/model/system"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +19,7 @@ func NewDictDataDao(DB *gorm.DB) *DictDataDao {
 
 // CreateDictData 添加字典数据
 func (b DictDataDao) CreateDictData(dto system.AddDictDataDto) error {
-	item := a.DictData{
+	item := m.DictData{
 		DictSort:  dto.DictSort,  // 字典排序
 		DictLabel: dto.DictLabel, // 字典标签
 		DictValue: dto.DictValue, // 字典键值
@@ -36,13 +37,13 @@ func (b DictDataDao) CreateDictData(dto system.AddDictDataDto) error {
 
 // DeleteDictDataByIds 根据id删除字典数据
 func (b DictDataDao) DeleteDictDataByIds(ids []int64) error {
-	return b.db.Where("id in (?)", ids).Delete(&a.DictData{}).Error
+	return b.db.Where("id in (?)", ids).Delete(&m.DictData{}).Error
 }
 
 // UpdateDictData 更新字典数据
 func (b DictDataDao) UpdateDictData(dto system.UpdateDictDataDto) error {
 
-	item := a.DictData{
+	item := m.DictData{
 		Id:         dto.Id,          // 字典编码
 		DictSort:   dto.DictSort,    // 字典排序
 		DictLabel:  dto.DictLabel,   // 字典标签
@@ -65,24 +66,32 @@ func (b DictDataDao) UpdateDictData(dto system.UpdateDictDataDto) error {
 // UpdateDictDataStatus 更新字典数据状态
 func (b DictDataDao) UpdateDictDataStatus(dto system.UpdateDictDataStatusDto) error {
 
-	return b.db.Model(&a.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&m.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
 }
 
 // QueryDictDataDetail 查询字典数据详情
-func (b DictDataDao) QueryDictDataDetail(dto system.QueryDictDataDetailDto) (a.DictData, error) {
-	var item a.DictData
+func (b DictDataDao) QueryDictDataDetail(dto system.QueryDictDataDetailDto) (*m.DictData, error) {
+	var item m.DictData
 	err := b.db.Where("id", dto.Id).First(&item).Error
-	return item, err
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }
 
 // QueryDictDataList 查询字典数据列表
-func (b DictDataDao) QueryDictDataList(dto system.QueryDictDataListDto) ([]a.DictData, int64) {
+func (b DictDataDao) QueryDictDataList(dto system.QueryDictDataListDto) ([]*m.DictData, int64, error) {
 	pageNo := dto.PageNo
 	pageSize := dto.PageSize
 
 	var total int64 = 0
-	var list []a.DictData
-	tx := b.db.Model(&a.DictData{})
+	var list []*m.DictData
+	tx := b.db.Model(&m.DictData{})
 	if len(dto.DictLabel) > 0 {
 		tx.Where("dict_label like %?%", dto.DictLabel) // 字典标签
 	}
@@ -96,6 +105,36 @@ func (b DictDataDao) QueryDictDataList(dto system.QueryDictDataListDto) ([]a.Dic
 	}
 	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
 
-	tx.Count(&total)
-	return list, total
+	err := tx.Count(&total).Error
+	return list, total, err
+}
+
+// QueryDictDataById 根据id查询字典数据
+func (b DictDataDao) QueryDictDataById(id int64) (*m.DictData, error) {
+	var item m.DictData
+	err := b.db.Where("id = ?", id).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
+}
+
+// QueryDictDataByName 根据label和type查询字典数据
+func (b DictDataDao) QueryDictDataByName(label, dictType string) (*m.DictData, error) {
+	var item m.DictData
+	err := b.db.Where(map[string]interface{}{"dict_label": label, "dict_type": dictType}).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }

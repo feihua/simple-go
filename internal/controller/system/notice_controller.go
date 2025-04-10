@@ -1,9 +1,9 @@
 package system
 
 import (
-	a "github.com/feihua/simple-go/internal/dto/system"
+	d "github.com/feihua/simple-go/internal/dto/system"
 	"github.com/feihua/simple-go/internal/service/system/notice"
-	b "github.com/feihua/simple-go/internal/vo/system/req"
+	rq "github.com/feihua/simple-go/internal/vo/system/req"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
 )
@@ -20,20 +20,20 @@ func NewNoticeController(Service notice.NoticeService) *NoticeController {
 // CreateNotice 添加通知公告
 func (r NoticeController) CreateNotice(c *gin.Context) {
 
-	req := b.AddNoticeReqVo{}
+	req := rq.AddNoticeReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.AddNoticeDto{
+	item := d.AddNoticeDto{
 		NoticeTitle:   req.NoticeTitle,   // 公告标题
 		NoticeType:    req.NoticeType,    // 公告类型（1:通知,2:公告）
 		NoticeContent: req.NoticeContent, // 公告内容
 		Status:        req.Status,        // 公告状态（0:关闭,1:正常 ）
 		Remark:        req.Remark,        // 备注
-
+		CreateBy:      c.MustGet("userName").(string),
 	}
 
 	err = r.Service.CreateNotice(item)
@@ -47,7 +47,7 @@ func (r NoticeController) CreateNotice(c *gin.Context) {
 // DeleteNoticeByIds 删除通知公告
 func (r NoticeController) DeleteNoticeByIds(c *gin.Context) {
 
-	req := b.DeleteNoticeReqVo{}
+	req := rq.DeleteNoticeReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
@@ -65,21 +65,21 @@ func (r NoticeController) DeleteNoticeByIds(c *gin.Context) {
 // UpdateNotice 更新通知公告
 func (r NoticeController) UpdateNotice(c *gin.Context) {
 
-	req := b.UpdateNoticeReqVo{}
+	req := rq.UpdateNoticeReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.UpdateNoticeDto{
+	item := d.UpdateNoticeDto{
 		Id:            req.Id,            // 公告ID
 		NoticeTitle:   req.NoticeTitle,   // 公告标题
 		NoticeType:    req.NoticeType,    // 公告类型（1:通知,2:公告）
 		NoticeContent: req.NoticeContent, // 公告内容
 		Status:        req.Status,        // 公告状态（0:关闭,1:正常 ）
 		Remark:        req.Remark,        // 备注
-
+		UpdateBy:      c.MustGet("userName").(string),
 	}
 	err = r.Service.UpdateNotice(item)
 	if err != nil {
@@ -92,16 +92,17 @@ func (r NoticeController) UpdateNotice(c *gin.Context) {
 // UpdateNoticeStatus 更新通知公告状态
 func (r NoticeController) UpdateNoticeStatus(c *gin.Context) {
 
-	req := b.UpdateNoticeStatusReqVo{}
+	req := rq.UpdateNoticeStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.UpdateNoticeStatusDto{
-		Ids:    req.Ids,
-		Status: req.Status,
+	item := d.UpdateNoticeStatusDto{
+		Ids:      req.Ids,
+		Status:   req.Status,
+		UpdateBy: c.MustGet("userName").(string),
 	}
 	err = r.Service.UpdateNoticeStatus(item)
 	if err != nil {
@@ -113,14 +114,14 @@ func (r NoticeController) UpdateNoticeStatus(c *gin.Context) {
 
 // QueryNoticeDetail 查询通知公告详情
 func (r NoticeController) QueryNoticeDetail(c *gin.Context) {
-	req := b.QueryNoticeDetailReqVo{}
+	req := rq.QueryNoticeDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.QueryNoticeDetailDto{
+	item := d.QueryNoticeDetailDto{
 		Id: req.Id,
 	}
 	data, err := r.Service.QueryNoticeDetail(item)
@@ -133,20 +134,24 @@ func (r NoticeController) QueryNoticeDetail(c *gin.Context) {
 
 // QueryNoticeList 查询通知公告列表
 func (r NoticeController) QueryNoticeList(c *gin.Context) {
-	req := b.QueryNoticeListReqVo{}
+	req := rq.QueryNoticeListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.QueryNoticeListDto{
+	item := d.QueryNoticeListDto{
 		PageNo:      req.PageNo,
 		PageSize:    req.PageSize,
 		NoticeTitle: req.NoticeTitle, // 公告标题
 		NoticeType:  req.NoticeType,  // 公告类型（1:通知,2:公告）
 		Status:      req.Status,      // 公告状态（0:关闭,1:正常 ）
 	}
-	list, total := r.Service.QueryNoticeList(item)
-	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+	list, total, err := r.Service.QueryNoticeList(item)
+	if err != nil {
+		result.FailWithMsg(c, result.NoticeError, err.Error())
+	} else {
+		result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+	}
 }

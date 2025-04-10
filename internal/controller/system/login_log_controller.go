@@ -1,9 +1,9 @@
 package system
 
 import (
-	a "github.com/feihua/simple-go/internal/dto/system"
+	d "github.com/feihua/simple-go/internal/dto/system"
 	"github.com/feihua/simple-go/internal/service/system/login_log"
-	b "github.com/feihua/simple-go/internal/vo/system/req"
+	rq "github.com/feihua/simple-go/internal/vo/system/req"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
 )
@@ -20,7 +20,7 @@ func NewLoginLogController(Service login_log.LoginLogService) *LoginLogControlle
 // DeleteLoginLogByIds 删除系统访问记录
 func (r LoginLogController) DeleteLoginLogByIds(c *gin.Context) {
 
-	req := b.DeleteLoginLogReqVo{}
+	req := rq.DeleteLoginLogReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
@@ -37,14 +37,14 @@ func (r LoginLogController) DeleteLoginLogByIds(c *gin.Context) {
 
 // QueryLoginLogDetail 查询系统访问记录详情
 func (r LoginLogController) QueryLoginLogDetail(c *gin.Context) {
-	req := b.QueryLoginLogDetailReqVo{}
+	req := rq.QueryLoginLogDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.QueryLoginLogDetailDto{
+	item := d.QueryLoginLogDetailDto{
 		Id: req.Id,
 	}
 	data, err := r.Service.QueryLoginLogDetail(item)
@@ -57,14 +57,14 @@ func (r LoginLogController) QueryLoginLogDetail(c *gin.Context) {
 
 // QueryLoginLogList 查询系统访问记录列表
 func (r LoginLogController) QueryLoginLogList(c *gin.Context) {
-	req := b.QueryLoginLogListReqVo{}
+	req := rq.QueryLoginLogListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.QueryLoginLogListDto{
+	item := d.QueryLoginLogListDto{
 		PageNo:        req.PageNo,
 		PageSize:      req.PageSize,
 		LoginName:     req.LoginName,     // 登录账号
@@ -76,6 +76,10 @@ func (r LoginLogController) QueryLoginLogList(c *gin.Context) {
 		Os:            req.Os,            // 操作系统
 		Status:        req.Status,        // 登录状态(0:失败,1:成功)
 	}
-	list, total := r.Service.QueryLoginLogList(item)
-	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+	list, total, err := r.Service.QueryLoginLogList(item)
+	if err != nil {
+		result.FailWithMsg(c, result.LoginLogError, err.Error())
+	} else {
+		result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+	}
 }

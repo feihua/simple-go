@@ -1,8 +1,9 @@
 package system
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/internal/dto/system"
-	a "github.com/feihua/simple-go/internal/model/system"
+	m "github.com/feihua/simple-go/internal/model/system"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +19,7 @@ func NewRoleDao(DB *gorm.DB) *RoleDao {
 
 // CreateRole 添加角色信息
 func (b RoleDao) CreateRole(dto system.AddRoleDto) error {
-	item := a.Role{
+	item := m.Role{
 		RoleName:  dto.RoleName,  // 名称
 		RoleKey:   dto.RoleKey,   // 角色权限字符串
 		DataScope: dto.DataScope, // 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）
@@ -34,13 +35,13 @@ func (b RoleDao) CreateRole(dto system.AddRoleDto) error {
 
 // DeleteRoleByIds 根据id删除角色信息
 func (b RoleDao) DeleteRoleByIds(ids []int64) error {
-	return b.db.Where("id in (?)", ids).Delete(&a.Role{}).Error
+	return b.db.Where("id in (?)", ids).Delete(&m.Role{}).Error
 }
 
 // UpdateRole 更新角色信息
 func (b RoleDao) UpdateRole(dto system.UpdateRoleDto) error {
 
-	item := a.Role{
+	item := m.Role{
 		Id:         dto.Id,          // 主键
 		RoleName:   dto.RoleName,    // 名称
 		RoleKey:    dto.RoleKey,     // 角色权限字符串
@@ -60,24 +61,32 @@ func (b RoleDao) UpdateRole(dto system.UpdateRoleDto) error {
 // UpdateRoleStatus 更新角色信息状态
 func (b RoleDao) UpdateRoleStatus(dto system.UpdateRoleStatusDto) error {
 
-	return b.db.Model(&a.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&m.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
 }
 
 // QueryRoleDetail 查询角色信息详情
-func (b RoleDao) QueryRoleDetail(dto system.QueryRoleDetailDto) (a.Role, error) {
-	var item a.Role
+func (b RoleDao) QueryRoleDetail(dto system.QueryRoleDetailDto) (*m.Role, error) {
+	var item m.Role
 	err := b.db.Where("id", dto.Id).First(&item).Error
-	return item, err
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }
 
 // QueryRoleList 查询角色信息列表
-func (b RoleDao) QueryRoleList(dto system.QueryRoleListDto) ([]a.Role, int64) {
+func (b RoleDao) QueryRoleList(dto system.QueryRoleListDto) ([]*m.Role, int64, error) {
 	pageNo := dto.PageNo
 	pageSize := dto.PageSize
 
 	var total int64 = 0
-	var list []a.Role
-	tx := b.db.Model(&a.Role{})
+	var list []*m.Role
+	tx := b.db.Model(&m.Role{})
 	if len(dto.RoleName) > 0 {
 		tx.Where("role_name like %?%", dto.RoleName) // 名称
 	}
@@ -94,5 +103,51 @@ func (b RoleDao) QueryRoleList(dto system.QueryRoleListDto) ([]a.Role, int64) {
 	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
 
 	tx.Count(&total)
-	return list, total
+	err := tx.Count(&total).Error
+	return list, total, err
+}
+
+// QueryRoleById 根据id查询角色
+func (b RoleDao) QueryRoleById(id int64) (*m.Role, error) {
+	var item m.Role
+	err := b.db.Where("id = ?", id).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
+}
+
+// QueryRoleByName 根据name查询角色
+func (b RoleDao) QueryRoleByName(name string) (*m.Role, error) {
+	var item m.Role
+	err := b.db.Where("role_name = ?", name).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
+}
+
+// QueryRoleByKey 根据key查询角色
+func (b RoleDao) QueryRoleByKey(key string) (*m.Role, error) {
+	var item m.Role
+	err := b.db.Where("role_key = ?", key).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }

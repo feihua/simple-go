@@ -1,9 +1,11 @@
 package post
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/internal/dao/system"
-	a "github.com/feihua/simple-go/internal/dto/system"
-	b "github.com/feihua/simple-go/internal/model/system"
+	d "github.com/feihua/simple-go/internal/dto/system"
+	"github.com/feihua/simple-go/pkg/utils"
+	"time"
 )
 
 // PostServiceImpl 岗位信息操作实现
@@ -18,7 +20,7 @@ func NewPostServiceImpl(dao *system.PostDao) PostService {
 }
 
 // CreatePost 添加岗位信息
-func (s *PostServiceImpl) CreatePost(dto a.AddPostDto) error {
+func (s *PostServiceImpl) CreatePost(dto d.AddPostDto) error {
 	return s.Dao.CreatePost(dto)
 }
 
@@ -28,21 +30,108 @@ func (s *PostServiceImpl) DeletePostByIds(ids []int64) error {
 }
 
 // UpdatePost 更新岗位信息
-func (s *PostServiceImpl) UpdatePost(dto a.UpdatePostDto) error {
+func (s *PostServiceImpl) UpdatePost(dto d.UpdatePostDto) error {
+	item, err := s.Dao.QueryPostById(dto.Id)
+
+	if err != nil {
+		return err
+	}
+
+	if item == nil {
+		return errors.New("岗位信息不存在")
+	}
+
+	dto.CreateBy = item.CreateBy
+	dto.CreateTime = item.CreateTime
+	dto.UpdateTime = time.Now()
 	return s.Dao.UpdatePost(dto)
 }
 
 // UpdatePostStatus 更新岗位信息状态
-func (s *PostServiceImpl) UpdatePostStatus(dto a.UpdatePostStatusDto) error {
+func (s *PostServiceImpl) UpdatePostStatus(dto d.UpdatePostStatusDto) error {
 	return s.Dao.UpdatePostStatus(dto)
 }
 
 // QueryPostDetail 查询岗位信息详情
-func (s *PostServiceImpl) QueryPostDetail(dto a.QueryPostDetailDto) (b.Post, error) {
-	return s.Dao.QueryPostDetail(dto)
+func (s *PostServiceImpl) QueryPostDetail(dto d.QueryPostDetailDto) (*d.QueryPostListDtoResp, error) {
+	item, err := s.Dao.QueryPostDetail(dto)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if item == nil {
+		return nil, errors.New("岗位信息不存在")
+	}
+
+	return &d.QueryPostListDtoResp{
+		Id:         item.Id,                             // 岗位id
+		PostCode:   item.PostCode,                       // 岗位编码
+		PostName:   item.PostName,                       // 岗位名称
+		Sort:       item.Sort,                           // 显示顺序
+		Status:     item.Status,                         // 岗位状态（0：停用，1:正常）
+		Remark:     item.Remark,                         // 备注
+		CreateBy:   item.CreateBy,                       // 创建者
+		CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
+		UpdateBy:   item.UpdateBy,                       // 更新者
+		UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+	}, nil
+
+}
+
+// QueryPostById 根据id查询岗位信息详情
+func (s *PostServiceImpl) QueryPostById(id int64) (*d.QueryPostListDtoResp, error) {
+	item, err := s.Dao.QueryPostById(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if item == nil {
+		return nil, errors.New("岗位信息不存在")
+	}
+
+	return &d.QueryPostListDtoResp{
+		Id:         item.Id,                             // 岗位id
+		PostCode:   item.PostCode,                       // 岗位编码
+		PostName:   item.PostName,                       // 岗位名称
+		Sort:       item.Sort,                           // 显示顺序
+		Status:     item.Status,                         // 岗位状态（0：停用，1:正常）
+		Remark:     item.Remark,                         // 备注
+		CreateBy:   item.CreateBy,                       // 创建者
+		CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
+		UpdateBy:   item.UpdateBy,                       // 更新者
+		UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+	}, nil
+
 }
 
 // QueryPostList 查询岗位信息列表
-func (s *PostServiceImpl) QueryPostList(dto a.QueryPostListDto) ([]b.Post, int64) {
-	return s.Dao.QueryPostList(dto)
+func (s *PostServiceImpl) QueryPostList(dto d.QueryPostListDto) ([]*d.QueryPostListDtoResp, int64, error) {
+	result, i, err := s.Dao.QueryPostList(dto)
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	var list []*d.QueryPostListDtoResp
+
+	for _, item := range result {
+		resp := &d.QueryPostListDtoResp{
+			Id:         item.Id,                             // 岗位id
+			PostCode:   item.PostCode,                       // 岗位编码
+			PostName:   item.PostName,                       // 岗位名称
+			Sort:       item.Sort,                           // 显示顺序
+			Status:     item.Status,                         // 岗位状态（0：停用，1:正常）
+			Remark:     item.Remark,                         // 备注
+			CreateBy:   item.CreateBy,                       // 创建者
+			CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
+			UpdateBy:   item.UpdateBy,                       // 更新者
+			UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+		}
+
+		list = append(list, resp)
+	}
+
+	return list, i, nil
 }

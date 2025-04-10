@@ -1,22 +1,23 @@
 package dept
 
 import (
-	b "github.com/feihua/simple-go/internal/dto/system"
-	a "github.com/feihua/simple-go/internal/model/system"
+	d "github.com/feihua/simple-go/internal/dto/system"
 )
 
 // DeptService 部门操作接口
 type DeptService interface {
 	// CreateDept 添加部门
-	CreateDept(dto b.AddDeptDto) error
+	CreateDept(dto d.AddDeptDto) error
 	// DeleteDeptByIds 删除部门
 	DeleteDeptByIds(ids []int64) error
 	// UpdateDept 更新部门
-	UpdateDept(dto b.UpdateDeptDto) error
+	UpdateDept(dto d.UpdateDeptDto) error
 	// UpdateDeptStatus 更新部门状态
-	UpdateDeptStatus(dto b.UpdateDeptStatusDto) error
+	UpdateDeptStatus(dto d.UpdateDeptStatusDto) error
 	// QueryDeptDetail 查询部门详情
-	QueryDeptDetail(dto b.QueryDeptDetailDto) (a.Dept, error)
+	QueryDeptDetail(dto d.QueryDeptDetailDto) (*d.QueryDeptListDtoResp, error)
+	// QueryDeptById 根据id查询部门详情
+	QueryDeptById(id int64) (*d.QueryDeptListDtoResp, error)
 	// QueryDeptList 查询部门列表
-	QueryDeptList(dto b.QueryDeptListDto) ([]a.Dept, error)
+	QueryDeptList(dto d.QueryDeptListDto) ([]*d.QueryDeptListDtoResp, error)
 }

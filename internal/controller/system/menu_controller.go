@@ -1,9 +1,9 @@
 package system
 
 import (
-	a "github.com/feihua/simple-go/internal/dto/system"
+	d "github.com/feihua/simple-go/internal/dto/system"
 	"github.com/feihua/simple-go/internal/service/system/menu"
-	b "github.com/feihua/simple-go/internal/vo/system/req"
+	rq "github.com/feihua/simple-go/internal/vo/system/req"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
 )
@@ -20,14 +20,14 @@ func NewMenuController(Service menu.MenuService) *MenuController {
 // CreateMenu 添加菜单信息
 func (r MenuController) CreateMenu(c *gin.Context) {
 
-	req := b.AddMenuReqVo{}
+	req := rq.AddMenuReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.AddMenuDto{
+	item := d.AddMenuDto{
 		MenuName: req.MenuName, // 菜单名称
 		MenuType: req.MenuType, // 菜单类型(1：目录   2：菜单   3：按钮)
 		Visible:  req.Visible,  // 显示状态（0:隐藏, 显示:1）
@@ -38,7 +38,7 @@ func (r MenuController) CreateMenu(c *gin.Context) {
 		ApiUrl:   req.ApiUrl,   // 接口URL
 		MenuIcon: req.MenuIcon, // 菜单图标
 		Remark:   req.Remark,   // 备注
-
+		CreateBy: c.MustGet("userName").(string),
 	}
 
 	err = r.Service.CreateMenu(item)
@@ -52,7 +52,7 @@ func (r MenuController) CreateMenu(c *gin.Context) {
 // DeleteMenuByIds 删除菜单信息
 func (r MenuController) DeleteMenuByIds(c *gin.Context) {
 
-	req := b.DeleteMenuReqVo{}
+	req := rq.DeleteMenuReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
@@ -70,14 +70,14 @@ func (r MenuController) DeleteMenuByIds(c *gin.Context) {
 // UpdateMenu 更新菜单信息
 func (r MenuController) UpdateMenu(c *gin.Context) {
 
-	req := b.UpdateMenuReqVo{}
+	req := rq.UpdateMenuReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.UpdateMenuDto{
+	item := d.UpdateMenuDto{
 		Id:       req.Id,       // 主键
 		MenuName: req.MenuName, // 菜单名称
 		MenuType: req.MenuType, // 菜单类型(1：目录   2：菜单   3：按钮)
@@ -89,7 +89,7 @@ func (r MenuController) UpdateMenu(c *gin.Context) {
 		ApiUrl:   req.ApiUrl,   // 接口URL
 		MenuIcon: req.MenuIcon, // 菜单图标
 		Remark:   req.Remark,   // 备注
-
+		UpdateBy: c.MustGet("userName").(string),
 	}
 	err = r.Service.UpdateMenu(item)
 	if err != nil {
@@ -102,16 +102,17 @@ func (r MenuController) UpdateMenu(c *gin.Context) {
 // UpdateMenuStatus 更新菜单信息状态
 func (r MenuController) UpdateMenuStatus(c *gin.Context) {
 
-	req := b.UpdateMenuStatusReqVo{}
+	req := rq.UpdateMenuStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.UpdateMenuStatusDto{
-		Ids:    req.Ids,
-		Status: req.Status,
+	item := d.UpdateMenuStatusDto{
+		Ids:      req.Ids,
+		Status:   req.Status,
+		UpdateBy: c.MustGet("userName").(string),
 	}
 	err = r.Service.UpdateMenuStatus(item)
 	if err != nil {
@@ -123,14 +124,14 @@ func (r MenuController) UpdateMenuStatus(c *gin.Context) {
 
 // QueryMenuDetail 查询菜单信息详情
 func (r MenuController) QueryMenuDetail(c *gin.Context) {
-	req := b.QueryMenuDetailReqVo{}
+	req := rq.QueryMenuDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.QueryMenuDetailDto{
+	item := d.QueryMenuDetailDto{
 		Id: req.Id,
 	}
 	data, err := r.Service.QueryMenuDetail(item)
@@ -143,17 +144,21 @@ func (r MenuController) QueryMenuDetail(c *gin.Context) {
 
 // QueryMenuList 查询菜单信息列表
 func (r MenuController) QueryMenuList(c *gin.Context) {
-	req := b.QueryMenuListReqVo{}
+	req := rq.QueryMenuListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.QueryMenuListDto{
+	item := d.QueryMenuListDto{
 		PageNo:   req.PageNo,
 		PageSize: req.PageSize,
 	}
-	list, total := r.Service.QueryMenuList(item)
-	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+	list, total, err := r.Service.QueryMenuList(item)
+	if err != nil {
+		result.FailWithMsg(c, result.MenuError, err.Error())
+	} else {
+		result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+	}
 }

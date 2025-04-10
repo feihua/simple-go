@@ -1,8 +1,9 @@
 package system
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/internal/dto/system"
-	a "github.com/feihua/simple-go/internal/model/system"
+	m "github.com/feihua/simple-go/internal/model/system"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +19,7 @@ func NewDictTypeDao(DB *gorm.DB) *DictTypeDao {
 
 // CreateDictType 添加字典类型
 func (b DictTypeDao) CreateDictType(dto system.AddDictTypeDto) error {
-	item := a.DictType{
+	item := m.DictType{
 		DictName: dto.DictName, // 字典名称
 		DictType: dto.DictType, // 字典类型
 		Status:   dto.Status,   // 状态（0：停用，1:正常）
@@ -32,13 +33,13 @@ func (b DictTypeDao) CreateDictType(dto system.AddDictTypeDto) error {
 
 // DeleteDictTypeByIds 根据id删除字典类型
 func (b DictTypeDao) DeleteDictTypeByIds(ids []int64) error {
-	return b.db.Where("id in (?)", ids).Delete(&a.DictType{}).Error
+	return b.db.Where("id in (?)", ids).Delete(&m.DictType{}).Error
 }
 
 // UpdateDictType 更新字典类型
 func (b DictTypeDao) UpdateDictType(dto system.UpdateDictTypeDto) error {
 
-	item := a.DictType{
+	item := m.DictType{
 		Id:         dto.Id,          // 字典主键
 		DictName:   dto.DictName,    // 字典名称
 		DictType:   dto.DictType,    // 字典类型
@@ -56,24 +57,32 @@ func (b DictTypeDao) UpdateDictType(dto system.UpdateDictTypeDto) error {
 // UpdateDictTypeStatus 更新字典类型状态
 func (b DictTypeDao) UpdateDictTypeStatus(dto system.UpdateDictTypeStatusDto) error {
 
-	return b.db.Model(&a.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&m.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
 }
 
 // QueryDictTypeDetail 查询字典类型详情
-func (b DictTypeDao) QueryDictTypeDetail(dto system.QueryDictTypeDetailDto) (a.DictType, error) {
-	var item a.DictType
+func (b DictTypeDao) QueryDictTypeDetail(dto system.QueryDictTypeDetailDto) (*m.DictType, error) {
+	var item m.DictType
 	err := b.db.Where("id", dto.Id).First(&item).Error
-	return item, err
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }
 
 // QueryDictTypeList 查询字典类型列表
-func (b DictTypeDao) QueryDictTypeList(dto system.QueryDictTypeListDto) ([]a.DictType, int64) {
+func (b DictTypeDao) QueryDictTypeList(dto system.QueryDictTypeListDto) ([]*m.DictType, int64, error) {
 	pageNo := dto.PageNo
 	pageSize := dto.PageSize
 
 	var total int64 = 0
-	var list []a.DictType
-	tx := b.db.Model(&a.DictType{})
+	var list []*m.DictType
+	tx := b.db.Model(&m.DictType{})
 	if len(dto.DictName) > 0 {
 		tx.Where("dict_name like %?%", dto.DictName) // 字典名称
 	}
@@ -85,6 +94,51 @@ func (b DictTypeDao) QueryDictTypeList(dto system.QueryDictTypeListDto) ([]a.Dic
 	}
 	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
 
-	tx.Count(&total)
-	return list, total
+	err := tx.Count(&total).Error
+	return list, total, err
+}
+
+// QueryDictTypeById 根据id查询字典类型
+func (b DictTypeDao) QueryDictTypeById(id int64) (*m.DictType, error) {
+	var item m.DictType
+	err := b.db.Where("id = ?", id).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
+}
+
+// QueryDictTypeByName 根据name查询字典类型
+func (b DictTypeDao) QueryDictTypeByName(name string) (*m.DictType, error) {
+	var item m.DictType
+	err := b.db.Where("dict_name = ?", name).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
+}
+
+// QueryDictTypeByType 根据type查询字典类型
+func (b DictTypeDao) QueryDictTypeByType(dictType string) (*m.DictType, error) {
+	var item m.DictType
+	err := b.db.Where("dict_type = ?", dictType).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }

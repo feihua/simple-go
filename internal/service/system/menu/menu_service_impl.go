@@ -1,9 +1,11 @@
 package menu
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/internal/dao/system"
-	a "github.com/feihua/simple-go/internal/dto/system"
-	b "github.com/feihua/simple-go/internal/model/system"
+	d "github.com/feihua/simple-go/internal/dto/system"
+	"github.com/feihua/simple-go/pkg/utils"
+	"time"
 )
 
 // MenuServiceImpl 菜单信息操作实现
@@ -18,7 +20,7 @@ func NewMenuServiceImpl(dao *system.MenuDao) MenuService {
 }
 
 // CreateMenu 添加菜单信息
-func (s *MenuServiceImpl) CreateMenu(dto a.AddMenuDto) error {
+func (s *MenuServiceImpl) CreateMenu(dto d.AddMenuDto) error {
 	return s.Dao.CreateMenu(dto)
 }
 
@@ -28,21 +30,123 @@ func (s *MenuServiceImpl) DeleteMenuByIds(ids []int64) error {
 }
 
 // UpdateMenu 更新菜单信息
-func (s *MenuServiceImpl) UpdateMenu(dto a.UpdateMenuDto) error {
+func (s *MenuServiceImpl) UpdateMenu(dto d.UpdateMenuDto) error {
+	item, err := s.Dao.QueryMenuById(dto.Id)
+
+	if err != nil {
+		return err
+	}
+
+	if item == nil {
+		return errors.New("菜单信息不存在")
+	}
+
+	dto.CreateBy = item.CreateBy
+	dto.CreateTime = item.CreateTime
+	dto.UpdateTime = time.Now()
 	return s.Dao.UpdateMenu(dto)
 }
 
 // UpdateMenuStatus 更新菜单信息状态
-func (s *MenuServiceImpl) UpdateMenuStatus(dto a.UpdateMenuStatusDto) error {
+func (s *MenuServiceImpl) UpdateMenuStatus(dto d.UpdateMenuStatusDto) error {
 	return s.Dao.UpdateMenuStatus(dto)
 }
 
 // QueryMenuDetail 查询菜单信息详情
-func (s *MenuServiceImpl) QueryMenuDetail(dto a.QueryMenuDetailDto) (b.Menu, error) {
-	return s.Dao.QueryMenuDetail(dto)
+func (s *MenuServiceImpl) QueryMenuDetail(dto d.QueryMenuDetailDto) (*d.QueryMenuListDtoResp, error) {
+	item, err := s.Dao.QueryMenuDetail(dto)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if item == nil {
+		return nil, errors.New("菜单信息不存在")
+	}
+
+	return &d.QueryMenuListDtoResp{
+		Id:         item.Id,                             // 主键
+		MenuName:   item.MenuName,                       // 菜单名称
+		MenuType:   item.MenuType,                       // 菜单类型(1：目录   2：菜单   3：按钮)
+		Visible:    item.Visible,                        // 显示状态（0:隐藏, 显示:1）
+		Status:     item.Status,                         // 菜单状态(1:正常，0:禁用)
+		Sort:       item.Sort,                           // 排序
+		ParentId:   item.ParentId,                       // 父ID
+		MenuUrl:    item.MenuUrl,                        // 路由路径
+		ApiUrl:     item.ApiUrl,                         // 接口URL
+		MenuIcon:   item.MenuIcon,                       // 菜单图标
+		Remark:     item.Remark,                         // 备注
+		CreateBy:   item.CreateBy,                       // 创建者
+		CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
+		UpdateBy:   item.UpdateBy,                       // 更新者
+		UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+	}, nil
+
+}
+
+// QueryMenuById 根据id查询菜单信息详情
+func (s *MenuServiceImpl) QueryMenuById(id int64) (*d.QueryMenuListDtoResp, error) {
+	item, err := s.Dao.QueryMenuById(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if item == nil {
+		return nil, errors.New("菜单信息不存在")
+	}
+
+	return &d.QueryMenuListDtoResp{
+		Id:         item.Id,                             // 主键
+		MenuName:   item.MenuName,                       // 菜单名称
+		MenuType:   item.MenuType,                       // 菜单类型(1：目录   2：菜单   3：按钮)
+		Visible:    item.Visible,                        // 显示状态（0:隐藏, 显示:1）
+		Status:     item.Status,                         // 菜单状态(1:正常，0:禁用)
+		Sort:       item.Sort,                           // 排序
+		ParentId:   item.ParentId,                       // 父ID
+		MenuUrl:    item.MenuUrl,                        // 路由路径
+		ApiUrl:     item.ApiUrl,                         // 接口URL
+		MenuIcon:   item.MenuIcon,                       // 菜单图标
+		Remark:     item.Remark,                         // 备注
+		CreateBy:   item.CreateBy,                       // 创建者
+		CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
+		UpdateBy:   item.UpdateBy,                       // 更新者
+		UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+	}, nil
+
 }
 
 // QueryMenuList 查询菜单信息列表
-func (s *MenuServiceImpl) QueryMenuList(dto a.QueryMenuListDto) ([]b.Menu, int64) {
-	return s.Dao.QueryMenuList(dto)
+func (s *MenuServiceImpl) QueryMenuList(dto d.QueryMenuListDto) ([]*d.QueryMenuListDtoResp, int64, error) {
+	result, i, err := s.Dao.QueryMenuList(dto)
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	var list []*d.QueryMenuListDtoResp
+
+	for _, item := range result {
+		resp := &d.QueryMenuListDtoResp{
+			Id:         item.Id,                             // 主键
+			MenuName:   item.MenuName,                       // 菜单名称
+			MenuType:   item.MenuType,                       // 菜单类型(1：目录   2：菜单   3：按钮)
+			Visible:    item.Visible,                        // 显示状态（0:隐藏, 显示:1）
+			Status:     item.Status,                         // 菜单状态(1:正常，0:禁用)
+			Sort:       item.Sort,                           // 排序
+			ParentId:   item.ParentId,                       // 父ID
+			MenuUrl:    item.MenuUrl,                        // 路由路径
+			ApiUrl:     item.ApiUrl,                         // 接口URL
+			MenuIcon:   item.MenuIcon,                       // 菜单图标
+			Remark:     item.Remark,                         // 备注
+			CreateBy:   item.CreateBy,                       // 创建者
+			CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
+			UpdateBy:   item.UpdateBy,                       // 更新者
+			UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+		}
+
+		list = append(list, resp)
+	}
+
+	return list, i, nil
 }

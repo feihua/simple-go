@@ -1,22 +1,23 @@
 package post
 
 import (
-	b "github.com/feihua/simple-go/internal/dto/system"
-	a "github.com/feihua/simple-go/internal/model/system"
+	d "github.com/feihua/simple-go/internal/dto/system"
 )
 
 // PostService 岗位信息操作接口
 type PostService interface {
 	// CreatePost 添加岗位信息
-	CreatePost(dto b.AddPostDto) error
+	CreatePost(dto d.AddPostDto) error
 	// DeletePostByIds 删除岗位信息
 	DeletePostByIds(ids []int64) error
 	// UpdatePost 更新岗位信息
-	UpdatePost(dto b.UpdatePostDto) error
+	UpdatePost(dto d.UpdatePostDto) error
 	// UpdatePostStatus 更新岗位信息状态
-	UpdatePostStatus(dto b.UpdatePostStatusDto) error
+	UpdatePostStatus(dto d.UpdatePostStatusDto) error
 	// QueryPostDetail 查询岗位信息详情
-	QueryPostDetail(dto b.QueryPostDetailDto) (a.Post, error)
+	QueryPostDetail(dto d.QueryPostDetailDto) (*d.QueryPostListDtoResp, error)
+	// QueryPostById 根据id查询岗位信息详情
+	QueryPostById(id int64) (*d.QueryPostListDtoResp, error)
 	// QueryPostList 查询岗位信息列表
-	QueryPostList(dto b.QueryPostListDto) ([]a.Post, int64)
+	QueryPostList(dto d.QueryPostListDto) ([]*d.QueryPostListDtoResp, int64, error)
 }

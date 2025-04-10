@@ -15,10 +15,10 @@ type User struct {
 	Status        int32      `gorm:"column:status" json:"status"`                                    // 状态(1:正常，0:禁用)
 	DeptId        int64      `gorm:"column:dept_id" json:"deptId"`                                   // 部门ID
 	LoginIp       string     `gorm:"column:login_ip" json:"loginIp"`                                 // 最后登录IP
-	LoginDate     time.Time  `gorm:"column:login_date" json:"loginDate"`                             // 最后登录时间
+	LoginDate     *time.Time `gorm:"column:login_date" json:"loginDate"`                             // 最后登录时间
 	LoginBrowser  string     `gorm:"column:login_browser" json:"loginBrowser"`                       // 浏览器类型
 	LoginOs       string     `gorm:"column:login_os" json:"loginOs"`                                 // 操作系统
-	PwdUpdateDate time.Time  `gorm:"column:pwd_update_date" json:"pwdUpdateDate"`                    // 密码最后更新时间
+	PwdUpdateDate *time.Time `gorm:"column:pwd_update_date" json:"pwdUpdateDate"`                    // 密码最后更新时间
 	Remark        string     `gorm:"column:remark" json:"remark"`                                    // 备注
 	DelFlag       int32      `gorm:"column:del_flag" json:"delFlag"`                                 // 删除标志（0代表删除 1代表存在）
 	CreateBy      string     `gorm:"column:create_by" json:"createBy"`                               // 创建者

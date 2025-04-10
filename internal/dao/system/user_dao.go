@@ -1,8 +1,9 @@
 package system
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/internal/dto/system"
-	a "github.com/feihua/simple-go/internal/model/system"
+	m "github.com/feihua/simple-go/internal/model/system"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +19,7 @@ func NewUserDao(DB *gorm.DB) *UserDao {
 
 // CreateUser 添加用户信息
 func (b UserDao) CreateUser(dto system.AddUserDto) error {
-	item := a.User{
+	item := m.User{
 		Mobile:   dto.Mobile,   // 手机号码
 		UserName: dto.UserName, // 用户账号
 		NickName: dto.NickName, // 用户昵称
@@ -39,13 +40,13 @@ func (b UserDao) CreateUser(dto system.AddUserDto) error {
 
 // DeleteUserByIds 根据id删除用户信息
 func (b UserDao) DeleteUserByIds(ids []int64) error {
-	return b.db.Where("id in (?)", ids).Delete(&a.User{}).Error
+	return b.db.Where("id in (?)", ids).Delete(&m.User{}).Error
 }
 
 // UpdateUser 更新用户信息
 func (b UserDao) UpdateUser(dto system.UpdateUserDto) error {
 
-	item := a.User{
+	item := m.User{
 		Id:            dto.Id,            // 主键
 		Mobile:        dto.Mobile,        // 手机号码
 		UserName:      dto.UserName,      // 用户账号
@@ -75,24 +76,32 @@ func (b UserDao) UpdateUser(dto system.UpdateUserDto) error {
 // UpdateUserStatus 更新用户信息状态
 func (b UserDao) UpdateUserStatus(dto system.UpdateUserStatusDto) error {
 
-	return b.db.Model(&a.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&m.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
 }
 
 // QueryUserDetail 查询用户信息详情
-func (b UserDao) QueryUserDetail(dto system.QueryUserDetailDto) (a.User, error) {
-	var item a.User
+func (b UserDao) QueryUserDetail(dto system.QueryUserDetailDto) (*m.User, error) {
+	var item m.User
 	err := b.db.Where("id", dto.Id).First(&item).Error
-	return item, err
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }
 
 // QueryUserList 查询用户信息列表
-func (b UserDao) QueryUserList(dto system.QueryUserListDto) ([]a.User, int64) {
+func (b UserDao) QueryUserList(dto system.QueryUserListDto) ([]*m.User, int64, error) {
 	pageNo := dto.PageNo
 	pageSize := dto.PageSize
 
 	var total int64 = 0
-	var list []a.User
-	tx := b.db.Model(&a.User{})
+	var list []*m.User
+	tx := b.db.Model(&m.User{})
 	if len(dto.Mobile) > 0 {
 		tx.Where("mobile like %?%", dto.Mobile) // 手机号码
 	}
@@ -112,15 +121,23 @@ func (b UserDao) QueryUserList(dto system.QueryUserListDto) ([]a.User, int64) {
 
 	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
 
-	tx.Count(&total)
-	return list, total
+	err := tx.Count(&total).Error
+	return list, total, err
 }
 
 // QueryUserByAccount 查询用户信息
-func (b UserDao) QueryUserByAccount(account string) (a.User, error) {
-	var item a.User
+func (b UserDao) QueryUserByAccount(account string) (*m.User, error) {
+	var item m.User
 	err := b.db.Where("mobile=? or user_name =?", account, account).First(&item).Error
-	return item, err
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }
 
 // QueryApiUrls 根据用户id查询用户权限
@@ -139,22 +156,76 @@ where t.user_id = ?`
 }
 
 // QueryUserById 根据id查询用户信息
-func (b UserDao) QueryUserById(id int64) (a.User, error) {
-	var item a.User
-	err := b.db.Where("id", id).First(&item).Error
-	return item, err
+func (b UserDao) QueryUserById(id int64) (*m.User, error) {
+	var item m.User
+	err := b.db.Where("id = ?", id).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
+}
+
+// QueryUserByMobile 根据mobile查询用户
+func (b UserDao) QueryUserByMobile(mobile string) (*m.User, error) {
+	var item m.User
+	err := b.db.Where("mobile = ?", mobile).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
+}
+
+// QueryUserByName 根据name查询用户
+func (b UserDao) QueryUserByName(userName string) (*m.User, error) {
+	var item m.User
+	err := b.db.Where("user_name = ?", userName).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
+}
+
+// QueryUserByEmail 根据email查询用户
+func (b UserDao) QueryUserByEmail(email string) (*m.User, error) {
+	var item m.User
+	err := b.db.Where("email = ?", email).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }
 
 // QueryUserMenus 根据用户id查询用户权限
-func (u UserDao) QueryUserMenus(userId int64) ([]a.Menu, error) {
+func (u UserDao) QueryUserMenus(userId int64) ([]*m.Menu, error) {
 	sql := `select u.*
-from sys_user_role t
-         left join sys_role usr on t.role_id = usr.id
-         left join sys_role_menu srm on usr.id = srm.role_id
-         left join sys_menu u on srm.menu_id = u.id
-where t.user_id = ?`
+			from sys_user_role t
+					 left join sys_role usr on t.role_id = usr.id
+					 left join sys_role_menu srm on usr.id = srm.role_id
+					 left join sys_menu u on srm.menu_id = u.id
+			where t.user_id = ?
+`
 
-	var list []a.Menu
+	var list []*m.Menu
 	err := u.db.Raw(sql, userId).Scan(&list).Error
 
 	return list, err

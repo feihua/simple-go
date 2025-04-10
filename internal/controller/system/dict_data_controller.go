@@ -1,9 +1,9 @@
 package system
 
 import (
-	a "github.com/feihua/simple-go/internal/dto/system"
+	d "github.com/feihua/simple-go/internal/dto/system"
 	"github.com/feihua/simple-go/internal/service/system/dict_data"
-	b "github.com/feihua/simple-go/internal/vo/system/req"
+	rq "github.com/feihua/simple-go/internal/vo/system/req"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
 )
@@ -20,14 +20,14 @@ func NewDictDataController(Service dict_data.DictDataService) *DictDataControlle
 // CreateDictData 添加字典数据
 func (r DictDataController) CreateDictData(c *gin.Context) {
 
-	req := b.AddDictDataReqVo{}
+	req := rq.AddDictDataReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.AddDictDataDto{
+	item := d.AddDictDataDto{
 		DictSort:  req.DictSort,  // 字典排序
 		DictLabel: req.DictLabel, // 字典标签
 		DictValue: req.DictValue, // 字典键值
@@ -37,7 +37,7 @@ func (r DictDataController) CreateDictData(c *gin.Context) {
 		IsDefault: req.IsDefault, // 是否默认（Y是 N否）
 		Status:    req.Status,    // 状态（0：停用，1:正常）
 		Remark:    req.Remark,    // 备注
-
+		CreateBy:  c.MustGet("userName").(string),
 	}
 
 	err = r.Service.CreateDictData(item)
@@ -51,7 +51,7 @@ func (r DictDataController) CreateDictData(c *gin.Context) {
 // DeleteDictDataByIds 删除字典数据
 func (r DictDataController) DeleteDictDataByIds(c *gin.Context) {
 
-	req := b.DeleteDictDataReqVo{}
+	req := rq.DeleteDictDataReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
@@ -69,14 +69,14 @@ func (r DictDataController) DeleteDictDataByIds(c *gin.Context) {
 // UpdateDictData 更新字典数据
 func (r DictDataController) UpdateDictData(c *gin.Context) {
 
-	req := b.UpdateDictDataReqVo{}
+	req := rq.UpdateDictDataReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.UpdateDictDataDto{
+	item := d.UpdateDictDataDto{
 		Id:        req.Id,        // 字典编码
 		DictSort:  req.DictSort,  // 字典排序
 		DictLabel: req.DictLabel, // 字典标签
@@ -87,7 +87,7 @@ func (r DictDataController) UpdateDictData(c *gin.Context) {
 		IsDefault: req.IsDefault, // 是否默认（Y是 N否）
 		Status:    req.Status,    // 状态（0：停用，1:正常）
 		Remark:    req.Remark,    // 备注
-
+		UpdateBy:  c.MustGet("userName").(string),
 	}
 	err = r.Service.UpdateDictData(item)
 	if err != nil {
@@ -100,16 +100,17 @@ func (r DictDataController) UpdateDictData(c *gin.Context) {
 // UpdateDictDataStatus 更新字典数据状态
 func (r DictDataController) UpdateDictDataStatus(c *gin.Context) {
 
-	req := b.UpdateDictDataStatusReqVo{}
+	req := rq.UpdateDictDataStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.UpdateDictDataStatusDto{
-		Ids:    req.Ids,
-		Status: req.Status,
+	item := d.UpdateDictDataStatusDto{
+		Ids:      req.Ids,
+		Status:   req.Status,
+		UpdateBy: c.MustGet("userName").(string),
 	}
 	err = r.Service.UpdateDictDataStatus(item)
 	if err != nil {
@@ -121,14 +122,14 @@ func (r DictDataController) UpdateDictDataStatus(c *gin.Context) {
 
 // QueryDictDataDetail 查询字典数据详情
 func (r DictDataController) QueryDictDataDetail(c *gin.Context) {
-	req := b.QueryDictDataDetailReqVo{}
+	req := rq.QueryDictDataDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.QueryDictDataDetailDto{
+	item := d.QueryDictDataDetailDto{
 		Id: req.Id,
 	}
 	data, err := r.Service.QueryDictDataDetail(item)
@@ -141,20 +142,24 @@ func (r DictDataController) QueryDictDataDetail(c *gin.Context) {
 
 // QueryDictDataList 查询字典数据列表
 func (r DictDataController) QueryDictDataList(c *gin.Context) {
-	req := b.QueryDictDataListReqVo{}
+	req := rq.QueryDictDataListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.QueryDictDataListDto{
+	item := d.QueryDictDataListDto{
 		PageNo:    req.PageNo,
 		PageSize:  req.PageSize,
 		DictLabel: req.DictLabel, // 字典标签
 		DictType:  req.DictType,  // 字典类型
 		Status:    req.Status,    // 状态（0：停用，1:正常）
 	}
-	list, total := r.Service.QueryDictDataList(item)
-	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+	list, total, err := r.Service.QueryDictDataList(item)
+	if err != nil {
+		result.FailWithMsg(c, result.DictDataError, err.Error())
+	} else {
+		result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+	}
 }

@@ -1,9 +1,11 @@
 package dict_data
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/internal/dao/system"
-	a "github.com/feihua/simple-go/internal/dto/system"
-	b "github.com/feihua/simple-go/internal/model/system"
+	d "github.com/feihua/simple-go/internal/dto/system"
+	"github.com/feihua/simple-go/pkg/utils"
+	"time"
 )
 
 // DictDataServiceImpl 字典数据操作实现
@@ -18,7 +20,7 @@ func NewDictDataServiceImpl(dao *system.DictDataDao) DictDataService {
 }
 
 // CreateDictData 添加字典数据
-func (s *DictDataServiceImpl) CreateDictData(dto a.AddDictDataDto) error {
+func (s *DictDataServiceImpl) CreateDictData(dto d.AddDictDataDto) error {
 	return s.Dao.CreateDictData(dto)
 }
 
@@ -28,21 +30,120 @@ func (s *DictDataServiceImpl) DeleteDictDataByIds(ids []int64) error {
 }
 
 // UpdateDictData 更新字典数据
-func (s *DictDataServiceImpl) UpdateDictData(dto a.UpdateDictDataDto) error {
+func (s *DictDataServiceImpl) UpdateDictData(dto d.UpdateDictDataDto) error {
+	item, err := s.Dao.QueryDictDataById(dto.Id)
+
+	if err != nil {
+		return err
+	}
+
+	if item == nil {
+		return errors.New("字典数据不存在")
+	}
+
+	dto.CreateBy = item.CreateBy
+	dto.CreateTime = item.CreateTime
+	dto.UpdateTime = time.Now()
 	return s.Dao.UpdateDictData(dto)
 }
 
 // UpdateDictDataStatus 更新字典数据状态
-func (s *DictDataServiceImpl) UpdateDictDataStatus(dto a.UpdateDictDataStatusDto) error {
+func (s *DictDataServiceImpl) UpdateDictDataStatus(dto d.UpdateDictDataStatusDto) error {
 	return s.Dao.UpdateDictDataStatus(dto)
 }
 
 // QueryDictDataDetail 查询字典数据详情
-func (s *DictDataServiceImpl) QueryDictDataDetail(dto a.QueryDictDataDetailDto) (b.DictData, error) {
-	return s.Dao.QueryDictDataDetail(dto)
+func (s *DictDataServiceImpl) QueryDictDataDetail(dto d.QueryDictDataDetailDto) (*d.QueryDictDataListDtoResp, error) {
+	item, err := s.Dao.QueryDictDataDetail(dto)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if item == nil {
+		return nil, errors.New("字典数据不存在")
+	}
+
+	return &d.QueryDictDataListDtoResp{
+		Id:         item.Id,                             // 字典编码
+		DictSort:   item.DictSort,                       // 字典排序
+		DictLabel:  item.DictLabel,                      // 字典标签
+		DictValue:  item.DictValue,                      // 字典键值
+		DictType:   item.DictType,                       // 字典类型
+		CssClass:   item.CssClass,                       // 样式属性（其他样式扩展）
+		ListClass:  item.ListClass,                      // 表格回显样式
+		IsDefault:  item.IsDefault,                      // 是否默认（Y是 N否）
+		Status:     item.Status,                         // 状态（0：停用，1:正常）
+		Remark:     item.Remark,                         // 备注
+		CreateBy:   item.CreateBy,                       // 创建者
+		CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
+		UpdateBy:   item.UpdateBy,                       // 更新者
+		UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+	}, nil
+
+}
+
+// QueryDictDataById 根据id查询字典数据详情
+func (s *DictDataServiceImpl) QueryDictDataById(id int64) (*d.QueryDictDataListDtoResp, error) {
+	item, err := s.Dao.QueryDictDataById(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if item == nil {
+		return nil, errors.New("字典数据不存在")
+	}
+
+	return &d.QueryDictDataListDtoResp{
+		Id:         item.Id,                             // 字典编码
+		DictSort:   item.DictSort,                       // 字典排序
+		DictLabel:  item.DictLabel,                      // 字典标签
+		DictValue:  item.DictValue,                      // 字典键值
+		DictType:   item.DictType,                       // 字典类型
+		CssClass:   item.CssClass,                       // 样式属性（其他样式扩展）
+		ListClass:  item.ListClass,                      // 表格回显样式
+		IsDefault:  item.IsDefault,                      // 是否默认（Y是 N否）
+		Status:     item.Status,                         // 状态（0：停用，1:正常）
+		Remark:     item.Remark,                         // 备注
+		CreateBy:   item.CreateBy,                       // 创建者
+		CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
+		UpdateBy:   item.UpdateBy,                       // 更新者
+		UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+	}, nil
+
 }
 
 // QueryDictDataList 查询字典数据列表
-func (s *DictDataServiceImpl) QueryDictDataList(dto a.QueryDictDataListDto) ([]b.DictData, int64) {
-	return s.Dao.QueryDictDataList(dto)
+func (s *DictDataServiceImpl) QueryDictDataList(dto d.QueryDictDataListDto) ([]*d.QueryDictDataListDtoResp, int64, error) {
+	result, i, err := s.Dao.QueryDictDataList(dto)
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	var list []*d.QueryDictDataListDtoResp
+
+	for _, item := range result {
+		resp := &d.QueryDictDataListDtoResp{
+			Id:         item.Id,                             // 字典编码
+			DictSort:   item.DictSort,                       // 字典排序
+			DictLabel:  item.DictLabel,                      // 字典标签
+			DictValue:  item.DictValue,                      // 字典键值
+			DictType:   item.DictType,                       // 字典类型
+			CssClass:   item.CssClass,                       // 样式属性（其他样式扩展）
+			ListClass:  item.ListClass,                      // 表格回显样式
+			IsDefault:  item.IsDefault,                      // 是否默认（Y是 N否）
+			Status:     item.Status,                         // 状态（0：停用，1:正常）
+			Remark:     item.Remark,                         // 备注
+			CreateBy:   item.CreateBy,                       // 创建者
+			CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
+			UpdateBy:   item.UpdateBy,                       // 更新者
+			UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+		}
+
+		list = append(list, resp)
+	}
+
+	return list, i, nil
 }

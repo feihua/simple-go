@@ -1,8 +1,9 @@
 package system
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/internal/dto/system"
-	a "github.com/feihua/simple-go/internal/model/system"
+	m "github.com/feihua/simple-go/internal/model/system"
 	"gorm.io/gorm"
 	"time"
 )
@@ -19,7 +20,7 @@ func NewOperateLogDao(DB *gorm.DB) *OperateLogDao {
 
 // CreateOperateLog 添加操作日志记录
 func (b OperateLogDao) CreateOperateLog(dto system.AddOperateLogDto) error {
-	item := a.OperateLog{
+	item := m.OperateLog{
 		Title:           dto.Title,           // 模块标题
 		BusinessType:    dto.BusinessType,    // 业务类型（0其它 1新增 2修改 3删除）
 		Method:          dto.Method,          // 方法名称
@@ -51,24 +52,32 @@ func (b OperateLogDao) CreateOperateLog(dto system.AddOperateLogDto) error {
 
 // DeleteOperateLogByIds 根据id删除操作日志记录
 func (b OperateLogDao) DeleteOperateLogByIds(ids []int64) error {
-	return b.db.Where("id in (?)", ids).Delete(&a.OperateLog{}).Error
+	return b.db.Where("id in (?)", ids).Delete(&m.OperateLog{}).Error
 }
 
 // QueryOperateLogDetail 查询操作日志记录详情
-func (b OperateLogDao) QueryOperateLogDetail(dto system.QueryOperateLogDetailDto) (a.OperateLog, error) {
-	var item a.OperateLog
+func (b OperateLogDao) QueryOperateLogDetail(dto system.QueryOperateLogDetailDto) (*m.OperateLog, error) {
+	var item m.OperateLog
 	err := b.db.Where("id", dto.Id).First(&item).Error
-	return item, err
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }
 
 // QueryOperateLogList 查询操作日志记录列表
-func (b OperateLogDao) QueryOperateLogList(dto system.QueryOperateLogListDto) ([]a.OperateLog, int64) {
+func (b OperateLogDao) QueryOperateLogList(dto system.QueryOperateLogListDto) ([]*m.OperateLog, int64, error) {
 	pageNo := dto.PageNo
 	pageSize := dto.PageSize
 
 	var total int64 = 0
-	var list []a.OperateLog
-	tx := b.db.Model(&a.OperateLog{})
+	var list []*m.OperateLog
+	tx := b.db.Model(&m.OperateLog{})
 	if len(dto.Title) > 0 {
 		tx.Where("title like %?%", dto.Title) // 模块标题
 	}
@@ -119,6 +128,6 @@ func (b OperateLogDao) QueryOperateLogList(dto system.QueryOperateLogListDto) ([
 
 	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
 
-	tx.Count(&total)
-	return list, total
+	err := tx.Count(&total).Error
+	return list, total, err
 }

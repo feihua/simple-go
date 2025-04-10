@@ -1,8 +1,9 @@
 package system
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/internal/dto/system"
-	a "github.com/feihua/simple-go/internal/model/system"
+	m "github.com/feihua/simple-go/internal/model/system"
 	"gorm.io/gorm"
 	"time"
 )
@@ -19,7 +20,7 @@ func NewLoginLogDao(DB *gorm.DB) *LoginLogDao {
 
 // CreateLoginLog 添加系统访问记录
 func (b LoginLogDao) CreateLoginLog(dto system.AddLoginLogDto) error {
-	item := a.LoginLog{
+	item := m.LoginLog{
 		LoginName:     dto.LoginName,     // 登录账号
 		Ipaddr:        dto.Ipaddr,        // 登录IP地址
 		LoginLocation: dto.LoginLocation, // 登录地点
@@ -41,24 +42,32 @@ func (b LoginLogDao) CreateLoginLog(dto system.AddLoginLogDto) error {
 
 // DeleteLoginLogByIds 根据id删除系统访问记录
 func (b LoginLogDao) DeleteLoginLogByIds(ids []int64) error {
-	return b.db.Where("id in (?)", ids).Delete(&a.LoginLog{}).Error
+	return b.db.Where("id in (?)", ids).Delete(&m.LoginLog{}).Error
 }
 
 // QueryLoginLogDetail 查询系统访问记录详情
-func (b LoginLogDao) QueryLoginLogDetail(dto system.QueryLoginLogDetailDto) (a.LoginLog, error) {
-	var item a.LoginLog
+func (b LoginLogDao) QueryLoginLogDetail(dto system.QueryLoginLogDetailDto) (*m.LoginLog, error) {
+	var item m.LoginLog
 	err := b.db.Where("id", dto.Id).First(&item).Error
-	return item, err
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }
 
 // QueryLoginLogList 查询系统访问记录列表
-func (b LoginLogDao) QueryLoginLogList(dto system.QueryLoginLogListDto) ([]a.LoginLog, int64) {
+func (b LoginLogDao) QueryLoginLogList(dto system.QueryLoginLogListDto) ([]*m.LoginLog, int64, error) {
 	pageNo := dto.PageNo
 	pageSize := dto.PageSize
 
 	var total int64 = 0
-	var list []a.LoginLog
-	tx := b.db.Model(&a.LoginLog{})
+	var list []*m.LoginLog
+	tx := b.db.Model(&m.LoginLog{})
 	if len(dto.LoginName) > 0 {
 		tx.Where("login_name like %?%", dto.LoginName) // 登录账号
 	}
@@ -85,6 +94,6 @@ func (b LoginLogDao) QueryLoginLogList(dto system.QueryLoginLogListDto) ([]a.Log
 	}
 	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
 
-	tx.Count(&total)
-	return list, total
+	err := tx.Count(&total).Error
+	return list, total, err
 }

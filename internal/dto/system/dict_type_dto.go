@@ -51,17 +51,15 @@ type QueryDictTypeListDto struct {
 
 }
 
-// QueryDictTypeListDtoRes 查询字典类型列表响应参数
-type QueryDictTypeListDtoRes []struct {
-	PageNo     int    `json:"pageNo" default:"1"`    // 第几页
-	PageSize   int    `json:"pageSize" default:"10"` // 每页的数量
-	Id         int64  `json:"id"`                    // 字典主键
-	DictName   string `json:"dictName"`              // 字典名称
-	DictType   string `json:"dictType"`              // 字典类型
-	Status     int32  `json:"status"`                // 状态（0：停用，1:正常）
-	Remark     string `json:"remark"`                // 备注
-	CreateBy   string `json:"createBy"`              // 创建者
-	CreateTime string `json:"createTime"`            // 创建时间
-	UpdateBy   string `json:"updateBy"`              // 更新者
-	UpdateTime string `json:"updateTime"`            // 更新时间
+// QueryDictTypeListDtoResp 查询字典类型列表响应参数
+type QueryDictTypeListDtoResp struct {
+	Id         int64  `json:"id"`         // 字典主键
+	DictName   string `json:"dictName"`   // 字典名称
+	DictType   string `json:"dictType"`   // 字典类型
+	Status     int32  `json:"status"`     // 状态（0：停用，1:正常）
+	Remark     string `json:"remark"`     // 备注
+	CreateBy   string `json:"createBy"`   // 创建者
+	CreateTime string `json:"createTime"` // 创建时间
+	UpdateBy   string `json:"updateBy"`   // 更新者
+	UpdateTime string `json:"updateTime"` // 更新时间
 }

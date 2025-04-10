@@ -1,8 +1,9 @@
 package system
 
 import (
+	"errors"
 	"github.com/feihua/simple-go/internal/dto/system"
-	a "github.com/feihua/simple-go/internal/model/system"
+	m "github.com/feihua/simple-go/internal/model/system"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +19,7 @@ func NewMenuDao(DB *gorm.DB) *MenuDao {
 
 // CreateMenu 添加菜单信息
 func (b MenuDao) CreateMenu(dto system.AddMenuDto) error {
-	item := a.Menu{
+	item := m.Menu{
 		MenuName: dto.MenuName, // 菜单名称
 		MenuType: dto.MenuType, // 菜单类型(1：目录   2：菜单   3：按钮)
 		Visible:  dto.Visible,  // 显示状态（0:隐藏, 显示:1）
@@ -38,13 +39,13 @@ func (b MenuDao) CreateMenu(dto system.AddMenuDto) error {
 
 // DeleteMenuByIds 根据id删除菜单信息
 func (b MenuDao) DeleteMenuByIds(ids []int64) error {
-	return b.db.Where("id in (?)", ids).Delete(&a.Menu{}).Error
+	return b.db.Where("id in (?)", ids).Delete(&m.Menu{}).Error
 }
 
 // UpdateMenu 更新菜单信息
 func (b MenuDao) UpdateMenu(dto system.UpdateMenuDto) error {
 
-	item := a.Menu{
+	item := m.Menu{
 		Id:         dto.Id,          // 主键
 		MenuName:   dto.MenuName,    // 菜单名称
 		MenuType:   dto.MenuType,    // 菜单类型(1：目录   2：菜单   3：按钮)
@@ -68,43 +69,81 @@ func (b MenuDao) UpdateMenu(dto system.UpdateMenuDto) error {
 // UpdateMenuStatus 更新菜单信息状态
 func (b MenuDao) UpdateMenuStatus(dto system.UpdateMenuStatusDto) error {
 
-	return b.db.Model(&a.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&m.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
 }
 
 // QueryMenuDetail 查询菜单信息详情
-func (b MenuDao) QueryMenuDetail(dto system.QueryMenuDetailDto) (a.Menu, error) {
-	var item a.Menu
+func (b MenuDao) QueryMenuDetail(dto system.QueryMenuDetailDto) (*m.Menu, error) {
+	var item m.Menu
 	err := b.db.Where("id", dto.Id).First(&item).Error
-	return item, err
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }
 
 // QueryMenuList 查询菜单信息列表
-func (b MenuDao) QueryMenuList(dto system.QueryMenuListDto) ([]a.Menu, int64) {
+func (b MenuDao) QueryMenuList(dto system.QueryMenuListDto) ([]*m.Menu, int64, error) {
 	pageNo := dto.PageNo
 	pageSize := dto.PageSize
 
 	var total int64 = 0
-	var list []a.Menu
-	tx := b.db.Model(&a.Menu{})
+	var list []*m.Menu
+	tx := b.db.Model(&m.Menu{})
 
 	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
 
-	tx.Count(&total)
-	return list, total
+	err := tx.Count(&total).Error
+	return list, total, err
 }
 
 // QueryApiUrlList 查询菜单apiUrl
 func (b MenuDao) QueryApiUrlList() ([]string, error) {
 	var apiUrls []string
-	err := b.db.Model(&a.Menu{}).Select("api_url").Where("api_url is not null").Scan(&apiUrls).Error
+	err := b.db.Model(&m.Menu{}).Select("api_url").Where("api_url is not null").Scan(&apiUrls).Error
 	return apiUrls, err
 }
 
 // QueryAllMenuList 查询所有菜单信息列表
-func (b MenuDao) QueryAllMenuList() ([]a.Menu, error) {
+func (b MenuDao) QueryAllMenuList() ([]*m.Menu, error) {
 
-	var list []a.Menu
-	err := b.db.Model(&a.Menu{}).Find(&list).Error
+	var list []*m.Menu
+	err := b.db.Model(&m.Menu{}).Find(&list).Error
 
 	return list, err
+}
+
+// QueryMenuById 根据id查询菜单
+func (b MenuDao) QueryMenuById(id int64) (*m.Menu, error) {
+	var item m.Menu
+	err := b.db.Where("id = ?", id).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
+}
+
+// QueryMenuByName 根据name查询菜单
+func (b MenuDao) QueryMenuByName(name string) (*m.Menu, error) {
+	var item m.Menu
+	err := b.db.Where("menu_name = ?", name).First(&item).Error
+
+	switch {
+	case err == nil:
+		return &item, nil
+	case errors.Is(err, gorm.ErrRecordNotFound):
+		return nil, nil
+	default:
+		return nil, err
+	}
 }

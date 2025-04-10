@@ -1,9 +1,9 @@
 package system
 
 import (
-	a "github.com/feihua/simple-go/internal/dto/system"
+	d "github.com/feihua/simple-go/internal/dto/system"
 	"github.com/feihua/simple-go/internal/service/system/operate_log"
-	b "github.com/feihua/simple-go/internal/vo/system/req"
+	rq "github.com/feihua/simple-go/internal/vo/system/req"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
 )
@@ -20,7 +20,7 @@ func NewOperateLogController(Service operate_log.OperateLogService) *OperateLogC
 // DeleteOperateLogByIds 删除操作日志记录
 func (r OperateLogController) DeleteOperateLogByIds(c *gin.Context) {
 
-	req := b.DeleteOperateLogReqVo{}
+	req := rq.DeleteOperateLogReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
@@ -37,14 +37,14 @@ func (r OperateLogController) DeleteOperateLogByIds(c *gin.Context) {
 
 // QueryOperateLogDetail 查询操作日志记录详情
 func (r OperateLogController) QueryOperateLogDetail(c *gin.Context) {
-	req := b.QueryOperateLogDetailReqVo{}
+	req := rq.QueryOperateLogDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.QueryOperateLogDetailDto{
+	item := d.QueryOperateLogDetailDto{
 		Id: req.Id,
 	}
 	data, err := r.Service.QueryOperateLogDetail(item)
@@ -57,14 +57,14 @@ func (r OperateLogController) QueryOperateLogDetail(c *gin.Context) {
 
 // QueryOperateLogList 查询操作日志记录列表
 func (r OperateLogController) QueryOperateLogList(c *gin.Context) {
-	req := b.QueryOperateLogListReqVo{}
+	req := rq.QueryOperateLogListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.QueryOperateLogListDto{
+	item := d.QueryOperateLogListDto{
 		PageNo:          req.PageNo,
 		PageSize:        req.PageSize,
 		Title:           req.Title,           // 模块标题
@@ -84,6 +84,10 @@ func (r OperateLogController) QueryOperateLogList(c *gin.Context) {
 		Status:          req.Status,          // 操作状态(0:异常,正常)
 
 	}
-	list, total := r.Service.QueryOperateLogList(item)
-	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+	list, total, err := r.Service.QueryOperateLogList(item)
+	if err != nil {
+		result.FailWithMsg(c, result.OperateLogError, err.Error())
+	} else {
+		result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+	}
 }

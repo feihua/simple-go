@@ -1,9 +1,9 @@
 package system
 
 import (
-	a "github.com/feihua/simple-go/internal/dto/system"
+	d "github.com/feihua/simple-go/internal/dto/system"
 	"github.com/feihua/simple-go/internal/service/system/user"
-	b "github.com/feihua/simple-go/internal/vo/system/req"
+	rq "github.com/feihua/simple-go/internal/vo/system/req"
 	"github.com/feihua/simple-go/pkg/result"
 	"github.com/gin-gonic/gin"
 )
@@ -20,14 +20,14 @@ func NewUserController(Service user.UserService) *UserController {
 // CreateUser 添加用户信息
 func (r UserController) CreateUser(c *gin.Context) {
 
-	req := b.AddUserReqVo{}
+	req := rq.AddUserReqVo{}
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.AddUserDto{
+	item := d.AddUserDto{
 		Mobile:   req.Mobile,   // 手机号码
 		UserName: req.UserName, // 用户账号
 		NickName: req.NickName, // 用户昵称
@@ -38,6 +38,7 @@ func (r UserController) CreateUser(c *gin.Context) {
 		Status:   req.Status,   // 状态(1:正常，0:禁用)
 		DeptId:   req.DeptId,   // 部门ID
 		Remark:   req.Remark,   // 备注
+		CreateBy: c.MustGet("userName").(string),
 	}
 
 	err = r.Service.CreateUser(item)
@@ -51,7 +52,7 @@ func (r UserController) CreateUser(c *gin.Context) {
 // DeleteUserByIds 删除用户信息
 func (r UserController) DeleteUserByIds(c *gin.Context) {
 
-	req := b.DeleteUserReqVo{}
+	req := rq.DeleteUserReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
@@ -69,14 +70,14 @@ func (r UserController) DeleteUserByIds(c *gin.Context) {
 // UpdateUser 更新用户信息
 func (r UserController) UpdateUser(c *gin.Context) {
 
-	req := b.UpdateUserReqVo{}
+	req := rq.UpdateUserReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.UpdateUserDto{
+	item := d.UpdateUserDto{
 		Id:       req.Id,       // 主键
 		Mobile:   req.Mobile,   // 手机号码
 		UserName: req.UserName, // 用户账号
@@ -87,7 +88,7 @@ func (r UserController) UpdateUser(c *gin.Context) {
 		Status:   req.Status,   // 状态(1:正常，0:禁用)
 		DeptId:   req.DeptId,   // 部门ID
 		Remark:   req.Remark,   // 备注
-
+		UpdateBy: c.MustGet("userName").(string),
 	}
 	err = r.Service.UpdateUser(item)
 	if err != nil {
@@ -100,16 +101,17 @@ func (r UserController) UpdateUser(c *gin.Context) {
 // UpdateUserStatus 更新用户信息状态
 func (r UserController) UpdateUserStatus(c *gin.Context) {
 
-	req := b.UpdateUserStatusReqVo{}
+	req := rq.UpdateUserStatusReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.UpdateUserStatusDto{
-		Ids:    req.Ids,
-		Status: req.Status,
+	item := d.UpdateUserStatusDto{
+		Ids:      req.Ids,
+		Status:   req.Status,
+		UpdateBy: c.MustGet("userName").(string),
 	}
 	err = r.Service.UpdateUserStatus(item)
 	if err != nil {
@@ -121,14 +123,14 @@ func (r UserController) UpdateUserStatus(c *gin.Context) {
 
 // QueryUserDetail 查询用户信息详情
 func (r UserController) QueryUserDetail(c *gin.Context) {
-	req := b.QueryUserDetailReqVo{}
+	req := rq.QueryUserDetailReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.QueryUserDetailDto{
+	item := d.QueryUserDetailDto{
 		Id: req.Id,
 	}
 	data, err := r.Service.QueryUserDetail(item)
@@ -141,14 +143,14 @@ func (r UserController) QueryUserDetail(c *gin.Context) {
 
 // QueryUserList 查询用户信息列表
 func (r UserController) QueryUserList(c *gin.Context) {
-	req := b.QueryUserListReqVo{}
+	req := rq.QueryUserListReqVo{}
 	err := c.ShouldBind(&req)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	item := a.QueryUserListDto{
+	item := d.QueryUserListDto{
 		PageNo:   req.PageNo,
 		PageSize: req.PageSize,
 		Mobile:   req.Mobile,   // 手机号码
@@ -158,20 +160,24 @@ func (r UserController) QueryUserList(c *gin.Context) {
 		DeptId:   req.DeptId,   // 部门ID
 
 	}
-	list, total := r.Service.QueryUserList(item)
-	result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+	list, total, err := r.Service.QueryUserList(item)
+	if err != nil {
+		result.FailWithMsg(c, result.UserError, err.Error())
+	} else {
+		result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+	}
 }
 
 // Login 登录
 func (u UserController) Login(c *gin.Context) {
-	loginReq := b.LoginReqVo{}
+	loginReq := rq.LoginReqVo{}
 	err := c.ShouldBind(&loginReq)
 	if err != nil {
 		result.FailWithMsg(c, result.ParamsError, err.Error())
 		return
 	}
 
-	loginDto := a.LoginDto{
+	loginDto := d.LoginDto{
 		Account:  loginReq.Account,
 		Password: loginReq.Password,
 	}
