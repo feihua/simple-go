@@ -151,3 +151,28 @@ func (b RoleDao) QueryRoleByKey(key string) (*m.Role, error) {
 		return nil, err
 	}
 }
+
+// CancelAuthUser 取消授权用户
+func (b RoleDao) CancelAuthUser(userId, roleId int64) error {
+	return b.db.Model(&m.UserRole{}).Delete("user_id = ? and role_id = ?", userId, roleId).Error
+}
+
+// BatchCancelAuthUser 批量取消授权用户
+func (b RoleDao) BatchCancelAuthUser(userIds []int64, roleId int64) error {
+	return b.db.Model(&m.UserRole{}).Delete("user_id in (?) and role_id = ?", userIds, roleId).Error
+
+}
+
+// BatchAuthUser 批量选择用户授权
+func (b RoleDao) BatchAuthUser(dto system.BatchAuthUserDto) error {
+	var userRoles []*m.UserRole
+	for _, userId := range dto.UserIds {
+		sysUserRole := m.UserRole{
+			RoleId: dto.RoleId,
+			UserId: userId,
+		}
+		userRoles = append(userRoles, &sysUserRole)
+	}
+	return b.db.Model(&m.UserRole{}).CreateInBatches(userRoles, len(userRoles)).Error
+
+}

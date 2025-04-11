@@ -10,12 +10,16 @@ import (
 
 // RoleServiceImpl 角色信息操作实现
 type RoleServiceImpl struct {
-	Dao *system.RoleDao
+	Dao         *system.RoleDao
+	userRoleDao *system.UserRoleDao
+	RoleMenuDao *system.RoleMenuDao
 }
 
-func NewRoleServiceImpl(dao *system.RoleDao) RoleService {
+func NewRoleServiceImpl(dao *system.RoleDao, userRoleDao *system.UserRoleDao, RoleMenuDao *system.RoleMenuDao) RoleService {
 	return &RoleServiceImpl{
-		Dao: dao,
+		Dao:         dao,
+		userRoleDao: userRoleDao,
+		RoleMenuDao: RoleMenuDao,
 	}
 }
 
@@ -181,4 +185,103 @@ func (s *RoleServiceImpl) QueryRoleList(dto d.QueryRoleListDto) ([]*d.QueryRoleL
 	}
 
 	return list, i, nil
+}
+
+// QueryAllocatedList 查询已分配用户角色列表
+func (s *RoleServiceImpl) QueryAllocatedList(item d.QueryRoleUserListDto) ([]*d.QueryRoleListDtoResp, int64, error) {
+	// TODO implement me
+	panic("implement me")
+}
+
+// QueryUnallocatedList 查询未分配用户角色列表
+func (s *RoleServiceImpl) QueryUnallocatedList(item d.QueryRoleUserListDto) ([]*d.QueryRoleListDtoResp, int64, error) {
+	// TODO implement me
+	panic("implement me")
+}
+
+// CancelAuthUser 取消授权用户
+func (s *RoleServiceImpl) CancelAuthUser(dto d.AuthUserDto) error {
+	if dto.RoleId == 1 {
+		return errors.New("不允许取消超级管理员角色")
+	}
+
+	roleById, err := s.Dao.QueryRoleById(dto.RoleId)
+
+	if err != nil {
+		return err
+	}
+
+	if roleById == nil {
+		return errors.New("角色信息不存在")
+	}
+
+	return s.Dao.CancelAuthUser(dto.UserId, dto.RoleId)
+}
+
+// BatchCancelAuthUser 批量取消授权用户
+func (s *RoleServiceImpl) BatchCancelAuthUser(dto d.BatchAuthUserDto) error {
+	if dto.RoleId == 1 {
+		return errors.New("不允许取消超级管理员角色")
+	}
+
+	roleById, err := s.Dao.QueryRoleById(dto.RoleId)
+
+	if err != nil {
+		return err
+	}
+
+	if roleById == nil {
+		return errors.New("角色信息不存在")
+	}
+
+	return s.Dao.BatchCancelAuthUser(dto.UserIds, dto.RoleId)
+}
+
+// BatchAuthUser 批量选择用户授权
+func (s *RoleServiceImpl) BatchAuthUser(dto d.BatchAuthUserDto) error {
+	if dto.RoleId == 1 {
+		return errors.New("不允许取消超级管理员角色")
+	}
+
+	roleById, err := s.Dao.QueryRoleById(dto.RoleId)
+
+	if err != nil {
+		return err
+	}
+
+	if roleById == nil {
+		return errors.New("角色信息不存在")
+	}
+
+	return s.Dao.BatchAuthUser(dto)
+}
+
+// QueryRoleMenuList 分页查询角色菜单关联列表
+func (s *RoleServiceImpl) QueryRoleMenuList(dto d.QueryRoleMenuListDto) (d.QueryRoleMenuListDataDtoResp, error) {
+	// TODO implement me
+	panic("implement me")
+}
+
+// UpdateRoleMenu 添加角色菜单关联
+func (s *RoleServiceImpl) UpdateRoleMenu(dto d.UpdateRoleMenuDto) error {
+	if dto.RoleId == 1 {
+		return errors.New("不允许取消超级管理员角色")
+	}
+
+	roleById, err := s.Dao.QueryRoleById(dto.RoleId)
+
+	if err != nil {
+		return err
+	}
+
+	if roleById == nil {
+		return errors.New("角色信息不存在")
+	}
+
+	err = s.userRoleDao.DeleteUserRoleByRoleId(dto.RoleId)
+	if err != nil {
+		return err
+	}
+
+	return s.RoleMenuDao.CreateRoleMenuBatch(dto)
 }

@@ -14,5 +14,12 @@ func RoleRouter(r *gin.RouterGroup, b *a.RoleController) {
 	r.POST("/system/role/updateRoleStatus", b.UpdateRoleStatus)
 	r.POST("/system/role/queryRoleDetail", b.QueryRoleDetail)
 	r.POST("/system/role/queryRoleList", b.QueryRoleList)
+	r.POST("/system/role/queryRoleMenu", b.QueryRoleMenuList)
+	r.POST("/system/role/updateRoleMenu", b.AddRoleMenu)
+	r.POST("/system/role/queryAllocatedList", b.QueryAllocatedList)
+	r.POST("/system/role/queryUnallocatedList", b.QueryUnallocatedList)
+	r.POST("/system/role/cancelAuthUser", b.CancelAuthUser)
+	r.POST("/system/role/batchCancelAuthUser", b.BatchCancelAuthUser)
+	r.POST("/system/role/batchAuthUser", b.BatchAuthUser)
 
 }

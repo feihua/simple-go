@@ -31,6 +31,11 @@ func (b UserRoleDao) DeleteUserRoleByUserId(userId int64) error {
 	return b.db.Where("user_id = ?", userId).Delete(&m.UserRole{}).Error
 }
 
+// DeleteUserRoleByRoleId 根据roleId删除角色用户关联
+func (b UserRoleDao) DeleteUserRoleByRoleId(roleId int64) error {
+	return b.db.Where("role_id = ?", roleId).Delete(&m.UserRole{}).Error
+}
+
 // DeleteUserRoleByUserIds 根据userIds删除角色用户关联
 func (b UserRoleDao) DeleteUserRoleByUserIds(userIds []int64) error {
 	return b.db.Where("user_id in (?)", userIds).Delete(&m.UserRole{}).Error

@@ -47,3 +47,31 @@ type QueryRoleListReqVo struct {
 	Status    int32  `json:"status" `                                  // 状态(1:正常，0:禁用)
 
 }
+
+type QueryRoleMenuListReq struct {
+	RoleId int64 `json:"roleId" binding:"required"` // 角色Id
+}
+
+type UpdateRoleMenuReq struct {
+	RoleId  int64   `json:"roleId" binding:"required"`  // 角色Id
+	MenuIds []int64 `json:"menuIds" binding:"required"` // 菜单Id
+}
+
+// QueryRoleUserListReqVo 查询角色用户信息列表请求参数
+type QueryRoleUserListReqVo struct {
+	PageNo   int    `json:"pageNo" default:"1" binding:"required"`    // 第几页
+	PageSize int    `json:"pageSize" default:"10" binding:"required"` // 每页的数量
+	RoleId   int64  `json:"RoleId" binding:"required"`                // 主键
+	Mobile   string `json:"mobile" binding:"required" `               // 手机号码
+	UserName string `json:"userName"  binding:"required"`             // 用户账号
+}
+
+type AuthUserReq struct {
+	RoleId int64 `json:"roleId" binding:"required"` // 角色Id
+	UserId int64 `json:"userId" binding:"required"` // 用户Id
+}
+
+type BatchAuthUserReq struct {
+	RoleId  int64   `json:"roleId" binding:"required"`  // 角色Id
+	UserIds []int64 `json:"userIds" binding:"required"` // 用户Id
+}

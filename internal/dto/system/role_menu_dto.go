@@ -15,12 +15,3 @@ type DeleteRoleMenuDto struct {
 type QueryRoleMenuDetailDto struct {
 	Id int64 `json:"id"` // id
 }
-
-// QueryRoleMenuListDto 查询菜单角色关联列表请求参数
-type QueryRoleMenuListDto struct {
-	PageNo   int   `json:"pageNo" default:"1"`    // 第几页
-	PageSize int   `json:"pageSize" default:"10"` // 每页的数量
-	Id       int64 `json:"id"`                    // 主键
-	RoleId   int64 `json:"roleId"`                // 角色ID
-	MenuId   int64 `json:"menuId"`                // 菜单ID
-}

@@ -56,6 +56,28 @@ type QueryRoleListDto struct {
 
 }
 
+type QueryRoleMenuListDto struct {
+	RoleId int64 `json:"roleId"` // 角色Id
+}
+
+type RoleMenuListDataDto struct {
+	Key           string `json:"key"`      // 菜单名称
+	Title         string `json:"title"`    // 菜单名称
+	ParentId      int64  `json:"parentId"` // 父菜单ID，一级菜单为0
+	Id            int64  `json:"id"`       // 父菜单ID，一级菜单为0
+	Label         string `json:"label"`    // 父菜单ID，一级菜单为0
+	IsPenultimate bool   `json:"isPenultimate"`
+}
+type QueryRoleMenuListDataDtoResp struct {
+	MenuList []RoleMenuListDataDto `json:"menuList"`
+	MenuIds  []int64               `json:"menuIds"`
+}
+
+type UpdateRoleMenuDto struct {
+	RoleId  int64   `json:"roleId" binding:"required"`  // 角色Id
+	MenuIds []int64 `json:"menuIds" binding:"required"` // 菜单Id
+}
+
 // QueryRoleListDtoResp 查询角色信息列表响应参数
 type QueryRoleListDtoResp struct {
 	Id         int64  `json:"id"`         // 主键
@@ -69,4 +91,22 @@ type QueryRoleListDtoResp struct {
 	CreateTime string `json:"createTime"` // 创建时间
 	UpdateBy   string `json:"updateBy"`   // 更新者
 	UpdateTime string `json:"updateTime"` // 更新时间
+}
+
+// QueryRoleUserListDto 查询角色用户信息列表请求参数
+type QueryRoleUserListDto struct {
+	PageNo   int    `json:"pageNo" `   // 第几页
+	PageSize int    `json:"pageSize"`  // 每页的数量
+	RoleId   int64  `json:"RoleId" `   // 主键
+	Mobile   string `json:"mobile" `   // 手机号码
+	UserName string `json:"userName" ` // 用户账号
+}
+
+type AuthUserDto struct {
+	RoleId int64 `json:"roleId"` // 角色Id
+	UserId int64 `json:"userId"` // 用户Id
+}
+type BatchAuthUserDto struct {
+	RoleId  int64   `json:"roleId"`  // 角色Id
+	UserIds []int64 `json:"userIds"` // 用户Id
 }
