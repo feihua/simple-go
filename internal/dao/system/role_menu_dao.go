@@ -50,3 +50,15 @@ func (b RoleMenuDao) QueryRoleMenuDetail(dto system.QueryRoleMenuDetailDto) (m.R
 	err := b.db.Where("id", dto.Id).First(&item).Error
 	return item, err
 }
+
+// DeleteRoleMenuByRoleId 根据roleId删除角色用户关联
+func (b RoleMenuDao) DeleteRoleMenuByRoleId(roleId int64) error {
+	return b.db.Where("role_id = ?", roleId).Delete(&m.RoleMenu{}).Error
+}
+
+// QueryMenuIds 根据roleId查询菜单ids
+func (b RoleMenuDao) QueryMenuIds(roleId int64) ([]int64, error) {
+	var ids []int64
+	err := b.db.Model(&m.RoleMenu{}).Where("role_id", roleId).Scan(&ids).Error
+	return ids, err
+}

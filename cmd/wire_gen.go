@@ -36,7 +36,7 @@ func initApp() *gin.Engine {
 	userService := user.NewUserServiceImpl(userDao, userRoleDao, menuDao, roleDao, userPostDao)
 	userController := system2.NewUserController(userService)
 	roleMenuDao := system.NewRoleMenuDao(db)
-	roleService := role.NewRoleServiceImpl(roleDao, userRoleDao, roleMenuDao)
+	roleService := role.NewRoleServiceImpl(roleDao, userRoleDao, roleMenuDao, menuDao, userDao)
 	roleController := system2.NewRoleController(roleService)
 	menuService := menu.NewMenuServiceImpl(menuDao)
 	menuController := system2.NewMenuController(menuService)

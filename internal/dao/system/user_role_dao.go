@@ -31,11 +31,6 @@ func (b UserRoleDao) DeleteUserRoleByUserId(userId int64) error {
 	return b.db.Where("user_id = ?", userId).Delete(&m.UserRole{}).Error
 }
 
-// DeleteUserRoleByRoleId 根据roleId删除角色用户关联
-func (b UserRoleDao) DeleteUserRoleByRoleId(roleId int64) error {
-	return b.db.Where("role_id = ?", roleId).Delete(&m.UserRole{}).Error
-}
-
 // DeleteUserRoleByUserIds 根据userIds删除角色用户关联
 func (b UserRoleDao) DeleteUserRoleByUserIds(userIds []int64) error {
 	return b.db.Where("user_id in (?)", userIds).Delete(&m.UserRole{}).Error
@@ -58,4 +53,13 @@ func (u UserRoleDao) IsAdministrator(userId int64) bool {
 	u.db.Model(&m.UserRole{}).Where("user_id= ? and role_id = 1", userId).Count(&count)
 
 	return count > 0
+}
+
+// QueryUserIds 查询用户ids
+func (b UserRoleDao) QueryUserIds(roleId int64) ([]int64, error) {
+
+	var ids []int64
+	err := b.db.Model(&m.UserRole{}).Select("user_id").Where("role_id=?", roleId).Scan(&ids).Error
+	return ids, err
+
 }

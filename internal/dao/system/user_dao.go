@@ -234,3 +234,47 @@ func (u UserDao) QueryUserMenus(userId int64) ([]*m.Menu, error) {
 
 	return list, err
 }
+
+// QueryUserByUserIds 根据userIds查询用户
+func (b UserDao) QueryUserByUserIds(dto system.QueryRoleUserListDto, userIs []int64) ([]*m.User, int64, error) {
+	pageNo := dto.PageNo
+	pageSize := dto.PageSize
+
+	var total int64 = 0
+	var list []*m.User
+	tx := b.db.Model(&m.User{}).Where("id in (?)", userIs)
+
+	if len(dto.Mobile) > 0 {
+		tx.Where("mobile like %?%", dto.Mobile) // 手机号码
+	}
+	if len(dto.UserName) > 0 {
+		tx.Where("user_name like %?%", dto.UserName) // 用户账号
+	}
+
+	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
+
+	err := tx.Count(&total).Error
+	return list, total, err
+}
+
+// QueryUserNotUserIds 排除userIds的用户
+func (b UserDao) QueryUserNotUserIds(dto system.QueryRoleUserListDto, userIs []int64) ([]*m.User, int64, error) {
+	pageNo := dto.PageNo
+	pageSize := dto.PageSize
+
+	var total int64 = 0
+	var list []*m.User
+	tx := b.db.Model(&m.User{}).Where("id not in (?)", userIs)
+
+	if len(dto.Mobile) > 0 {
+		tx.Where("mobile like %?%", dto.Mobile) // 手机号码
+	}
+	if len(dto.UserName) > 0 {
+		tx.Where("user_name like %?%", dto.UserName) // 用户账号
+	}
+
+	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
+
+	err := tx.Count(&total).Error
+	return list, total, err
+}

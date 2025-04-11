@@ -21,9 +21,9 @@ type RoleService interface {
 	// QueryRoleList 查询角色信息列表
 	QueryRoleList(dto d.QueryRoleListDto) ([]*d.QueryRoleListDtoResp, int64, error)
 	// QueryAllocatedList 查询已分配用户角色列表
-	QueryAllocatedList(item d.QueryRoleUserListDto) ([]*d.QueryRoleListDtoResp, int64, error)
+	QueryAllocatedList(item d.QueryRoleUserListDto) ([]*d.QueryUserListDtoResp, int64, error)
 	// QueryUnallocatedList 查询未分配用户角色列表
-	QueryUnallocatedList(item d.QueryRoleUserListDto) ([]*d.QueryRoleListDtoResp, int64, error)
+	QueryUnallocatedList(item d.QueryRoleUserListDto) ([]*d.QueryUserListDtoResp, int64, error)
 	// CancelAuthUser 取消授权用户
 	CancelAuthUser(item d.AuthUserDto) error
 	// BatchCancelAuthUser 批量取消授权用户
@@ -31,7 +31,7 @@ type RoleService interface {
 	// BatchAuthUser 批量选择用户授权
 	BatchAuthUser(dto d.BatchAuthUserDto) error
 	// QueryRoleMenuList 分页查询角色菜单关联列表
-	QueryRoleMenuList(item d.QueryRoleMenuListDto) (d.QueryRoleMenuListDataDtoResp, error)
+	QueryRoleMenuList(item d.QueryRoleMenuListDto) (*d.QueryRoleMenuListDataDtoResp, error)
 	// UpdateRoleMenu 添加角色菜单关联
 	UpdateRoleMenu(item d.UpdateRoleMenuDto) error
 }

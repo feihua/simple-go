@@ -5,6 +5,7 @@ import (
 	"github.com/feihua/simple-go/internal/dao/system"
 	d "github.com/feihua/simple-go/internal/dto/system"
 	"github.com/feihua/simple-go/pkg/utils"
+	"strconv"
 	"time"
 )
 
@@ -13,13 +14,17 @@ type RoleServiceImpl struct {
 	Dao         *system.RoleDao
 	userRoleDao *system.UserRoleDao
 	RoleMenuDao *system.RoleMenuDao
+	MenuDao     *system.MenuDao
+	UserDao     *system.UserDao
 }
 
-func NewRoleServiceImpl(dao *system.RoleDao, userRoleDao *system.UserRoleDao, RoleMenuDao *system.RoleMenuDao) RoleService {
+func NewRoleServiceImpl(dao *system.RoleDao, userRoleDao *system.UserRoleDao, RoleMenuDao *system.RoleMenuDao, MenuDao *system.MenuDao, UserDao *system.UserDao) RoleService {
 	return &RoleServiceImpl{
 		Dao:         dao,
 		userRoleDao: userRoleDao,
 		RoleMenuDao: RoleMenuDao,
+		MenuDao:     MenuDao,
+		UserDao:     UserDao,
 	}
 }
 
@@ -188,15 +193,103 @@ func (s *RoleServiceImpl) QueryRoleList(dto d.QueryRoleListDto) ([]*d.QueryRoleL
 }
 
 // QueryAllocatedList 查询已分配用户角色列表
-func (s *RoleServiceImpl) QueryAllocatedList(item d.QueryRoleUserListDto) ([]*d.QueryRoleListDtoResp, int64, error) {
-	// TODO implement me
-	panic("implement me")
+func (s *RoleServiceImpl) QueryAllocatedList(dto d.QueryRoleUserListDto) ([]*d.QueryUserListDtoResp, int64, error) {
+	if dto.RoleId == 1 {
+		return nil, 0, errors.New("不允许取消超级管理员角色")
+	}
+
+	roleById, err := s.Dao.QueryRoleById(dto.RoleId)
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	if roleById == nil {
+		return nil, 0, errors.New("角色信息不存在")
+	}
+
+	userIds, err := s.userRoleDao.QueryUserIds(dto.RoleId)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	users, count, err := s.UserDao.QueryUserByUserIds(dto, userIds)
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	var list = make([]*d.QueryUserListDtoResp, 0, len(users))
+
+	for _, item := range users {
+		list = append(list, &d.QueryUserListDtoResp{
+			Id:         item.Id,                             // 主键
+			Mobile:     item.Mobile,                         // 手机号码
+			UserName:   item.UserName,                       // 用户账号
+			NickName:   item.NickName,                       // 用户昵称
+			Avatar:     item.Avatar,                         // 头像路径
+			Email:      item.Email,                          // 用户邮箱
+			Status:     item.Status,                         // 状态(1:正常，0:禁用)
+			DeptId:     item.DeptId,                         // 部门ID
+			Remark:     item.Remark,                         // 备注
+			CreateBy:   item.CreateBy,                       // 创建者
+			CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
+			UpdateBy:   item.UpdateBy,                       // 更新者
+			UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+
+		})
+	}
+	return list, count, nil
 }
 
 // QueryUnallocatedList 查询未分配用户角色列表
-func (s *RoleServiceImpl) QueryUnallocatedList(item d.QueryRoleUserListDto) ([]*d.QueryRoleListDtoResp, int64, error) {
-	// TODO implement me
-	panic("implement me")
+func (s *RoleServiceImpl) QueryUnallocatedList(dto d.QueryRoleUserListDto) ([]*d.QueryUserListDtoResp, int64, error) {
+	if dto.RoleId == 1 {
+		return nil, 0, errors.New("不允许取消超级管理员角色")
+	}
+
+	roleById, err := s.Dao.QueryRoleById(dto.RoleId)
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	if roleById == nil {
+		return nil, 0, errors.New("角色信息不存在")
+	}
+
+	userIds, err := s.userRoleDao.QueryUserIds(dto.RoleId)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	users, count, err := s.UserDao.QueryUserNotUserIds(dto, userIds)
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	var list = make([]*d.QueryUserListDtoResp, 0, len(users))
+
+	for _, item := range users {
+		list = append(list, &d.QueryUserListDtoResp{
+			Id:         item.Id,                             // 主键
+			Mobile:     item.Mobile,                         // 手机号码
+			UserName:   item.UserName,                       // 用户账号
+			NickName:   item.NickName,                       // 用户昵称
+			Avatar:     item.Avatar,                         // 头像路径
+			Email:      item.Email,                          // 用户邮箱
+			Status:     item.Status,                         // 状态(1:正常，0:禁用)
+			DeptId:     item.DeptId,                         // 部门ID
+			Remark:     item.Remark,                         // 备注
+			CreateBy:   item.CreateBy,                       // 创建者
+			CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
+			UpdateBy:   item.UpdateBy,                       // 更新者
+			UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+
+		})
+	}
+	return list, count, nil
 }
 
 // CancelAuthUser 取消授权用户
@@ -257,9 +350,40 @@ func (s *RoleServiceImpl) BatchAuthUser(dto d.BatchAuthUserDto) error {
 }
 
 // QueryRoleMenuList 分页查询角色菜单关联列表
-func (s *RoleServiceImpl) QueryRoleMenuList(dto d.QueryRoleMenuListDto) (d.QueryRoleMenuListDataDtoResp, error) {
-	// TODO implement me
-	panic("implement me")
+func (s *RoleServiceImpl) QueryRoleMenuList(dto d.QueryRoleMenuListDto) (*d.QueryRoleMenuListDataDtoResp, error) {
+	allMenuList, err := s.MenuDao.QueryAllMenuList()
+	if err != nil {
+		return nil, err
+	}
+
+	var menuList []d.RoleMenuListDataDto
+	var menuIds []int64
+
+	for _, menu := range allMenuList {
+		menuList = append(menuList, d.RoleMenuListDataDto{
+			Key:           strconv.FormatInt(menu.Id, 10),
+			Title:         menu.MenuName,
+			ParentId:      menu.ParentId,
+			Id:            menu.Id,
+			Label:         menu.MenuName,
+			IsPenultimate: menu.ParentId == 2,
+		})
+		menuIds = append(menuIds, menu.Id)
+	}
+
+	// 2.如果角色不是admin则根据roleId查询菜单
+	if dto.RoleId != 1 {
+		menuIds, err = s.RoleMenuDao.QueryMenuIds(dto.RoleId)
+
+	}
+
+	data := &d.QueryRoleMenuListDataDtoResp{
+		MenuList: menuList,
+		MenuIds:  menuIds,
+	}
+
+	return data, nil
+
 }
 
 // UpdateRoleMenu 添加角色菜单关联
@@ -278,7 +402,7 @@ func (s *RoleServiceImpl) UpdateRoleMenu(dto d.UpdateRoleMenuDto) error {
 		return errors.New("角色信息不存在")
 	}
 
-	err = s.userRoleDao.DeleteUserRoleByRoleId(dto.RoleId)
+	err = s.RoleMenuDao.DeleteRoleMenuByRoleId(dto.RoleId)
 	if err != nil {
 		return err
 	}
