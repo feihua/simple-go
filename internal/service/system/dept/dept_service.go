@@ -8,8 +8,8 @@ import (
 type DeptService interface {
 	// CreateDept 添加部门
 	CreateDept(dto d.AddDeptDto) error
-	// DeleteDeptByIds 删除部门
-	DeleteDeptByIds(ids []int64) error
+	// DeleteDeptById 删除部门
+	DeleteDeptById(id int64) error
 	// UpdateDept 更新部门
 	UpdateDept(dto d.UpdateDeptDto) error
 	// UpdateDeptStatus 更新部门状态

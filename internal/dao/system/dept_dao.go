@@ -35,9 +35,9 @@ func (b DeptDao) CreateDept(dto system.AddDeptDto) error {
 	return b.db.Create(&item).Error
 }
 
-// DeleteDeptByIds 根据id删除部门
-func (b DeptDao) DeleteDeptByIds(ids []int64) error {
-	return b.db.Where("id in (?)", ids).Delete(&m.Dept{}).Error
+// DeleteDeptById 根据id删除部门
+func (b DeptDao) DeleteDeptById(id int64) error {
+	return b.db.Where("id = ?", id).Delete(&m.Dept{}).Error
 }
 
 // UpdateDept 更新部门
@@ -64,9 +64,9 @@ func (b DeptDao) UpdateDept(dto system.UpdateDeptDto) error {
 }
 
 // UpdateDeptStatus 更新部门状态
-func (b DeptDao) UpdateDeptStatus(dto system.UpdateDeptStatusDto) error {
+func (b DeptDao) UpdateDeptStatus(ids []int64, status int32, updateBy string) error {
 
-	return b.db.Model(&m.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&m.Dept{}).Where("id in (?) and update_by = ?", ids, updateBy).Update("status", status).Error
 }
 
 // QueryDeptDetail 查询部门详情
@@ -108,10 +108,10 @@ func (b DeptDao) QueryDeptById(id int64) (*m.Dept, error) {
 	}
 }
 
-// QueryDeptByName 根据name查询部门详情
-func (b DeptDao) QueryDeptByName(name string) (*m.Dept, error) {
+// QueryDeptByNameAndParentId 根据name查询部门详情
+func (b DeptDao) QueryDeptByNameAndParentId(name string, parentId int64) (*m.Dept, error) {
 	var item m.Dept
-	err := b.db.Where("dept_name = ?", name).First(&item).Error
+	err := b.db.Where("dept_name = ? and parent_id = ?", name, parentId).First(&item).Error
 
 	switch {
 	case err == nil:
@@ -121,4 +121,35 @@ func (b DeptDao) QueryDeptByName(name string) (*m.Dept, error) {
 	default:
 		return nil, err
 	}
+}
+
+// QueryChildDept 查询下级部门
+func (b DeptDao) QueryChildDept(id int64) ([]*m.Dept, error) {
+	var item []*m.Dept
+	err := b.db.Model(&m.Dept{}).Where("parent_id = ?", id).Scan(&item).Error
+
+	return item, err
+}
+
+// QueryChildDeptList 查询下级部门(包括子孙)
+func (b DeptDao) QueryChildDeptList(id int64) ([]*m.Dept, error) {
+	var item []*m.Dept
+	sql := "select * from sys_dept where find_in_set(?, 'ancestors')"
+	err := b.db.Model(&m.Dept{}).Raw(sql, id).Scan(&item).Error
+
+	return item, err
+}
+
+// QueryChildDeptCount 查询下级部门数量
+func (b DeptDao) QueryChildDeptCount(id int64) (int64, error) {
+	var count int64
+	sql := "select count(*) from sys_dept where status = 1 and del_flag = 1 and find_in_set(?, 'ancestors')"
+	err := b.db.Model(&m.Dept{}).Raw(sql, id).Count(&count).Error
+	return count, err
+}
+
+// UpdateDeptAncestors 更新祖级列表
+func (b DeptDao) UpdateDeptAncestors(id int64, ancestors string) error {
+
+	return b.db.Model(&m.Dept{}).Where("id = ? ", id).Update("ancestors", ancestors).Error
 }

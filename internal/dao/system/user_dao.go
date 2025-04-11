@@ -278,3 +278,11 @@ func (b UserDao) QueryUserNotUserIds(dto system.QueryRoleUserListDto, userIs []i
 	err := tx.Count(&total).Error
 	return list, total, err
 }
+
+// ExistUserByDeptId 查询部门是否存在用户
+func (b UserDao) ExistUserByDeptId(deptId int64) ([]*m.User, error) {
+	var item []*m.User
+	err := b.db.Model(&m.Dept{}).Where("dept_id = ?", deptId).Scan(&item).Error
+
+	return item, err
+}

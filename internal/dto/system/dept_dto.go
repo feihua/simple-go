@@ -40,9 +40,9 @@ type UpdateDeptDto struct {
 
 // UpdateDeptStatusDto 修改部门状态请求参数
 type UpdateDeptStatusDto struct {
-	Ids      []int64 `json:"ids"`      // id
-	Status   int32   `json:"status"`   // 状态（0:关闭,1:正常 ）
-	UpdateBy string  `json:"updateBy"` // 更新者
+	Id       int64  `json:"id"`       // id
+	Status   int32  `json:"status"`   // 状态（0:关闭,1:正常 ）
+	UpdateBy string `json:"updateBy"` // 更新者
 }
 
 // QueryDeptDetailDto 查询部门详情请求参数

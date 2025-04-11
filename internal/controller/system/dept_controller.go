@@ -57,7 +57,7 @@ func (r DeptController) DeleteDeptByIds(c *gin.Context) {
 		return
 	}
 
-	err = r.Service.DeleteDeptByIds(req.Ids)
+	err = r.Service.DeleteDeptById(req.Id)
 	if err != nil {
 		result.FailWithMsg(c, result.DeptError, err.Error())
 	} else {
@@ -106,7 +106,7 @@ func (r DeptController) UpdateDeptStatus(c *gin.Context) {
 	}
 
 	item := d.UpdateDeptStatusDto{
-		Ids:      req.Ids,
+		Id:       req.Id,
 		Status:   req.Status,
 		UpdateBy: c.MustGet("userName").(string),
 	}

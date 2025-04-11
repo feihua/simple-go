@@ -56,7 +56,7 @@ func initApp() *gin.Engine {
 	noticeService := notice.NewNoticeServiceImpl(noticeDao)
 	noticeController := system2.NewNoticeController(noticeService)
 	deptDao := system.NewDeptDao(db)
-	deptService := dept.NewDeptServiceImpl(deptDao)
+	deptService := dept.NewDeptServiceImpl(deptDao, userDao)
 	deptController := system2.NewDeptController(deptService)
 	postDao := system.NewPostDao(db)
 	postService := post.NewPostServiceImpl(postDao)

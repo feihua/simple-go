@@ -15,7 +15,7 @@ type AddDeptReqVo struct {
 
 // DeleteDeptReqVo 删除部门请求参数
 type DeleteDeptReqVo struct {
-	Ids []int64 `json:"ids" binding:"required"`
+	Id int64 `json:"id" binding:"required"`
 }
 
 // UpdateDeptReqVo 修改部门请求参数
@@ -34,8 +34,8 @@ type UpdateDeptReqVo struct {
 
 // UpdateDeptStatusReqVo 修改部门状态请求参数
 type UpdateDeptStatusReqVo struct {
-	Ids    []int64 `json:"ids" binding:"required"`    // id
-	Status int32   `json:"status" binding:"required"` // 状态（0:关闭,1:正常 ）
+	Id     int64 `json:"id" binding:"required"`     // id
+	Status int32 `json:"status" binding:"required"` // 状态（0:关闭,1:正常 ）
 }
 
 // QueryDeptDetailReqVo 查询部门详情请求参数
