@@ -60,7 +60,7 @@ type QueryUserListReqVo struct {
 
 // LoginReqVo 登录参数
 type LoginReqVo struct {
-	Account  string `json:"account" binding:"required"`
+	Account  string `json:"mobile" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 

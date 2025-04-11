@@ -54,7 +54,7 @@ func FailWithMsg(c *gin.Context, err Response, msg string) {
 }
 
 var (
-	SUCCESS         = Error(200, "success")
+	SUCCESS         = Error(0, "success")
 	NeedRedirect    = Error(301, "need redirect")
 	InvalidArgs     = Error(400, "invalid params")
 	Unauthorized    = Error(401, "unauthorized")
