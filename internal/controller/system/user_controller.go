@@ -235,8 +235,8 @@ func (u UserController) UpdateUserRoleList(c *gin.Context) {
 	}
 
 	dto := d.UpdateUserRoleDto{
-		UserId: req.UserId,
-		RoleId: req.RoleId,
+		UserId:  req.UserId,
+		RoleIds: req.RoleIds,
 	}
 
 	err = u.Service.UpdateUserRole(dto)

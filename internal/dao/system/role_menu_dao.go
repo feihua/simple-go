@@ -19,7 +19,6 @@ func NewRoleMenuDao(DB *gorm.DB) *RoleMenuDao {
 // CreateRoleMenu 添加菜单角色关联
 func (b RoleMenuDao) CreateRoleMenu(dto system.AddRoleMenuDto) error {
 	item := m.RoleMenu{
-		Id:     dto.Id,     // 主键
 		RoleId: dto.RoleId, // 角色ID
 		MenuId: dto.MenuId, // 菜单ID
 	}
