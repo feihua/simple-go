@@ -116,10 +116,10 @@ func (b UserDao) QueryUserList(dto system.QueryUserListDto) ([]*m.User, int64, e
 		tx.Where("nick_name like %?%", dto.NickName) // 用户昵称
 	}
 
-	if dto.Status != 2 {
+	if dto.Status != nil {
 		tx.Where("status=?", dto.Status) // 状态(1:正常，0:禁用)
 	}
-	if dto.DeptId != 0 {
+	if dto.DeptId != nil {
 		tx.Where("dept_id=?", dto.DeptId) // 部门ID
 	}
 

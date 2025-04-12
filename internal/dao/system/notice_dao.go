@@ -87,11 +87,11 @@ func (b NoticeDao) QueryNoticeList(dto system.QueryNoticeListDto) ([]*m.Notice, 
 	if len(dto.NoticeTitle) > 0 {
 		tx.Where("notice_title like %?%", dto.NoticeTitle) // 公告标题
 	}
-	if dto.NoticeType != 2 {
+	if dto.NoticeType != nil {
 		tx.Where("notice_type=?", dto.NoticeType) // 公告类型（1:通知,2:公告）
 	}
 
-	if dto.Status != 2 {
+	if dto.Status != nil {
 		tx.Where("status=?", dto.Status) // 公告状态（0:关闭,1:正常 ）
 	}
 	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)

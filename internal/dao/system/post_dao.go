@@ -91,7 +91,7 @@ func (b PostDao) QueryPostList(dto system.QueryPostListDto) ([]*m.Post, int64, e
 	if len(dto.PostName) > 0 {
 		tx.Where("post_name like %?%", dto.PostName) // 岗位名称
 	}
-	if dto.Status != 2 {
+	if dto.Status != nil {
 		tx.Where("status=?", dto.Status) // 岗位状态（0：停用，1:正常）
 	}
 	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)

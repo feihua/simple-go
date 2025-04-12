@@ -145,7 +145,7 @@ func (s *PostServiceImpl) QueryPostList(dto d.QueryPostListDto) ([]*d.QueryPostL
 		return nil, 0, err
 	}
 
-	var list []*d.QueryPostListDtoResp
+	list := make([]*d.QueryPostListDtoResp, 0)
 
 	for _, item := range result {
 		resp := &d.QueryPostListDtoResp{

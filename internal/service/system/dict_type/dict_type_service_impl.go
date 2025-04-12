@@ -145,7 +145,7 @@ func (s *DictTypeServiceImpl) QueryDictTypeList(dto d.QueryDictTypeListDto) ([]*
 		return nil, 0, err
 	}
 
-	var list []*d.QueryDictTypeListDtoResp
+	list := make([]*d.QueryDictTypeListDtoResp, 0)
 
 	for _, item := range result {
 		resp := &d.QueryDictTypeListDtoResp{

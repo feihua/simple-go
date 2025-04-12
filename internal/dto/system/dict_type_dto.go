@@ -47,7 +47,7 @@ type QueryDictTypeListDto struct {
 	PageSize int    `json:"pageSize" default:"10"` // 每页的数量
 	DictName string `json:"dictName"`              // 字典名称
 	DictType string `json:"dictType"`              // 字典类型
-	Status   int32  `json:"status"`                // 状态（0：停用，1:正常）
+	Status   *int32 `json:"status"`                // 状态（0：停用，1:正常）
 
 }
 

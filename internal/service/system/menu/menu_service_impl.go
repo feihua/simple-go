@@ -153,11 +153,11 @@ func (s *MenuServiceImpl) QueryMenuById(id int64) (*d.QueryMenuListDtoResp, erro
 }
 
 // QueryMenuList 查询菜单信息列表
-func (s *MenuServiceImpl) QueryMenuList(dto d.QueryMenuListDto) ([]*d.QueryMenuListDtoResp, int64, error) {
-	result, i, err := s.Dao.QueryMenuList(dto)
+func (s *MenuServiceImpl) QueryMenuList(dto d.QueryMenuListDto) ([]*d.QueryMenuListDtoResp, error) {
+	result, err := s.Dao.QueryMenuList(dto)
 
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 
 	var list []*d.QueryMenuListDtoResp
@@ -184,5 +184,5 @@ func (s *MenuServiceImpl) QueryMenuList(dto d.QueryMenuListDto) ([]*d.QueryMenuL
 		list = append(list, resp)
 	}
 
-	return list, i, nil
+	return list, nil
 }

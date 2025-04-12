@@ -56,9 +56,6 @@ type QueryMenuDetailDto struct {
 
 // QueryMenuListDto 查询菜单信息列表请求参数
 type QueryMenuListDto struct {
-	PageNo   int `json:"pageNo" default:"1"`    // 第几页
-	PageSize int `json:"pageSize" default:"10"` // 每页的数量
-
 }
 
 // QueryMenuListDtoResp 查询菜单信息列表响应参数

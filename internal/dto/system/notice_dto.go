@@ -48,8 +48,8 @@ type QueryNoticeListDto struct {
 	PageNo      int    `json:"pageNo" default:"1"`    // 第几页
 	PageSize    int    `json:"pageSize" default:"10"` // 每页的数量
 	NoticeTitle string `json:"noticeTitle"`           // 公告标题
-	NoticeType  int32  `json:"noticeType"`            // 公告类型（1:通知,2:公告）
-	Status      int32  `json:"status"`                // 公告状态（0:关闭,1:正常 ）
+	NoticeType  *int32 `json:"noticeType"`            // 公告类型（1:通知,2:公告）
+	Status      *int32 `json:"status"`                // 公告状态（0:关闭,1:正常 ）
 
 }
 

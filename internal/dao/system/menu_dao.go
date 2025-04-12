@@ -88,18 +88,12 @@ func (b MenuDao) QueryMenuDetail(dto system.QueryMenuDetailDto) (*m.Menu, error)
 }
 
 // QueryMenuList 查询菜单信息列表
-func (b MenuDao) QueryMenuList(dto system.QueryMenuListDto) ([]*m.Menu, int64, error) {
-	pageNo := dto.PageNo
-	pageSize := dto.PageSize
+func (b MenuDao) QueryMenuList(dto system.QueryMenuListDto) ([]*m.Menu, error) {
 
-	var total int64 = 0
 	var list []*m.Menu
-	tx := b.db.Model(&m.Menu{})
+	err := b.db.Model(&m.Menu{}).Find(&list).Error
 
-	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
-
-	err := tx.Count(&total).Error
-	return list, total, err
+	return list, err
 }
 
 // QueryApiUrlList 查询菜单apiUrl

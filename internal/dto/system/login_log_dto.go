@@ -39,7 +39,7 @@ type QueryLoginLogListDto struct {
 	Browser       string `json:"browser"`               // 浏览器类型
 	Version       string `json:"version"`               // 浏览器版本
 	Os            string `json:"os"`                    // 操作系统
-	Status        int32  `json:"status"`                // 登录状态(0:失败,1:成功)
+	Status        *int32 `json:"status"`                // 登录状态(0:失败,1:成功)
 }
 
 // QueryLoginLogListDtoResp 查询系统访问记录列表响应参数

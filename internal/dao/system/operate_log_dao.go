@@ -81,7 +81,7 @@ func (b OperateLogDao) QueryOperateLogList(dto system.QueryOperateLogListDto) ([
 	if len(dto.Title) > 0 {
 		tx.Where("title like %?%", dto.Title) // 模块标题
 	}
-	if dto.BusinessType != 2 {
+	if dto.BusinessType != nil {
 		tx.Where("business_type=?", dto.BusinessType) // 业务类型（0其它 1新增 2修改 3删除）
 	}
 	if len(dto.Method) > 0 {
@@ -90,7 +90,7 @@ func (b OperateLogDao) QueryOperateLogList(dto system.QueryOperateLogListDto) ([
 	if len(dto.RequestMethod) > 0 {
 		tx.Where("request_method like %?%", dto.RequestMethod) // 请求方式
 	}
-	if dto.OperatorType != 2 {
+	if dto.OperatorType != nil {
 		tx.Where("operator_type=?", dto.OperatorType) // 操作类别（0其它 1后台用户 2手机端用户）
 	}
 	if len(dto.OperateName) > 0 {
@@ -122,7 +122,7 @@ func (b OperateLogDao) QueryOperateLogList(dto system.QueryOperateLogListDto) ([
 		tx.Where("os like %?%", dto.Os) // 操作系统
 	}
 
-	if dto.Status != 2 {
+	if dto.Status != nil {
 		tx.Where("status=?", dto.Status) // 操作状态(0:异常,正常)
 	}
 

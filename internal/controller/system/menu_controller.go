@@ -151,14 +151,11 @@ func (r MenuController) QueryMenuList(c *gin.Context) {
 		return
 	}
 
-	item := d.QueryMenuListDto{
-		PageNo:   req.PageNo,
-		PageSize: req.PageSize,
-	}
-	list, total, err := r.Service.QueryMenuList(item)
+	item := d.QueryMenuListDto{}
+	list, err := r.Service.QueryMenuList(item)
 	if err != nil {
 		result.FailWithMsg(c, result.MenuError, err.Error())
 	} else {
-		result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+		result.OkWithData(c, gin.H{"list": list, "success": true})
 	}
 }

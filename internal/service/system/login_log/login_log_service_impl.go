@@ -68,7 +68,7 @@ func (s *LoginLogServiceImpl) QueryLoginLogList(dto d.QueryLoginLogListDto) ([]*
 		return nil, 0, err
 	}
 
-	var list []*d.QueryLoginLogListDtoResp
+	list := make([]*d.QueryLoginLogListDtoResp, 0)
 
 	for _, item := range result {
 		resp := &d.QueryLoginLogListDtoResp{

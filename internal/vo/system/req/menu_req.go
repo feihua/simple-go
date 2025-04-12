@@ -49,7 +49,4 @@ type QueryMenuDetailReqVo struct {
 
 // QueryMenuListReqVo 查询菜单信息列表请求参数
 type QueryMenuListReqVo struct {
-	PageNo   int `json:"pageNo" default:"1" binding:"required"`    // 第几页
-	PageSize int `json:"pageSize" default:"10" binding:"required"` // 每页的数量
-
 }

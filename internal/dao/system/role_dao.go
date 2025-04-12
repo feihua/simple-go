@@ -93,10 +93,10 @@ func (b RoleDao) QueryRoleList(dto system.QueryRoleListDto) ([]*m.Role, int64, e
 	if len(dto.RoleKey) > 0 {
 		tx.Where("role_key like %?%", dto.RoleKey) // 角色权限字符串
 	}
-	if dto.DataScope != 2 {
+	if dto.DataScope != nil {
 		tx.Where("data_scope=?", dto.DataScope) // 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）
 	}
-	if dto.Status != 2 {
+	if dto.Status != nil {
 		tx.Where("status=?", dto.Status) // 状态(1:正常，0:禁用)
 	}
 

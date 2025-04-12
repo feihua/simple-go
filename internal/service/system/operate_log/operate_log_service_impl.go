@@ -78,7 +78,7 @@ func (s *OperateLogServiceImpl) QueryOperateLogList(dto d.QueryOperateLogListDto
 		return nil, 0, err
 	}
 
-	var list []*d.QueryOperateLogListDtoResp
+	list := make([]*d.QueryOperateLogListDtoResp, 0)
 
 	for _, item := range result {
 		resp := &d.QueryOperateLogListDtoResp{

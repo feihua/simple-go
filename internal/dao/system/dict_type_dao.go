@@ -89,7 +89,7 @@ func (b DictTypeDao) QueryDictTypeList(dto system.QueryDictTypeListDto) ([]*m.Di
 	if len(dto.DictType) > 0 {
 		tx.Where("dict_type like %?%", dto.DictType) // 字典类型
 	}
-	if dto.Status != 2 {
+	if dto.Status != nil {
 		tx.Where("status=?", dto.Status) // 状态（0：停用，1:正常）
 	}
 	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)

@@ -51,6 +51,6 @@ type QueryDictDataListReqVo struct {
 	PageSize  int    `json:"pageSize" default:"10" binding:"required"` // 每页的数量
 	DictLabel string `json:"dictLabel" `                               // 字典标签
 	DictType  string `json:"dictType" `                                // 字典类型
-	Status    int32  `json:"status" `                                  // 状态（0：停用，1:正常）
+	Status    *int32 `json:"status" `                                  // 状态（0：停用，1:正常）
 
 }

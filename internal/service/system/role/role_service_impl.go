@@ -169,7 +169,7 @@ func (s *RoleServiceImpl) QueryRoleList(dto d.QueryRoleListDto) ([]*d.QueryRoleL
 		return nil, 0, err
 	}
 
-	var list []*d.QueryRoleListDtoResp
+	list := make([]*d.QueryRoleListDtoResp, 0)
 
 	for _, item := range result {
 		resp := &d.QueryRoleListDtoResp{

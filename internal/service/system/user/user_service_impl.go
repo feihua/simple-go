@@ -236,7 +236,7 @@ func (s *UserServiceImpl) QueryUserList(dto d.QueryUserListDto) ([]*d.QueryUserL
 		return nil, 0, err
 	}
 
-	var list []*d.QueryUserListDtoResp
+	list := make([]*d.QueryUserListDtoResp, 0)
 
 	for _, item := range result {
 		resp := &d.QueryUserListDtoResp{
@@ -358,7 +358,7 @@ func (u *UserServiceImpl) QueryUserMenu(userId int64, userName string) (*d.Query
 		return nil, errors.New("查询菜单异常")
 	}
 
-	var list []d.UserMenuDto
+	list := make([]d.UserMenuDto, 0)
 	var apiUrl []string
 	for _, menu := range menuList {
 		if menu.ApiUrl != "" {
@@ -407,7 +407,7 @@ func (u *UserServiceImpl) QueryUserRoleList(dto d.QueryUserRoleListDto) (*d.Quer
 	}
 
 	var roleIds []int64
-	var list []d.QueryRoleListDtoResp
+	list := make([]d.QueryRoleListDtoResp, 0)
 	for _, item := range roleList {
 		roleIds = append(roleIds, item.Id)
 		list = append(list, d.QueryRoleListDtoResp{

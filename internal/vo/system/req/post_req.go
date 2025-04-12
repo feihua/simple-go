@@ -43,6 +43,6 @@ type QueryPostListReqVo struct {
 	PageSize int    `json:"pageSize" default:"10" binding:"required"` // 每页的数量
 	PostCode string `json:"postCode" `                                // 岗位编码
 	PostName string `json:"postName" `                                // 岗位名称
-	Status   int32  `json:"status" `                                  // 岗位状态（0：停用，1:正常）
+	Status   *int32 `json:"status" `                                  // 岗位状态（0：停用，1:正常）
 
 }

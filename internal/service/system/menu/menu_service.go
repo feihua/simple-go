@@ -19,5 +19,5 @@ type MenuService interface {
 	// QueryMenuById 根据id查询菜单信息详情
 	QueryMenuById(id int64) (*d.QueryMenuListDtoResp, error)
 	// QueryMenuList 查询菜单信息列表
-	QueryMenuList(dto d.QueryMenuListDto) ([]*d.QueryMenuListDtoResp, int64, error)
+	QueryMenuList(dto d.QueryMenuListDto) ([]*d.QueryMenuListDtoResp, error)
 }

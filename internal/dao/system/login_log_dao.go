@@ -89,7 +89,7 @@ func (b LoginLogDao) QueryLoginLogList(dto system.QueryLoginLogListDto) ([]*m.Lo
 	if len(dto.Os) > 0 {
 		tx.Where("os like %?%", dto.Os) // 操作系统
 	}
-	if dto.Status != 2 {
+	if dto.Status != nil {
 		tx.Where("status=?", dto.Status) // 登录状态(0:失败,1:成功)
 	}
 	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)

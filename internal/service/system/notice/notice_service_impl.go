@@ -130,7 +130,7 @@ func (s *NoticeServiceImpl) QueryNoticeList(dto d.QueryNoticeListDto) ([]*d.Quer
 		return nil, 0, err
 	}
 
-	var list []*d.QueryNoticeListDtoResp
+	list := make([]*d.QueryNoticeListDtoResp, 0)
 
 	for _, item := range result {
 		resp := &d.QueryNoticeListDtoResp{

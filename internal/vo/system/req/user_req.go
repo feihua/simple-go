@@ -48,14 +48,14 @@ type QueryUserDetailReqVo struct {
 
 // QueryUserListReqVo 查询用户信息列表请求参数
 type QueryUserListReqVo struct {
-	PageNo   int     `json:"pageNo" default:"1" binding:"required"`    // 第几页
-	PageSize int     `json:"pageSize" default:"10" binding:"required"` // 每页的数量
-	Mobile   string  `json:"mobile" `                                  // 手机号码
-	UserName string  `json:"userName" `                                // 用户账号
-	NickName string  `json:"nickName" `                                // 用户昵称
-	Status   int32   `json:"status" `                                  // 状态(1:正常，0:禁用)
-	DeptId   int64   `json:"deptId" `                                  // 部门ID
-	PostIds  []int64 `json:"postIds"`                                  // 部门id
+	PageNo   int    `json:"pageNo" default:"1" binding:"required"`    // 第几页
+	PageSize int    `json:"pageSize" default:"10" binding:"required"` // 每页的数量
+	Mobile   string `json:"mobile" `                                  // 手机号码
+	UserName string `json:"userName" `                                // 用户账号
+	NickName string `json:"nickName" `                                // 用户昵称
+	Status   *int32 `json:"status" `                                  // 状态(1:正常，0:禁用)
+	DeptId   *int64 `json:"deptId" `                                  // 部门ID
+
 }
 
 // LoginReqVo 登录参数
