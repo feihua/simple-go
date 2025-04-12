@@ -60,7 +60,7 @@ func (b DeptDao) UpdateDept(dto system.UpdateDeptDto) error {
 		UpdateTime: &dto.UpdateTime, // 更新时间
 	}
 
-	return b.db.Updates(&item).Error
+	return b.db.Save(&item).Error
 }
 
 // UpdateDeptStatus 更新部门状态

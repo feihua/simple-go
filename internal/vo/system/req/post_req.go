@@ -5,8 +5,8 @@ type AddPostReqVo struct {
 	PostCode string `json:"postCode" binding:"required"` // 岗位编码
 	PostName string `json:"postName" binding:"required"` // 岗位名称
 	Sort     int32  `json:"sort" binding:"required"`     // 显示顺序
-	Status   int32  `json:"status" binding:"required"`   // 岗位状态（0：停用，1:正常）
-	Remark   string `json:"remark" binding:"required"`   // 备注
+	Status   int32  `json:"status" `                     // 岗位状态（0：停用，1:正常）
+	Remark   string `json:"remark" `                     // 备注
 
 }
 
@@ -21,15 +21,15 @@ type UpdatePostReqVo struct {
 	PostCode string `json:"postCode" binding:"required"` // 岗位编码
 	PostName string `json:"postName" binding:"required"` // 岗位名称
 	Sort     int32  `json:"sort" binding:"required"`     // 显示顺序
-	Status   int32  `json:"status" binding:"required"`   // 岗位状态（0：停用，1:正常）
-	Remark   string `json:"remark" binding:"required"`   // 备注
+	Status   int32  `json:"status" `                     // 岗位状态（0：停用，1:正常）
+	Remark   string `json:"remark" `                     // 备注
 
 }
 
 // UpdatePostStatusReqVo 修改岗位信息状态请求参数
 type UpdatePostStatusReqVo struct {
-	Ids    []int64 `json:"ids" binding:"required"`    // id
-	Status int32   `json:"status" binding:"required"` // 状态（0:关闭,1:正常 ）
+	Ids    []int64 `json:"ids" binding:"required"` // id
+	Status int32   `json:"status" `                // 状态（0:关闭,1:正常 ）
 }
 
 // QueryPostDetailReqVo 查询岗位信息详情请求参数

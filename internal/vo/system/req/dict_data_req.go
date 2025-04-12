@@ -9,8 +9,8 @@ type AddDictDataReqVo struct {
 	CssClass  string `json:"cssClass" binding:"required"`  // 样式属性（其他样式扩展）
 	ListClass string `json:"listClass" binding:"required"` // 表格回显样式
 	IsDefault string `json:"isDefault" binding:"required"` // 是否默认（Y是 N否）
-	Status    int32  `json:"status" binding:"required"`    // 状态（0：停用，1:正常）
-	Remark    string `json:"remark" binding:"required"`    // 备注
+	Status    int32  `json:"status" `                      // 状态（0：停用，1:正常）
+	Remark    string `json:"remark" `                      // 备注
 
 }
 
@@ -29,15 +29,15 @@ type UpdateDictDataReqVo struct {
 	CssClass  string `json:"cssClass" binding:"required"`  // 样式属性（其他样式扩展）
 	ListClass string `json:"listClass" binding:"required"` // 表格回显样式
 	IsDefault string `json:"isDefault" binding:"required"` // 是否默认（Y是 N否）
-	Status    int32  `json:"status" binding:"required"`    // 状态（0：停用，1:正常）
-	Remark    string `json:"remark" binding:"required"`    // 备注
+	Status    int32  `json:"status" `                      // 状态（0：停用，1:正常）
+	Remark    string `json:"remark" `                      // 备注
 
 }
 
 // UpdateDictDataStatusReqVo 修改字典数据状态请求参数
 type UpdateDictDataStatusReqVo struct {
-	Ids    []int64 `json:"ids" binding:"required"`    // id
-	Status int32   `json:"status" binding:"required"` // 状态（0:关闭,1:正常 ）
+	Ids    []int64 `json:"ids" binding:"required"` // id
+	Status int32   `json:"status" `                // 状态（0:关闭,1:正常 ）
 }
 
 // QueryDictDataDetailReqVo 查询字典数据详情请求参数

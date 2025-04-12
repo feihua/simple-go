@@ -9,7 +9,7 @@ type AddDeptReqVo struct {
 	Leader    string `json:"leader" binding:"required"`    // 负责人
 	Phone     string `json:"phone" binding:"required"`     // 联系电话
 	Email     string `json:"email" binding:"required"`     // 邮箱
-	Status    int32  `json:"status" binding:"required"`    // 部门状态（0：停用，1:正常）
+	Status    int32  `json:"status"`                       // 部门状态（0：停用，1:正常）
 
 }
 
@@ -28,14 +28,14 @@ type UpdateDeptReqVo struct {
 	Leader    string `json:"leader" binding:"required"`    // 负责人
 	Phone     string `json:"phone" binding:"required"`     // 联系电话
 	Email     string `json:"email" binding:"required"`     // 邮箱
-	Status    int32  `json:"status" binding:"required"`    // 部门状态（0：停用，1:正常）
+	Status    int32  `json:"status" `                      // 部门状态（0：停用，1:正常）
 
 }
 
 // UpdateDeptStatusReqVo 修改部门状态请求参数
 type UpdateDeptStatusReqVo struct {
-	Id     int64 `json:"id" binding:"required"`     // id
-	Status int32 `json:"status" binding:"required"` // 状态（0:关闭,1:正常 ）
+	Id     int64 `json:"id" binding:"required"` // id
+	Status int32 `json:"status" `               // 状态（0:关闭,1:正常 ）
 }
 
 // QueryDeptDetailReqVo 查询部门详情请求参数

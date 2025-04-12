@@ -60,7 +60,7 @@ func (b DictDataDao) UpdateDictData(dto system.UpdateDictDataDto) error {
 		UpdateTime: &dto.UpdateTime, // 更新时间
 	}
 
-	return b.db.Updates(&item).Error
+	return b.db.Save(&item).Error
 }
 
 // UpdateDictDataStatus 更新字典数据状态

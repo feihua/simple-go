@@ -74,7 +74,7 @@ func (b UserDao) UpdateUser(dto system.UpdateUserDto) error {
 		UpdateTime:    &dto.UpdateTime,   // 更新时间
 	}
 
-	return b.db.Updates(&item).Error
+	return b.db.Save(&item).Error
 }
 
 // UpdateUserStatus 更新用户信息状态

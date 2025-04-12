@@ -63,7 +63,7 @@ func (b MenuDao) UpdateMenu(dto system.UpdateMenuDto) error {
 		UpdateTime: &dto.UpdateTime, // 更新时间
 	}
 
-	return b.db.Updates(&item).Error
+	return b.db.Save(&item).Error
 }
 
 // UpdateMenuStatus 更新菜单信息状态

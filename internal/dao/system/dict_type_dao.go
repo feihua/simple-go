@@ -51,7 +51,7 @@ func (b DictTypeDao) UpdateDictType(dto system.UpdateDictTypeDto) error {
 		UpdateTime: &dto.UpdateTime, // 更新时间
 	}
 
-	return b.db.Updates(&item).Error
+	return b.db.Save(&item).Error
 }
 
 // UpdateDictTypeStatus 更新字典类型状态

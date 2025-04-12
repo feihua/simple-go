@@ -6,12 +6,12 @@ type AddUserReqVo struct {
 	UserName string  `json:"userName" binding:"required"` // 用户账号
 	NickName string  `json:"nickName" binding:"required"` // 用户昵称
 	UserType string  `json:"userType" binding:"required"` // 用户类型（00系统用户）
-	Avatar   string  `json:"avatar" binding:"required"`   // 头像路径
+	Avatar   string  `json:"avatar" `                     // 头像路径
 	Email    string  `json:"email" binding:"required"`    // 用户邮箱
 	Password string  `json:"password" binding:"required"` // 密码
-	Status   int32   `json:"status" binding:"required"`   // 状态(1:正常，0:禁用)
+	Status   int32   `json:"status" `                     // 状态(1:正常，0:禁用)
 	DeptId   int64   `json:"deptId" binding:"required"`   // 部门ID
-	Remark   string  `json:"remark" binding:"required"`   // 备注
+	Remark   string  `json:"remark" `                     // 备注
 	PostIds  []int64 `json:"postIds"`                     // 部门id
 }
 
@@ -27,18 +27,18 @@ type UpdateUserReqVo struct {
 	UserName string  `json:"userName" binding:"required"` // 用户账号
 	NickName string  `json:"nickName" binding:"required"` // 用户昵称
 	UserType string  `json:"userType" binding:"required"` // 用户类型（00系统用户）
-	Avatar   string  `json:"avatar" binding:"required"`   // 头像路径
+	Avatar   string  `json:"avatar" `                     // 头像路径
 	Email    string  `json:"email" binding:"required"`    // 用户邮箱
-	Status   int32   `json:"status" binding:"required"`   // 状态(1:正常，0:禁用)
+	Status   int32   `json:"status" `                     // 状态(1:正常，0:禁用)
 	DeptId   int64   `json:"deptId" binding:"required"`   // 部门ID
-	Remark   string  `json:"remark" binding:"required"`   // 备注
+	Remark   string  `json:"remark" `                     // 备注
 	PostIds  []int64 `json:"postIds"`                     // 部门id
 }
 
 // UpdateUserStatusReqVo 修改用户信息状态请求参数
 type UpdateUserStatusReqVo struct {
-	Ids    []int64 `json:"ids" binding:"required"`    // id
-	Status int32   `json:"status" binding:"required"` // 状态（0:关闭,1:正常 ）
+	Ids    []int64 `json:"ids" binding:"required"` // id
+	Status int32   `json:"status" `                // 状态（0:关闭,1:正常 ）
 }
 
 // QueryUserDetailReqVo 查询用户信息详情请求参数

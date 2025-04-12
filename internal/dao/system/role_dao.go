@@ -55,7 +55,7 @@ func (b RoleDao) UpdateRole(dto system.UpdateRoleDto) error {
 		UpdateTime: &dto.UpdateTime, // 更新时间
 	}
 
-	return b.db.Updates(&item).Error
+	return b.db.Save(&item).Error
 }
 
 // UpdateRoleStatus 更新角色信息状态

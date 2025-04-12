@@ -4,8 +4,8 @@ package system
 type AddDictTypeReqVo struct {
 	DictName string `json:"dictName" binding:"required"` // 字典名称
 	DictType string `json:"dictType" binding:"required"` // 字典类型
-	Status   int32  `json:"status" binding:"required"`   // 状态（0：停用，1:正常）
-	Remark   string `json:"remark" binding:"required"`   // 备注
+	Status   int32  `json:"status" `                     // 状态（0：停用，1:正常）
+	Remark   string `json:"remark"`                      // 备注
 
 }
 
@@ -19,15 +19,15 @@ type UpdateDictTypeReqVo struct {
 	Id       int64  `json:"id" binding:"required"`       // 字典主键
 	DictName string `json:"dictName" binding:"required"` // 字典名称
 	DictType string `json:"dictType" binding:"required"` // 字典类型
-	Status   int32  `json:"status" binding:"required"`   // 状态（0：停用，1:正常）
-	Remark   string `json:"remark" binding:"required"`   // 备注
+	Status   int32  `json:"status" `                     // 状态（0：停用，1:正常）
+	Remark   string `json:"remark" `                     // 备注
 
 }
 
 // UpdateDictTypeStatusReqVo 修改字典类型状态请求参数
 type UpdateDictTypeStatusReqVo struct {
-	Ids    []int64 `json:"ids" binding:"required"`    // id
-	Status int32   `json:"status" binding:"required"` // 状态（0:关闭,1:正常 ）
+	Ids    []int64 `json:"ids" binding:"required"` // id
+	Status int32   `json:"status" `                // 状态（0:关闭,1:正常 ）
 }
 
 // QueryDictTypeDetailReqVo 查询字典类型详情请求参数

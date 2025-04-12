@@ -53,7 +53,7 @@ func (b PostDao) UpdatePost(dto system.UpdatePostDto) error {
 		UpdateTime: &dto.UpdateTime, // 更新时间
 	}
 
-	return b.db.Updates(&item).Error
+	return b.db.Save(&item).Error
 }
 
 // UpdatePostStatus 更新岗位信息状态

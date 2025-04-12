@@ -53,7 +53,7 @@ func (b NoticeDao) UpdateNotice(dto system.UpdateNoticeDto) error {
 		UpdateTime:    &dto.UpdateTime,   // 更新时间
 	}
 
-	return b.db.Updates(&item).Error
+	return b.db.Save(&item).Error
 }
 
 // UpdateNoticeStatus 更新通知公告状态
@@ -103,7 +103,7 @@ func (b NoticeDao) QueryNoticeList(dto system.QueryNoticeListDto) ([]*m.Notice, 
 // QueryNoticeById 根据id查询通知公告
 func (b NoticeDao) QueryNoticeById(id int64) (*m.Notice, error) {
 	var item m.Notice
-	err := b.db.Where("id = ?", id).Scan(&item).Error
+	err := b.db.Where("id = ?", id).First(&item).Error
 
 	switch {
 	case err == nil:
