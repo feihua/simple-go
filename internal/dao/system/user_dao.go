@@ -80,7 +80,7 @@ func (b UserDao) UpdateUser(dto system.UpdateUserDto) error {
 // UpdateUserStatus 更新用户信息状态
 func (b UserDao) UpdateUserStatus(dto system.UpdateUserStatusDto) error {
 
-	return b.db.Model(&m.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&m.User{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
 }
 
 // QueryUserDetail 查询用户信息详情

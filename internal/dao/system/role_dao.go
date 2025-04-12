@@ -61,7 +61,7 @@ func (b RoleDao) UpdateRole(dto system.UpdateRoleDto) error {
 // UpdateRoleStatus 更新角色信息状态
 func (b RoleDao) UpdateRoleStatus(dto system.UpdateRoleStatusDto) error {
 
-	return b.db.Model(&m.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&m.Role{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
 }
 
 // QueryRoleDetail 查询角色信息详情

@@ -59,7 +59,7 @@ func (b NoticeDao) UpdateNotice(dto system.UpdateNoticeDto) error {
 // UpdateNoticeStatus 更新通知公告状态
 func (b NoticeDao) UpdateNoticeStatus(dto system.UpdateNoticeStatusDto) error {
 
-	return b.db.Model(&m.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&m.Notice{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
 }
 
 // QueryNoticeDetail 查询通知公告详情

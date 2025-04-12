@@ -57,7 +57,7 @@ func (b DictTypeDao) UpdateDictType(dto system.UpdateDictTypeDto) error {
 // UpdateDictTypeStatus 更新字典类型状态
 func (b DictTypeDao) UpdateDictTypeStatus(dto system.UpdateDictTypeStatusDto) error {
 
-	return b.db.Model(&m.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&m.DictType{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
 }
 
 // QueryDictTypeDetail 查询字典类型详情

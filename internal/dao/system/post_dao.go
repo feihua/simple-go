@@ -59,7 +59,7 @@ func (b PostDao) UpdatePost(dto system.UpdatePostDto) error {
 // UpdatePostStatus 更新岗位信息状态
 func (b PostDao) UpdatePostStatus(dto system.UpdatePostStatusDto) error {
 
-	return b.db.Model(&m.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&m.Post{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
 }
 
 // QueryPostDetail 查询岗位信息详情

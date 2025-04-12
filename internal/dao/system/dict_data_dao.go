@@ -66,7 +66,7 @@ func (b DictDataDao) UpdateDictData(dto system.UpdateDictDataDto) error {
 // UpdateDictDataStatus 更新字典数据状态
 func (b DictDataDao) UpdateDictDataStatus(dto system.UpdateDictDataStatusDto) error {
 
-	return b.db.Model(&m.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&m.DictData{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
 }
 
 // QueryDictDataDetail 查询字典数据详情

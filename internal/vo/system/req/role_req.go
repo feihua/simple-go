@@ -62,8 +62,8 @@ type QueryRoleUserListReqVo struct {
 	PageNo   int    `json:"pageNo" default:"1" binding:"required"`    // 第几页
 	PageSize int    `json:"pageSize" default:"10" binding:"required"` // 每页的数量
 	RoleId   int64  `json:"RoleId" binding:"required"`                // 主键
-	Mobile   string `json:"mobile" binding:"required" `               // 手机号码
-	UserName string `json:"userName"  binding:"required"`             // 用户账号
+	Mobile   string `json:"mobile" `                                  // 手机号码
+	UserName string `json:"userName" "`                               // 用户账号
 }
 
 type AuthUserReq struct {

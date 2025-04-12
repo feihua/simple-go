@@ -69,7 +69,7 @@ func (b MenuDao) UpdateMenu(dto system.UpdateMenuDto) error {
 // UpdateMenuStatus 更新菜单信息状态
 func (b MenuDao) UpdateMenuStatus(dto system.UpdateMenuStatusDto) error {
 
-	return b.db.Model(&m.Dept{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&m.Menu{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
 }
 
 // QueryMenuDetail 查询菜单信息详情
