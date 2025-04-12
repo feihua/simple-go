@@ -39,6 +39,7 @@ func (r UserController) CreateUser(c *gin.Context) {
 		DeptId:   req.DeptId,   // 部门ID
 		Remark:   req.Remark,   // 备注
 		CreateBy: c.MustGet("userName").(string),
+		PostIds:  req.PostIds, // 岗位ID集合
 	}
 
 	err = r.Service.CreateUser(item)
@@ -89,6 +90,7 @@ func (r UserController) UpdateUser(c *gin.Context) {
 		DeptId:   req.DeptId,   // 部门ID
 		Remark:   req.Remark,   // 备注
 		UpdateBy: c.MustGet("userName").(string),
+		PostIds:  req.PostIds, // 岗位ID集合
 	}
 	err = r.Service.UpdateUser(item)
 	if err != nil {

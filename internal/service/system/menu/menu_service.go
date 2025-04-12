@@ -9,7 +9,7 @@ type MenuService interface {
 	// CreateMenu 添加菜单信息
 	CreateMenu(dto d.AddMenuDto) error
 	// DeleteMenuByIds 删除菜单信息
-	DeleteMenuByIds(ids []int64) error
+	DeleteMenuByIds(id int64) error
 	// UpdateMenu 更新菜单信息
 	UpdateMenu(dto d.UpdateMenuDto) error
 	// UpdateMenuStatus 更新菜单信息状态
@@ -20,4 +20,5 @@ type MenuService interface {
 	QueryMenuById(id int64) (*d.QueryMenuListDtoResp, error)
 	// QueryMenuList 查询菜单信息列表
 	QueryMenuList(dto d.QueryMenuListDto) ([]*d.QueryMenuListDtoResp, error)
+	QueryMenuListSimple() ([]*d.MenuListSimpleDataDtoResp, error)
 }

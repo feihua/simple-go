@@ -16,7 +16,7 @@ type DeleteDictTypeReqVo struct {
 
 // UpdateDictTypeReqVo 修改字典类型请求参数
 type UpdateDictTypeReqVo struct {
-	Id       int64  `json:"id" binding:"required"`       // 字典主键
+	Id       int64  `json:"dictId" binding:"required"`   // 字典主键
 	DictName string `json:"dictName" binding:"required"` // 字典名称
 	DictType string `json:"dictType" binding:"required"` // 字典类型
 	Status   int32  `json:"status" `                     // 状态（0：停用，1:正常）

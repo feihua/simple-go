@@ -53,7 +53,7 @@ type QueryDictTypeListDto struct {
 
 // QueryDictTypeListDtoResp 查询字典类型列表响应参数
 type QueryDictTypeListDtoResp struct {
-	Id         int64  `json:"id"`         // 字典主键
+	Id         int64  `json:"dictId"`     // 字典主键
 	DictName   string `json:"dictName"`   // 字典名称
 	DictType   string `json:"dictType"`   // 字典类型
 	Status     int32  `json:"status"`     // 状态（0：停用，1:正常）

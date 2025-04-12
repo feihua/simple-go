@@ -7,17 +7,17 @@ type AddMenuReqVo struct {
 	Visible  int32  `json:"visible" `                    // 显示状态（0:隐藏, 显示:1）
 	Status   int32  `json:"status" `                     // 菜单状态(1:正常，0:禁用)
 	Sort     int32  `json:"sort" binding:"required"`     // 排序
-	ParentId int64  `json:"parentId" binding:"required"` // 父ID
-	MenuUrl  string `json:"menuUrl" binding:"required"`  // 路由路径
-	ApiUrl   string `json:"apiUrl" binding:"required"`   // 接口URL
-	MenuIcon string `json:"menuIcon" binding:"required"` // 菜单图标
+	ParentId int64  `json:"parentId" `                   // 父ID
+	MenuUrl  string `json:"menuUrl" `                    // 路由路径
+	ApiUrl   string `json:"apiUrl" `                     // 接口URL
+	MenuIcon string `json:"menuIcon" `                   // 菜单图标
 	Remark   string `json:"remark" `                     // 备注
 
 }
 
 // DeleteMenuReqVo 删除菜单信息请求参数
 type DeleteMenuReqVo struct {
-	Ids []int64 `json:"ids" binding:"required"`
+	Id int64 `json:"id" binding:"required"`
 }
 
 // UpdateMenuReqVo 修改菜单信息请求参数
@@ -28,10 +28,10 @@ type UpdateMenuReqVo struct {
 	Visible  int32  `json:"visible" `                    // 显示状态（0:隐藏, 显示:1）
 	Status   int32  `json:"status" `                     // 菜单状态(1:正常，0:禁用)
 	Sort     int32  `json:"sort" binding:"required"`     // 排序
-	ParentId int64  `json:"parentId" binding:"required"` // 父ID
-	MenuUrl  string `json:"menuUrl" binding:"required"`  // 路由路径
-	ApiUrl   string `json:"apiUrl" binding:"required"`   // 接口URL
-	MenuIcon string `json:"menuIcon" binding:"required"` // 菜单图标
+	ParentId int64  `json:"parentId" `                   // 父ID
+	MenuUrl  string `json:"menuUrl"`                     // 路由路径
+	ApiUrl   string `json:"apiUrl" `                     // 接口URL
+	MenuIcon string `json:"menuIcon" `                   // 菜单图标
 	Remark   string `json:"remark"`                      // 备注
 
 }

@@ -38,8 +38,8 @@ func (b MenuDao) CreateMenu(dto system.AddMenuDto) error {
 }
 
 // DeleteMenuByIds 根据id删除菜单信息
-func (b MenuDao) DeleteMenuByIds(ids []int64) error {
-	return b.db.Where("id in (?)", ids).Delete(&m.Menu{}).Error
+func (b MenuDao) DeleteMenuByIds(id int64) error {
+	return b.db.Where("id = ?", id).Delete(&m.Menu{}).Error
 }
 
 // UpdateMenu 更新菜单信息

@@ -9,7 +9,7 @@ import (
 func PostRouter(r *gin.RouterGroup, b *a.PostController) {
 
 	r.POST("/system/post/addPost", b.CreatePost)
-	r.POST("/system/post/deletePostByIds", b.DeletePostByIds)
+	r.POST("/system/post/deletePost", b.DeletePostByIds)
 	r.POST("/system/post/updatePost", b.UpdatePost)
 	r.POST("/system/post/updatePostStatus", b.UpdatePostStatus)
 	r.POST("/system/post/queryPostDetail", b.QueryPostDetail)

@@ -9,7 +9,7 @@ import (
 func DictDataRouter(r *gin.RouterGroup, b *a.DictDataController) {
 
 	r.POST("/system/dictData/addDictData", b.CreateDictData)
-	r.POST("/system/dictData/deleteDictDataByIds", b.DeleteDictDataByIds)
+	r.POST("/system/dictData/deleteDictData", b.DeleteDictDataByIds)
 	r.POST("/system/dictData/updateDictData", b.UpdateDictData)
 	r.POST("/system/dictData/updateDictDataStatus", b.UpdateDictDataStatus)
 	r.POST("/system/dictData/queryDictDataDetail", b.QueryDictDataDetail)

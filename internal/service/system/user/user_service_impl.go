@@ -31,6 +31,7 @@ func NewUserServiceImpl(dao *system.UserDao, userRoleDao *system.UserRoleDao, Me
 		userRoleDao: userRoleDao,
 		MenuDao:     MenuDao,
 		RoleDao:     RoleDao,
+		UserPostDao: UserPostDao,
 	}
 }
 
@@ -203,6 +204,10 @@ func (s *UserServiceImpl) QueryUserDetail(dto d.QueryUserDetailDto) (*d.QueryUse
 		return nil, errors.New("用户信息不存在")
 	}
 
+	postIds, err := s.UserPostDao.QueryPostIdsByUserId(item.Id)
+	if err != nil {
+		return nil, err
+	}
 	return &d.QueryUserListDtoResp{
 		Id:            item.Id,                                // 主键
 		Mobile:        item.Mobile,                            // 手机号码
@@ -225,6 +230,7 @@ func (s *UserServiceImpl) QueryUserDetail(dto d.QueryUserDetailDto) (*d.QueryUse
 		CreateTime:    utils.TimeToStr(item.CreateTime),       // 创建时间
 		UpdateBy:      item.UpdateBy,                          // 更新者
 		UpdateTime:    utils.TimeToString(item.UpdateTime),    // 更新时间
+		PostIds:       postIds,                                // 岗位ID集合
 	}, nil
 }
 
@@ -244,7 +250,7 @@ func (s *UserServiceImpl) QueryUserList(dto d.QueryUserListDto) ([]*d.QueryUserL
 			Mobile:        item.Mobile,                            // 手机号码
 			UserName:      item.UserName,                          // 用户账号
 			NickName:      item.NickName,                          // 用户昵称
-			UserType:      item.UserType,                          // 用户类型（00系统用户）
+			UserType:      "01",                                   // 用户类型（00系统用户）
 			Avatar:        item.Avatar,                            // 头像路径
 			Email:         item.Email,                             // 用户邮箱
 			Password:      item.Password,                          // 密码
@@ -364,7 +370,7 @@ func (u *UserServiceImpl) QueryUserMenu(userId int64, userName string) (*d.Query
 		if menu.ApiUrl != "" {
 			apiUrl = append(apiUrl, menu.ApiUrl)
 		}
-		if menu.MenuType != 3 {
+		if menu.MenuType != 3 && menu.Visible != 0 {
 			list = append(list, d.UserMenuDto{
 				Id:       menu.Id,
 				MenuName: menu.MenuName,

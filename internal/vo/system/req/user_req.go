@@ -5,7 +5,7 @@ type AddUserReqVo struct {
 	Mobile   string  `json:"mobile" binding:"required"`   // 手机号码
 	UserName string  `json:"userName" binding:"required"` // 用户账号
 	NickName string  `json:"nickName" binding:"required"` // 用户昵称
-	UserType string  `json:"userType" binding:"required"` // 用户类型（00系统用户）
+	UserType string  `json:"userType"`                    // 用户类型（00系统用户）
 	Avatar   string  `json:"avatar" `                     // 头像路径
 	Email    string  `json:"email" binding:"required"`    // 用户邮箱
 	Password string  `json:"password" binding:"required"` // 密码
@@ -26,7 +26,7 @@ type UpdateUserReqVo struct {
 	Mobile   string  `json:"mobile" binding:"required"`   // 手机号码
 	UserName string  `json:"userName" binding:"required"` // 用户账号
 	NickName string  `json:"nickName" binding:"required"` // 用户昵称
-	UserType string  `json:"userType" binding:"required"` // 用户类型（00系统用户）
+	UserType string  `json:"userType"`                    // 用户类型（00系统用户）
 	Avatar   string  `json:"avatar" `                     // 头像路径
 	Email    string  `json:"email" binding:"required"`    // 用户邮箱
 	Status   int32   `json:"status" `                     // 状态(1:正常，0:禁用)

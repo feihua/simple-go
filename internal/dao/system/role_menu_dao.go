@@ -59,6 +59,6 @@ func (b RoleMenuDao) DeleteRoleMenuByRoleId(roleId int64) error {
 // QueryMenuIds 根据roleId查询菜单ids
 func (b RoleMenuDao) QueryMenuIds(roleId int64) ([]int64, error) {
 	var ids []int64
-	err := b.db.Model(&m.RoleMenu{}).Where("role_id", roleId).Scan(&ids).Error
+	err := b.db.Model(&m.RoleMenu{}).Select("menu_id").Where("role_id", roleId).Scan(&ids).Error
 	return ids, err
 }

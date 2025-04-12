@@ -21,7 +21,7 @@ type DeleteDictDataReqVo struct {
 
 // UpdateDictDataReqVo 修改字典数据请求参数
 type UpdateDictDataReqVo struct {
-	Id        int64  `json:"id" binding:"required"`        // 字典编码
+	Id        int64  `json:"dictCode" binding:"required"`  // 字典编码
 	DictSort  int32  `json:"dictSort" binding:"required"`  // 字典排序
 	DictLabel string `json:"dictLabel" binding:"required"` // 字典标签
 	DictValue string `json:"dictValue" binding:"required"` // 字典键值

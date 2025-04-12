@@ -20,7 +20,7 @@ type AddMenuDto struct {
 
 // DeleteMenuDto 删除菜单信息请求参数
 type DeleteMenuDto struct {
-	Ids []int64 `json:"ids"`
+	Id int64 `json:"id"`
 }
 
 // UpdateMenuDto 修改菜单信息请求参数
@@ -77,4 +77,10 @@ type QueryMenuListDtoResp struct {
 	CreateTime string `json:"createTime"`            // 创建时间
 	UpdateBy   string `json:"updateBy"`              // 更新者
 	UpdateTime string `json:"updateTime"`            // 更新时间
+}
+
+type MenuListSimpleDataDtoResp struct {
+	Id       int64  `json:"id"`       //主键
+	MenuName string `json:"menuName"` //菜单名称
+	ParentId int64  `json:"parentId"` //父ID
 }

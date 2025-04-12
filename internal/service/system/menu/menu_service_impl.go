@@ -43,8 +43,8 @@ func (s *MenuServiceImpl) CreateMenu(dto d.AddMenuDto) error {
 }
 
 // DeleteMenuByIds 删除菜单信息
-func (s *MenuServiceImpl) DeleteMenuByIds(ids []int64) error {
-	return s.Dao.DeleteMenuByIds(ids)
+func (s *MenuServiceImpl) DeleteMenuByIds(id int64) error {
+	return s.Dao.DeleteMenuByIds(id)
 }
 
 // UpdateMenu 更新菜单信息
@@ -179,6 +179,27 @@ func (s *MenuServiceImpl) QueryMenuList(dto d.QueryMenuListDto) ([]*d.QueryMenuL
 			CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
 			UpdateBy:   item.UpdateBy,                       // 更新者
 			UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+		}
+
+		list = append(list, resp)
+	}
+
+	return list, nil
+}
+func (s *MenuServiceImpl) QueryMenuListSimple() ([]*d.MenuListSimpleDataDtoResp, error) {
+	result, err := s.Dao.QueryAllMenuList()
+
+	if err != nil {
+		return nil, err
+	}
+
+	var list []*d.MenuListSimpleDataDtoResp
+
+	for _, item := range result {
+		resp := &d.MenuListSimpleDataDtoResp{
+			Id:       item.Id,       // 主键
+			MenuName: item.MenuName, // 菜单名称
+			ParentId: item.ParentId, // 父ID
 		}
 
 		list = append(list, resp)

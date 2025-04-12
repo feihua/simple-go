@@ -213,13 +213,15 @@ func (s *RoleServiceImpl) QueryAllocatedList(dto d.QueryRoleUserListDto) ([]*d.Q
 		return nil, 0, err
 	}
 
+	var list = make([]*d.QueryUserListDtoResp, 0)
+	if userIds == nil {
+		return list, 0, nil
+	}
 	users, count, err := s.UserDao.QueryUserByUserIds(dto, userIds)
 
 	if err != nil {
 		return nil, 0, err
 	}
-
-	var list = make([]*d.QueryUserListDtoResp, 0, len(users))
 
 	for _, item := range users {
 		list = append(list, &d.QueryUserListDtoResp{

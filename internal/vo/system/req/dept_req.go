@@ -2,14 +2,13 @@ package system
 
 // AddDeptReqVo 添加部门请求参数
 type AddDeptReqVo struct {
-	ParentId  int64  `json:"parentId" binding:"required"`  // 父部门id
-	Ancestors string `json:"ancestors" binding:"required"` // 祖级列表
-	DeptName  string `json:"deptName" binding:"required"`  // 部门名称
-	Sort      int32  `json:"sort" binding:"required"`      // 显示顺序
-	Leader    string `json:"leader" binding:"required"`    // 负责人
-	Phone     string `json:"phone" binding:"required"`     // 联系电话
-	Email     string `json:"email" binding:"required"`     // 邮箱
-	Status    int32  `json:"status"`                       // 部门状态（0：停用，1:正常）
+	ParentId int64  `json:"parentId" binding:"required"` // 父部门id
+	DeptName string `json:"deptName" binding:"required"` // 部门名称
+	Sort     int32  `json:"sort" binding:"required"`     // 显示顺序
+	Leader   string `json:"leader" binding:"required"`   // 负责人
+	Phone    string `json:"phone" binding:"required"`    // 联系电话
+	Email    string `json:"email" binding:"required"`    // 邮箱
+	Status   int32  `json:"status"`                      // 部门状态（0：停用，1:正常）
 
 }
 
@@ -20,15 +19,14 @@ type DeleteDeptReqVo struct {
 
 // UpdateDeptReqVo 修改部门请求参数
 type UpdateDeptReqVo struct {
-	Id        int64  `json:"id" binding:"required"`        // 部门id
-	ParentId  int64  `json:"parentId" binding:"required"`  // 父部门id
-	Ancestors string `json:"ancestors" binding:"required"` // 祖级列表
-	DeptName  string `json:"deptName" binding:"required"`  // 部门名称
-	Sort      int32  `json:"sort" binding:"required"`      // 显示顺序
-	Leader    string `json:"leader" binding:"required"`    // 负责人
-	Phone     string `json:"phone" binding:"required"`     // 联系电话
-	Email     string `json:"email" binding:"required"`     // 邮箱
-	Status    int32  `json:"status" `                      // 部门状态（0：停用，1:正常）
+	Id       int64  `json:"id" binding:"required"`       // 部门id
+	ParentId int64  `json:"parentId" binding:"required"` // 父部门id
+	DeptName string `json:"deptName" binding:"required"` // 部门名称
+	Sort     int32  `json:"sort" binding:"required"`     // 显示顺序
+	Leader   string `json:"leader" binding:"required"`   // 负责人
+	Phone    string `json:"phone" binding:"required"`    // 联系电话
+	Email    string `json:"email" binding:"required"`    // 邮箱
+	Status   int32  `json:"status" `                     // 部门状态（0：停用，1:正常）
 
 }
 

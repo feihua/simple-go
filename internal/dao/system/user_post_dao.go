@@ -49,3 +49,12 @@ func (b UserPostDao) QueryUserPostList(dto system.QueryUserPostListDto) ([]m.Use
 	tx.Count(&total)
 	return list, total
 }
+
+// QueryPostIdsByUserId 根据userId查询岗位id
+func (b UserPostDao) QueryPostIdsByUserId(userId int64) ([]int64, error) {
+
+	var list []int64
+	err := b.db.Model(&m.UserPost{}).Select("post_id").Where("user_id = ?", userId).Scan(&list).Error
+
+	return list, err
+}

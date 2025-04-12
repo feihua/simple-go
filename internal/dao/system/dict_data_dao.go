@@ -97,7 +97,7 @@ func (b DictDataDao) QueryDictDataList(dto system.QueryDictDataListDto) ([]*m.Di
 	}
 
 	if len(dto.DictType) > 0 {
-		tx.Where("dict_type like %?%", dto.DictType) // 字典类型
+		tx.Where("dict_type = ?", dto.DictType) // 字典类型
 	}
 
 	if dto.Status != nil {
@@ -157,5 +157,5 @@ func (b DictDataDao) QueryDictDataByValue(value, dictType string) (*m.DictData, 
 // UpdateDictDataDefault 更新字典数据默认选项
 func (b DictDataDao) UpdateDictDataDefault(dictType string) error {
 
-	return b.db.Model(&m.Dept{}).Where("is_default = ? and dict_type =? ", "Y", dictType).Update("is_default", "N").Error
+	return b.db.Model(&m.DictData{}).Where("is_default = ? and dict_type =? ", "Y", dictType).Update("is_default", "N").Error
 }

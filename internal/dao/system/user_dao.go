@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/feihua/simple-go/internal/dto/system"
 	m "github.com/feihua/simple-go/internal/model/system"
+	"github.com/feihua/simple-go/pkg/utils"
 	"gorm.io/gorm"
 )
 
@@ -39,6 +40,8 @@ func (b UserDao) CreateUser(dto system.AddUserDto) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
+
+	utils.Logger.Debugf("添加用户信息成功:%+v", item)
 	return item.Id, err
 }
 
@@ -242,7 +245,11 @@ func (b UserDao) QueryUserByUserIds(dto system.QueryRoleUserListDto, userIs []in
 
 	var total int64 = 0
 	var list []*m.User
-	tx := b.db.Model(&m.User{}).Where("id in (?)", userIs)
+	tx := b.db.Model(&m.User{})
+
+	if userIs != nil {
+		tx.Where("id in (?)", userIs) // 用户id
+	}
 
 	if len(dto.Mobile) > 0 {
 		tx.Where("mobile like %?%", dto.Mobile) // 手机号码
@@ -264,7 +271,11 @@ func (b UserDao) QueryUserNotUserIds(dto system.QueryRoleUserListDto, userIs []i
 
 	var total int64 = 0
 	var list []*m.User
-	tx := b.db.Model(&m.User{}).Where("id not in (?)", userIs)
+	tx := b.db.Model(&m.User{})
+
+	if userIs != nil {
+		tx.Where("id not in (?)", userIs)
+	}
 
 	if len(dto.Mobile) > 0 {
 		tx.Where("mobile like %?%", dto.Mobile) // 手机号码
@@ -282,7 +293,7 @@ func (b UserDao) QueryUserNotUserIds(dto system.QueryRoleUserListDto, userIs []i
 // ExistUserByDeptId 查询部门是否存在用户
 func (b UserDao) ExistUserByDeptId(deptId int64) ([]*m.User, error) {
 	var item []*m.User
-	err := b.db.Model(&m.Dept{}).Where("dept_id = ?", deptId).Scan(&item).Error
+	err := b.db.Model(&m.User{}).Where("dept_id = ?", deptId).Scan(&item).Error
 
 	return item, err
 }

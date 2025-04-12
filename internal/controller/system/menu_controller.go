@@ -59,7 +59,7 @@ func (r MenuController) DeleteMenuByIds(c *gin.Context) {
 		return
 	}
 
-	err = r.Service.DeleteMenuByIds(req.Ids)
+	err = r.Service.DeleteMenuByIds(req.Id)
 	if err != nil {
 		result.FailWithMsg(c, result.MenuError, err.Error())
 	} else {
@@ -153,6 +153,16 @@ func (r MenuController) QueryMenuList(c *gin.Context) {
 
 	item := d.QueryMenuListDto{}
 	list, err := r.Service.QueryMenuList(item)
+	if err != nil {
+		result.FailWithMsg(c, result.MenuError, err.Error())
+	} else {
+		result.OkWithData(c, gin.H{"list": list, "success": true})
+	}
+}
+
+func (r MenuController) QueryMenuListSimple(c *gin.Context) {
+
+	list, err := r.Service.QueryMenuListSimple()
 	if err != nil {
 		result.FailWithMsg(c, result.MenuError, err.Error())
 	} else {

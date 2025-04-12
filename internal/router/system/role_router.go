@@ -9,7 +9,7 @@ import (
 func RoleRouter(r *gin.RouterGroup, b *a.RoleController) {
 
 	r.POST("/system/role/addRole", b.CreateRole)
-	r.POST("/system/role/deleteRoleByIds", b.DeleteRoleByIds)
+	r.POST("/system/role/deleteRole", b.DeleteRoleByIds)
 	r.POST("/system/role/updateRole", b.UpdateRole)
 	r.POST("/system/role/updateRoleStatus", b.UpdateRoleStatus)
 	r.POST("/system/role/queryRoleDetail", b.QueryRoleDetail)

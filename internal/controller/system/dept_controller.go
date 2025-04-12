@@ -28,15 +28,14 @@ func (r DeptController) CreateDept(c *gin.Context) {
 	}
 
 	item := d.AddDeptDto{
-		ParentId:  req.ParentId,  // 父部门id
-		Ancestors: req.Ancestors, // 祖级列表
-		DeptName:  req.DeptName,  // 部门名称
-		Sort:      req.Sort,      // 显示顺序
-		Leader:    req.Leader,    // 负责人
-		Phone:     req.Phone,     // 联系电话
-		Email:     req.Email,     // 邮箱
-		Status:    req.Status,    // 部门状态（0：停用，1:正常）
-		CreateBy:  c.MustGet("userName").(string),
+		ParentId: req.ParentId, // 父部门id
+		DeptName: req.DeptName, // 部门名称
+		Sort:     req.Sort,     // 显示顺序
+		Leader:   req.Leader,   // 负责人
+		Phone:    req.Phone,    // 联系电话
+		Email:    req.Email,    // 邮箱
+		Status:   req.Status,   // 部门状态（0：停用，1:正常）
+		CreateBy: c.MustGet("userName").(string),
 	}
 
 	err = r.Service.CreateDept(item)
@@ -76,16 +75,15 @@ func (r DeptController) UpdateDept(c *gin.Context) {
 	}
 
 	item := d.UpdateDeptDto{
-		Id:        req.Id,        // 部门id
-		ParentId:  req.ParentId,  // 父部门id
-		Ancestors: req.Ancestors, // 祖级列表
-		DeptName:  req.DeptName,  // 部门名称
-		Sort:      req.Sort,      // 显示顺序
-		Leader:    req.Leader,    // 负责人
-		Phone:     req.Phone,     // 联系电话
-		Email:     req.Email,     // 邮箱
-		Status:    req.Status,    // 部门状态（0：停用，1:正常）
-		UpdateBy:  c.MustGet("userName").(string),
+		Id:       req.Id,       // 部门id
+		ParentId: req.ParentId, // 父部门id
+		DeptName: req.DeptName, // 部门名称
+		Sort:     req.Sort,     // 显示顺序
+		Leader:   req.Leader,   // 负责人
+		Phone:    req.Phone,    // 联系电话
+		Email:    req.Email,    // 邮箱
+		Status:   req.Status,   // 部门状态（0：停用，1:正常）
+		UpdateBy: c.MustGet("userName").(string),
 	}
 	err = r.Service.UpdateDept(item)
 	if err != nil {
