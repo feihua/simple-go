@@ -49,6 +49,11 @@ func (s *RoleServiceImpl) CreateRole(dto d.AddRoleDto) error {
 
 // DeleteRoleByIds 删除角色信息
 func (s *RoleServiceImpl) DeleteRoleByIds(ids []int64) error {
+	for _, id := range ids {
+		if id == 1 {
+			return errors.New("不允许操作超级管理员角色")
+		}
+	}
 	return s.Dao.DeleteRoleByIds(ids)
 }
 
