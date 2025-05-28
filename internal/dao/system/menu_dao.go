@@ -99,7 +99,7 @@ func (b MenuDao) QueryMenuList(dto system.QueryMenuListDto) ([]*m.Menu, error) {
 // QueryApiUrlList 查询菜单apiUrl
 func (b MenuDao) QueryApiUrlList() ([]string, error) {
 	var apiUrls []string
-	err := b.db.Model(&m.Menu{}).Select("api_url").Where("api_url is not null").Scan(&apiUrls).Error
+	err := b.db.Model(&m.Menu{}).Select("api_url").Where("api_url is not null and api_url !=''").Scan(&apiUrls).Error
 	return apiUrls, err
 }
 
