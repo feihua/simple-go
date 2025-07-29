@@ -168,6 +168,7 @@ func (s *DeptServiceImpl) UpdateDept(dto d.UpdateDeptDto) error {
 		}
 	}
 
+	dto.Ancestors = ancestors
 	dto.CreateBy = oldDept.CreateBy
 	dto.CreateTime = oldDept.CreateTime
 	dto.UpdateTime = time.Now()
