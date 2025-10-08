@@ -2,10 +2,12 @@ package notice
 
 import (
 	"errors"
-	"github.com/feihua/simple-go/internal/dao/system"
-	d "github.com/feihua/simple-go/internal/dto/system"
-	"github.com/feihua/simple-go/pkg/utils"
 	"time"
+
+	"github.com/feihua/simple-go/internal/dao/system"
+	dto "github.com/feihua/simple-go/internal/dto/system"
+	model "github.com/feihua/simple-go/internal/model/system"
+	"github.com/feihua/simple-go/pkg/utils"
 )
 
 // NoticeServiceImpl 通知公告操作实现
@@ -20,8 +22,8 @@ func NewNoticeServiceImpl(dao *system.NoticeDao) NoticeService {
 }
 
 // CreateNotice 添加通知公告
-func (s *NoticeServiceImpl) CreateNotice(dto d.AddNoticeDto) error {
-	notice, err := s.Dao.IsExistTitle(dto.NoticeTitle)
+func (s *NoticeServiceImpl) CreateNotice(req dto.AddNoticeDto) error {
+	notice, err := s.Dao.IsExistTitle(req.NoticeTitle)
 	if err != nil {
 		return err
 	}
@@ -29,7 +31,18 @@ func (s *NoticeServiceImpl) CreateNotice(dto d.AddNoticeDto) error {
 	if notice != nil {
 		return errors.New("通知公告标题已存在")
 	}
-	return s.Dao.CreateNotice(dto)
+
+	item := model.Notice{
+		NoticeTitle:   req.NoticeTitle,   // 公告标题
+		NoticeType:    req.NoticeType,    // 公告类型（1:通知,2:公告）
+		NoticeContent: req.NoticeContent, // 公告内容
+		Status:        req.Status,        // 公告状态（0:关闭,1:正常 ）
+		Remark:        req.Remark,        // 备注
+		CreateBy:      req.CreateBy,      // 创建者
+
+	}
+
+	return s.Dao.CreateNotice(item)
 }
 
 // DeleteNoticeByIds 删除通知公告
@@ -38,8 +51,8 @@ func (s *NoticeServiceImpl) DeleteNoticeByIds(ids []int64) error {
 }
 
 // UpdateNotice 更新通知公告
-func (s *NoticeServiceImpl) UpdateNotice(dto d.UpdateNoticeDto) error {
-	item, err := s.Dao.QueryNoticeById(dto.Id)
+func (s *NoticeServiceImpl) UpdateNotice(req dto.UpdateNoticeDto) error {
+	item, err := s.Dao.QueryNoticeById(req.Id)
 	if err != nil {
 		return err
 	}
@@ -48,29 +61,38 @@ func (s *NoticeServiceImpl) UpdateNotice(dto d.UpdateNoticeDto) error {
 		return errors.New("通知公告不存在")
 	}
 
-	notice, err := s.Dao.IsExistTitle(dto.NoticeTitle)
+	notice, err := s.Dao.IsExistTitle(req.NoticeTitle)
 	if err != nil {
 		return err
 	}
 
-	if notice != nil && notice.Id != dto.Id {
+	if notice != nil && notice.Id != req.Id {
 		return errors.New("通知公告标题已存在")
 	}
 
-	dto.CreateBy = item.CreateBy
-	dto.CreateTime = item.CreateTime
-	dto.UpdateTime = time.Now()
-	return s.Dao.UpdateNotice(dto)
+	now := time.Now()
+	return s.Dao.UpdateNotice(model.Notice{
+		Id:            req.Id,            // 公告ID
+		NoticeTitle:   req.NoticeTitle,   // 公告标题
+		NoticeType:    req.NoticeType,    // 公告类型（1:通知,2:公告）
+		NoticeContent: req.NoticeContent, // 公告内容
+		Status:        req.Status,        // 公告状态（0:关闭,1:正常 ）
+		Remark:        req.Remark,        // 备注
+		CreateBy:      item.CreateBy,     // 创建者
+		CreateTime:    item.CreateTime,   // 创建时间
+		UpdateBy:      req.UpdateBy,      // 更新者
+		UpdateTime:    &now,              // 更新时间
+	})
 }
 
 // UpdateNoticeStatus 更新通知公告状态
-func (s *NoticeServiceImpl) UpdateNoticeStatus(dto d.UpdateNoticeStatusDto) error {
+func (s *NoticeServiceImpl) UpdateNoticeStatus(dto dto.UpdateNoticeStatusDto) error {
 	return s.Dao.UpdateNoticeStatus(dto)
 }
 
 // QueryNoticeDetail 查询通知公告详情
-func (s *NoticeServiceImpl) QueryNoticeDetail(dto d.QueryNoticeDetailDto) (*d.QueryNoticeListDtoResp, error) {
-	item, err := s.Dao.QueryNoticeDetail(dto)
+func (s *NoticeServiceImpl) QueryNoticeDetail(req dto.QueryNoticeDetailDto) (*dto.QueryNoticeListDtoResp, error) {
+	item, err := s.Dao.QueryNoticeDetail(req)
 
 	if err != nil {
 		return nil, err
@@ -80,7 +102,7 @@ func (s *NoticeServiceImpl) QueryNoticeDetail(dto d.QueryNoticeDetailDto) (*d.Qu
 		return nil, errors.New("通知公告不存在")
 	}
 
-	return &d.QueryNoticeListDtoResp{
+	return &dto.QueryNoticeListDtoResp{
 		Id:            item.Id,                             // 公告ID
 		NoticeTitle:   item.NoticeTitle,                    // 公告标题
 		NoticeType:    item.NoticeType,                     // 公告类型（1:通知,2:公告）
@@ -96,7 +118,7 @@ func (s *NoticeServiceImpl) QueryNoticeDetail(dto d.QueryNoticeDetailDto) (*d.Qu
 }
 
 // QueryNoticeById 根据id查询通知公告详情
-func (s *NoticeServiceImpl) QueryNoticeById(id int64) (*d.QueryNoticeListDtoResp, error) {
+func (s *NoticeServiceImpl) QueryNoticeById(id int64) (*dto.QueryNoticeListDtoResp, error) {
 	item, err := s.Dao.QueryNoticeById(id)
 
 	if err != nil {
@@ -107,7 +129,7 @@ func (s *NoticeServiceImpl) QueryNoticeById(id int64) (*d.QueryNoticeListDtoResp
 		return nil, errors.New("通知公告不存在")
 	}
 
-	return &d.QueryNoticeListDtoResp{
+	return &dto.QueryNoticeListDtoResp{
 		Id:            item.Id,                             // 公告ID
 		NoticeTitle:   item.NoticeTitle,                    // 公告标题
 		NoticeType:    item.NoticeType,                     // 公告类型（1:通知,2:公告）
@@ -123,17 +145,17 @@ func (s *NoticeServiceImpl) QueryNoticeById(id int64) (*d.QueryNoticeListDtoResp
 }
 
 // QueryNoticeList 查询通知公告列表
-func (s *NoticeServiceImpl) QueryNoticeList(dto d.QueryNoticeListDto) ([]*d.QueryNoticeListDtoResp, int64, error) {
-	result, i, err := s.Dao.QueryNoticeList(dto)
+func (s *NoticeServiceImpl) QueryNoticeList(req dto.QueryNoticeListDto) ([]*dto.QueryNoticeListDtoResp, int64, error) {
+	result, i, err := s.Dao.QueryNoticeList(req)
 
 	if err != nil {
 		return nil, 0, err
 	}
 
-	list := make([]*d.QueryNoticeListDtoResp, 0)
+	list := make([]*dto.QueryNoticeListDtoResp, 0)
 
 	for _, item := range result {
-		resp := &d.QueryNoticeListDtoResp{
+		resp := &dto.QueryNoticeListDtoResp{
 			Id:            item.Id,                             // 公告ID
 			NoticeTitle:   item.NoticeTitle,                    // 公告标题
 			NoticeType:    item.NoticeType,                     // 公告类型（1:通知,2:公告）

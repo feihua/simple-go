@@ -2,8 +2,9 @@ package system
 
 import (
 	"errors"
+
 	"github.com/feihua/simple-go/internal/dto/system"
-	m "github.com/feihua/simple-go/internal/model/system"
+	model "github.com/feihua/simple-go/internal/model/system"
 	"gorm.io/gorm"
 )
 
@@ -18,40 +19,18 @@ func NewNoticeDao(DB *gorm.DB) *NoticeDao {
 }
 
 // CreateNotice 添加通知公告
-func (b NoticeDao) CreateNotice(dto system.AddNoticeDto) error {
-	item := m.Notice{
-		NoticeTitle:   dto.NoticeTitle,   // 公告标题
-		NoticeType:    dto.NoticeType,    // 公告类型（1:通知,2:公告）
-		NoticeContent: dto.NoticeContent, // 公告内容
-		Status:        dto.Status,        // 公告状态（0:关闭,1:正常 ）
-		Remark:        dto.Remark,        // 备注
-		CreateBy:      dto.CreateBy,      // 创建者
-
-	}
+func (b NoticeDao) CreateNotice(item model.Notice) error {
 
 	return b.db.Create(&item).Error
 }
 
 // DeleteNoticeByIds 根据id删除通知公告
 func (b NoticeDao) DeleteNoticeByIds(ids []int64) error {
-	return b.db.Where("id in (?)", ids).Delete(&m.Notice{}).Error
+	return b.db.Where("id in (?)", ids).Delete(&model.Notice{}).Error
 }
 
 // UpdateNotice 更新通知公告
-func (b NoticeDao) UpdateNotice(dto system.UpdateNoticeDto) error {
-
-	item := m.Notice{
-		Id:            dto.Id,            // 公告ID
-		NoticeTitle:   dto.NoticeTitle,   // 公告标题
-		NoticeType:    dto.NoticeType,    // 公告类型（1:通知,2:公告）
-		NoticeContent: dto.NoticeContent, // 公告内容
-		Status:        dto.Status,        // 公告状态（0:关闭,1:正常 ）
-		Remark:        dto.Remark,        // 备注
-		CreateBy:      dto.CreateBy,      // 创建者
-		CreateTime:    dto.CreateTime,    // 创建时间
-		UpdateBy:      dto.UpdateBy,      // 更新者
-		UpdateTime:    &dto.UpdateTime,   // 更新时间
-	}
+func (b NoticeDao) UpdateNotice(item model.Notice) error {
 
 	return b.db.Save(&item).Error
 }
@@ -59,12 +38,12 @@ func (b NoticeDao) UpdateNotice(dto system.UpdateNoticeDto) error {
 // UpdateNoticeStatus 更新通知公告状态
 func (b NoticeDao) UpdateNoticeStatus(dto system.UpdateNoticeStatusDto) error {
 
-	return b.db.Model(&m.Notice{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
+	return b.db.Model(&model.Notice{}).Where("id in (?)", dto.Ids).Update("status", dto.Status).Error
 }
 
 // QueryNoticeDetail 查询通知公告详情
-func (b NoticeDao) QueryNoticeDetail(dto system.QueryNoticeDetailDto) (*m.Notice, error) {
-	var item m.Notice
+func (b NoticeDao) QueryNoticeDetail(dto system.QueryNoticeDetailDto) (*model.Notice, error) {
+	var item model.Notice
 	err := b.db.Where("id", dto.Id).First(&item).Error
 	switch {
 	case err == nil:
@@ -77,13 +56,13 @@ func (b NoticeDao) QueryNoticeDetail(dto system.QueryNoticeDetailDto) (*m.Notice
 }
 
 // QueryNoticeList 查询通知公告列表
-func (b NoticeDao) QueryNoticeList(dto system.QueryNoticeListDto) ([]*m.Notice, int64, error) {
+func (b NoticeDao) QueryNoticeList(dto system.QueryNoticeListDto) ([]*model.Notice, int64, error) {
 	pageNo := dto.PageNo
 	pageSize := dto.PageSize
 
 	var total int64 = 0
-	var list []*m.Notice
-	tx := b.db.Model(&m.Notice{})
+	var list []*model.Notice
+	tx := b.db.Model(&model.Notice{})
 	if len(dto.NoticeTitle) > 0 {
 		tx.Where("notice_title like %?%", dto.NoticeTitle) // 公告标题
 	}
@@ -101,8 +80,8 @@ func (b NoticeDao) QueryNoticeList(dto system.QueryNoticeListDto) ([]*m.Notice, 
 }
 
 // QueryNoticeById 根据id查询通知公告
-func (b NoticeDao) QueryNoticeById(id int64) (*m.Notice, error) {
-	var item m.Notice
+func (b NoticeDao) QueryNoticeById(id int64) (*model.Notice, error) {
+	var item model.Notice
 	err := b.db.Where("id = ?", id).First(&item).Error
 
 	switch {
@@ -116,9 +95,9 @@ func (b NoticeDao) QueryNoticeById(id int64) (*m.Notice, error) {
 }
 
 // IsExistTitle 根据title查询通知公告
-func (b NoticeDao) IsExistTitle(title string) (*m.Notice, error) {
-	var item m.Notice
-	err := b.db.Model(&m.Notice{}).Where("notice_title = ?", title).First(&item).Error
+func (b NoticeDao) IsExistTitle(title string) (*model.Notice, error) {
+	var item model.Notice
+	err := b.db.Model(&model.Notice{}).Where("notice_title = ?", title).First(&item).Error
 
 	switch {
 	case err == nil:
