@@ -2,6 +2,7 @@ package system
 
 import (
 	"errors"
+
 	"github.com/feihua/simple-go/internal/dto/system"
 	m "github.com/feihua/simple-go/internal/model/system"
 	"gorm.io/gorm"
@@ -91,7 +92,7 @@ func (b MenuDao) QueryMenuDetail(dto system.QueryMenuDetailDto) (*m.Menu, error)
 func (b MenuDao) QueryMenuList(dto system.QueryMenuListDto) ([]*m.Menu, error) {
 
 	var list []*m.Menu
-	err := b.db.Model(&m.Menu{}).Find(&list).Error
+	err := b.db.Model(&m.Menu{}).Where("menu_type != ?", 3).Order("sort asc").Find(&list).Error
 
 	return list, err
 }
@@ -107,7 +108,7 @@ func (b MenuDao) QueryApiUrlList() ([]string, error) {
 func (b MenuDao) QueryAllMenuList() ([]*m.Menu, error) {
 
 	var list []*m.Menu
-	err := b.db.Model(&m.Menu{}).Find(&list).Error
+	err := b.db.Model(&m.Menu{}).Order("sort asc").Find(&list).Error
 
 	return list, err
 }
@@ -155,4 +156,28 @@ func (b MenuDao) QueryMenuByMenuUrl(menuUrl string) (*m.Menu, error) {
 	default:
 		return nil, err
 	}
+}
+
+// QueryMenuResourceList 查询所有菜单信息列表
+func (b MenuDao) QueryMenuResourceList(dto system.QueryMenuListDto) ([]*m.Menu, int64, error) {
+	pageNo := dto.PageNo
+	pageSize := dto.PageSize
+
+	var total int64 = 0
+	var list []*m.Menu
+	tx := b.db.Model(&m.Menu{})
+	if len(dto.MenuName) > 0 {
+		tx.Where("menu_name like %?%", dto.MenuName) // 公告标题
+	}
+
+	if dto.Status != nil {
+		tx.Where("status=?", dto.Status) // 公告状态（0:关闭,1:正常 ）
+	}
+	tx.Where("parent_id=?", dto.ParentId)
+	tx.Where("menu_type=?", 3)
+	tx.Order("sort asc")
+	tx.Limit(pageSize).Offset((pageNo - 1) * pageSize).Find(&list)
+
+	err := tx.Count(&total).Error
+	return list, total, err
 }

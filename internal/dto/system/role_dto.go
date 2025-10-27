@@ -67,6 +67,7 @@ type RoleMenuListDataDto struct {
 	Id            int64  `json:"id"`       // 父菜单ID，一级菜单为0
 	Label         string `json:"label"`    // 父菜单ID，一级菜单为0
 	IsPenultimate bool   `json:"isPenultimate"`
+	IsLeaf        bool   `json:"isLeaf"`
 }
 type QueryRoleMenuListDataDtoResp struct {
 	MenuList []RoleMenuListDataDto `json:"menuList"`

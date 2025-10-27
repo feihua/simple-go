@@ -2,11 +2,12 @@ package role
 
 import (
 	"errors"
+	"strconv"
+	"time"
+
 	"github.com/feihua/simple-go/internal/dao/system"
 	d "github.com/feihua/simple-go/internal/dto/system"
 	"github.com/feihua/simple-go/pkg/utils"
-	"strconv"
-	"time"
 )
 
 // RoleServiceImpl 角色信息操作实现
@@ -374,6 +375,7 @@ func (s *RoleServiceImpl) QueryRoleMenuList(dto d.QueryRoleMenuListDto) (*d.Quer
 			Id:            menu.Id,
 			Label:         menu.MenuName,
 			IsPenultimate: menu.ParentId == 2,
+			IsLeaf:        menu.MenuType == 3,
 		})
 		menuIds = append(menuIds, menu.Id)
 	}

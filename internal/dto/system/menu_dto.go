@@ -56,6 +56,11 @@ type QueryMenuDetailDto struct {
 
 // QueryMenuListDto 查询菜单信息列表请求参数
 type QueryMenuListDto struct {
+	PageNo   int    `json:"pageNo" default:"1" binding:"required"`    // 第几页
+	PageSize int    `json:"pageSize" default:"10" binding:"required"` // 每页的数量
+	MenuName string `json:"menuName"`                                 // 菜单名称
+	Status   *int32 `json:"status" `                                  // 菜单状态(1:正常，0:禁用)
+	ParentId int64  `json:"parentId" `                                // 父ID
 }
 
 // QueryMenuListDtoResp 查询菜单信息列表响应参数
@@ -80,7 +85,7 @@ type QueryMenuListDtoResp struct {
 }
 
 type MenuListSimpleDataDtoResp struct {
-	Id       int64  `json:"id"`       //主键
-	MenuName string `json:"menuName"` //菜单名称
-	ParentId int64  `json:"parentId"` //父ID
+	Id       int64  `json:"id"`       // 主键
+	MenuName string `json:"menuName"` // 菜单名称
+	ParentId int64  `json:"parentId"` // 父ID
 }

@@ -49,4 +49,9 @@ type QueryMenuDetailReqVo struct {
 
 // QueryMenuListReqVo 查询菜单信息列表请求参数
 type QueryMenuListReqVo struct {
+	PageNo   int    `json:"pageNo" default:"1" binding:"required"`    // 第几页
+	PageSize int    `json:"pageSize" default:"10" binding:"required"` // 每页的数量
+	MenuName string `json:"menuName"`                                 // 菜单名称
+	Status   *int32 `json:"status" `                                  // 菜单状态(1:正常，0:禁用)
+	ParentId int64  `json:"parentId" binding:"required"`              // 父ID
 }

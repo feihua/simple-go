@@ -2,10 +2,11 @@ package menu
 
 import (
 	"errors"
+	"time"
+
 	"github.com/feihua/simple-go/internal/dao/system"
 	d "github.com/feihua/simple-go/internal/dto/system"
 	"github.com/feihua/simple-go/pkg/utils"
-	"time"
 )
 
 // MenuServiceImpl 菜单信息操作实现
@@ -206,4 +207,39 @@ func (s *MenuServiceImpl) QueryMenuListSimple() ([]*d.MenuListSimpleDataDtoResp,
 	}
 
 	return list, nil
+}
+
+// QueryMenuResourceList 查询菜单信息列表
+func (s *MenuServiceImpl) QueryMenuResourceList(dto d.QueryMenuListDto) ([]*d.QueryMenuListDtoResp, int64, error) {
+	result, i, err := s.Dao.QueryMenuResourceList(dto)
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	var list []*d.QueryMenuListDtoResp
+
+	for _, item := range result {
+		resp := &d.QueryMenuListDtoResp{
+			Id:         item.Id,                             // 主键
+			MenuName:   item.MenuName,                       // 菜单名称
+			MenuType:   item.MenuType,                       // 菜单类型(1：目录   2：菜单   3：按钮)
+			Visible:    item.Visible,                        // 显示状态（0:隐藏, 显示:1）
+			Status:     item.Status,                         // 菜单状态(1:正常，0:禁用)
+			Sort:       item.Sort,                           // 排序
+			ParentId:   item.ParentId,                       // 父ID
+			MenuUrl:    item.MenuUrl,                        // 路由路径
+			ApiUrl:     item.ApiUrl,                         // 接口URL
+			MenuIcon:   item.MenuIcon,                       // 菜单图标
+			Remark:     item.Remark,                         // 备注
+			CreateBy:   item.CreateBy,                       // 创建者
+			CreateTime: utils.TimeToStr(item.CreateTime),    // 创建时间
+			UpdateBy:   item.UpdateBy,                       // 更新者
+			UpdateTime: utils.TimeToString(item.UpdateTime), // 更新时间
+		}
+
+		list = append(list, resp)
+	}
+
+	return list, i, nil
 }

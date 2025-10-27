@@ -169,3 +169,22 @@ func (r MenuController) QueryMenuListSimple(c *gin.Context) {
 		result.OkWithData(c, gin.H{"list": list, "success": true})
 	}
 }
+
+// QueryMenuResourceList 查询菜单信息列表
+func (r MenuController) QueryMenuResourceList(c *gin.Context) {
+	req := rq.QueryMenuListReqVo{}
+	err := c.ShouldBind(&req)
+	if err != nil {
+		result.FailWithMsg(c, result.ParamsError, err.Error())
+		return
+	}
+
+	item := d.QueryMenuListDto{}
+	list, total, err := r.Service.QueryMenuResourceList(item)
+	if err != nil {
+		result.FailWithMsg(c, result.MenuError, err.Error())
+	} else {
+		result.OkWithData(c, gin.H{"list": list, "success": true, "current": req.PageNo, "total": total, "pageSize": req.PageSize})
+
+	}
+}

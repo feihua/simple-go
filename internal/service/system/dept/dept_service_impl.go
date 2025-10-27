@@ -3,12 +3,13 @@ package dept
 import (
 	"errors"
 	"fmt"
-	"github.com/feihua/simple-go/internal/dao/system"
-	d "github.com/feihua/simple-go/internal/dto/system"
-	"github.com/feihua/simple-go/pkg/utils"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/feihua/simple-go/internal/dao/system"
+	d "github.com/feihua/simple-go/internal/dto/system"
+	"github.com/feihua/simple-go/pkg/utils"
 )
 
 // DeptServiceImpl 部门操作实现
@@ -286,9 +287,11 @@ func (s *DeptServiceImpl) QueryDeptList(dto d.QueryDeptListDto) ([]*d.QueryDeptL
 	for _, item := range result {
 		resp := &d.QueryDeptListDtoResp{
 			Id:         item.Id,                             // 部门id
+			Key:        strconv.FormatInt(item.Id, 10),      // 部门id
 			ParentId:   item.ParentId,                       // 父部门id
 			Ancestors:  item.Ancestors,                      // 祖级列表
 			DeptName:   item.DeptName,                       // 部门名称
+			Title:      item.DeptName,                       // 部门名称
 			Sort:       item.Sort,                           // 显示顺序
 			Leader:     item.Leader,                         // 负责人
 			Phone:      item.Phone,                          // 联系电话

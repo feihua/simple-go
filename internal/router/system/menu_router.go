@@ -14,6 +14,7 @@ func MenuRouter(r *gin.RouterGroup, b *a.MenuController) {
 	r.POST("/system/menu/updateMenuStatus", b.UpdateMenuStatus)
 	r.POST("/system/menu/queryMenuDetail", b.QueryMenuDetail)
 	r.POST("/system/menu/queryMenuList", b.QueryMenuList)
-	r.GET("/system/menu/queryMenuListSimple", b.QueryMenuListSimple)
+	r.POST("/system/menu/queryMenuListSimple", b.QueryMenuListSimple)
+	r.POST("/system/menu/queryMenuResourceList", b.QueryMenuResourceList)
 
 }
